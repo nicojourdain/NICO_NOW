@@ -1,0 +1,56 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! N. Jourdain, CCRC/UNSW, Oct. 2014
+!
+! namelist for pre-processing NOW simulations
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!-----------------------------------------------------------------------------------------------------
+&datactl
+!!-- ETOPO topography/bathymetry --
+file_etopo  =  '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/FORCING_FILES/ETOPO1_Bed_c_gmt4.grd.nc',
+!!-- Runoff -----------------------
+file_runoff = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/FORCING_FILES/runoff_obtaz_rhone_antar_1m_bathy_sept09_ORCA025_10112009.nc',
+!!-- Chlorophyl -------------------
+file_chloro = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/FORCING_FILES/chlaseawifs_c1m-99-05_smooth_ORCA_R025.nc',
+!!-- tidal parameters -------------
+file_tides  = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/FORCING_FILES/alltide_ORCA025.nc'
+/
+!-----------------------------------------------------------------------------------------------------
+&global
+!!-- directory containing ocean global simulation (for OBCs) :
+orcadir     =  '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S',
+!!-- file containing mask of global ocean simulation :
+filemskin   = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/MESH_MASK/ORCA025.L75-MJM91_byte_mask.nc',
+!!-- file containing vertical grid of global ocean simulation :
+filezgrin   = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/MESH_MASK/ORCA025.L75-MJM91_mesh_zgr.nc',
+!!-- file containing horizontal grid of global ocean simulation :
+filehgrin   = '/srv/ccrc/data22/z3381502/ORCA025.L75-MJM95-S/MESH_MASK/ORCA025.L75-MJM91_mesh_hgr.nc'
+/
+!-----------------------------------------------------------------------------------------------------
+&parent
+conf_par       = 'MC25new',                         !! parent configuration name
+max_dom        = 2,                                 !! number of WRF domains :
+                                                    !!       =1 if no nest, =2 if one nest, etc
+perio          = 0,                                 !! periodic East-West conditions : 
+                                                    !!     perio=1 if periodic / perio=0 if not
+feedback       = 1,                                 !! only used if max_dom > 1 : 
+                                                    !!     -> 1-way (feedback=0) or 2-way nesting (feedback=1) 
+                                                    !!     -> same as in WRF's namelist.input
+idateline      = 1,                                 !! Does the regional domain has an OBC on the date line ?
+                                                    !!   = 1 means YES and won't work if an OBC is near the Greenwitch meridian
+file_par_coord = './wrfinput_d01',                  !! parent original wrfinput
+file_eff_land  = './landeff_d01_MC25new_nest12.nc'  !! effective landmask of parent grid 
+                                                    !! (only used if max_dom>1 and feedback=1)
+/
+!-----------------------------------------------------------------------------------------------------
+&timectl
+yeari          = 1989,                              !! first year (initial state and first OBCs)
+yearf          = 2009                               !! last year for OBCs
+/
+!-----------------------------------------------------------------------------------------------------
+&child
+conf_child        = 'nest12',                           !! child configuration name
+file_child_coord  = './wrfinput_d02',                   !! child original wrfinput
+file_child_extend = './wrfinput_d02_EXTENDED_FOR_AGRIF' !! child extended wrfinput
+/
