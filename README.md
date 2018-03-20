@@ -1,4 +1,4 @@
-##### NEMO - OASIS - WRF (NOW)
+# NEMO - OASIS - WRF (NOW)
 
 ## preprocessing/
 
@@ -29,13 +29,13 @@ svn co http://oasis3mct.cerfacs.fr/svn/branches/OASIS3-MCT_2.0_branch/oasis3-mct
 ```
 
 For WRF, any version from v3.6 should work. See WRF documentation for compiling and preprocessing (WPS). The only thing that differs for coupling with OASIS is that you need to add the key\_cpp\_oasis3 compilation key in the configure file:
-````shell
+```shell
 ARCH_LOCAL = -DNONSTANDARD_SYSTEM_FUNC -DCHUNK=64 -DXEON_OPTIMIZED_WSM5 -DOPTIMIZE_CFL_TEST -DWRF_USE_CLM -Dkey_cpp_oasis3
 ```
 
 ## run/
 
-This contains...
+This contains scripts to run NOW on raijin. See specific README.txt file. To adapt for your own architecture...
 
 ## Acknowledgment
 
