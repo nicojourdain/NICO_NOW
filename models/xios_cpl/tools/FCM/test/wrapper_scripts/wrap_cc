@@ -1,0 +1,2 @@
+echo "wrap_cc $@" | sed "s#$RUN_DIR##g" >>$command_file
+gcc  "$@"

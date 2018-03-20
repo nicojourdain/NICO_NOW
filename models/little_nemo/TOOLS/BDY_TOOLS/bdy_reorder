@@ -1,0 +1,58 @@
+#!/bin/ksh
+
+# CALLS: bdy_reorder.exe
+
+#set -ax
+usage ()
+{
+   echo
+   echo "  bdy_reorder"
+   echo "  ************"
+   echo
+   echo "  usage: ${0##*/} [-c] file_in file_out"
+   echo
+   echo "  flags:    -c          target file is a coordinates.bdy.nc file"
+   echo "            -t          template file"
+   echo
+   exit 1
+}
+
+ln_coordinates=".false."
+file_template=""
+
+while getopts ct: opt
+do
+  case ${opt} in
+      c) 
+         ln_coordinates=".true." 
+      ;;
+      t) 
+         file_template=${OPTARG}
+      ;;
+      [?]) usage
+      ;;
+  esac
+done
+shift $(expr ${OPTIND} - 1)
+
+if [[ $# < 2 ]] ; then
+   usage
+fi
+
+script_dir=$(dirname $0)
+
+file_in=$1
+file_out=$2
+
+cat > nam_bdy_reorder << EOC
+&nam_bdy_reorder
+file_in='${file_in}'
+file_out='${file_out}'
+file_template='${file_template}'
+ln_coordinates=${ln_coordinates}
+EOC
+echo "/" >> nam_bdy_reorder
+
+${script_dir}/bdy_reorder.exe 
+
+exit 0

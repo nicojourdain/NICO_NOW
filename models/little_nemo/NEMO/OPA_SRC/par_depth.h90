@@ -1,0 +1,113 @@
+   !!----------------------------------------------------------------------
+   !!                     ***  par_depth.h90  ***
+   !!                    Vertical domain Parameter
+   !!----------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: par_ORCA_R2.h90 2715 2011-03-30 15:58:35Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+   INTEGER     &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      :: &
+#if key_depth==75
+      jpkdta  = 75              !: number of levels           > or = to jpk
+#elif key_depth==50
+      jpkdta  = 50              !: number of levels           > or = to jpk
+#elif key_depth==46
+      jpkdta  = 46              !: number of levels           > or = to jpk
+#else
+      par_depth.h90 :  You should not be there !!! Vertical Level not supported (key_depth)
+#endif
+
+   !!  Coefficients associated with the vertical coordinate system
+   !!---------------------------------------------------------------------
+#if key_depth==75
+   !!---------------------------------------------------------------------
+   REAL(wp), PARAMETER  ::       &
+      &     ppsur =  -3958.951371276829_wp  ,  &  !: ORCA r1 coefficients
+      &     ppa0  =   103.9530096000000_wp  ,  &  !: (75 levels case)
+      &     ppa1  =   2.415951269000000_wp  ,  &  !:
+      &     ppkth =   15.35101370000000_wp  ,  &  !: (non dimensional): gives the approximate
+      !                                           !: layer number above which  stretching will
+      !                                           !: be maximum. Usually of order jpk/2.
+      &     ppacr =       7.00000000000_wp        !: (non dimensional): stretching factor
+      !                                           !: for the grid. The higher zacr, the smaller
+      !                                           !: the stretching.
+   !!
+   !!  If both ppa0 ppa1 and ppsur are specified to pp_to_be_computed, then
+   !!  they are computed from ppdzmin, pphmax , ppkth, ppacr in dom_zgr
+   !!
+   REAL(wp), PARAMETER ::                      &
+      &     ppdzmin = pp_not_used           ,  &  !: (meters) vertical thickness of the top layer
+      &     pphmax  = pp_not_used                 !: (meters) Maximum depth of the ocean gdepw(jpk)
+   !!
+   LOGICAL,  PARAMETER ::                      &
+      &     ldbletanh = .TRUE.                    !: Use/do not use double tanf function for vertical coordinates
+   REAL(wp), PARAMETER ::                      &
+      &     ppa2  =   100.7609285000000_wp  ,  &  !: Double tanh function parameters
+      &     ppkth2=   48.02989372000000_wp  ,  &  !:
+      &     ppacr2=    13.00000000000_wp          !:
+
+   !!---------------------------------------------------------------------
+#elif key_depth==50
+   !!---------------------------------------------------------------------
+   REAL(wp), PARAMETER  ::       &
+      &     ppsur = -8494.48_wp ,   &  !: vertical grid Mercator
+      &     ppa0  =  257.609_wp ,   &  !: (default coefficients refine in surface)
+      &     ppa1  =  256.819_wp ,   &  !:
+      !
+      &     ppkth =    40_wp ,      &  !: (non dimensional): gives the approximate
+      !                                !: layer number above which  stretching will
+      !                                !: be maximum. Usually of order jpk/2.
+      &     ppacr =   10.00000000000_wp           !: (non dimensional): stretching factor
+      !                                           !: for the grid. The highest zacr, the smallest
+      !                                           !: the stretching.
+   !!
+   !!  If both ppa0 ppa1 and ppsur are specified to pp_to_be_computed, then
+   !!  they are computed from ppdzmin, pphmax , ppkth, ppacr in dom_zgr
+   !!
+   REAL(wp), PARAMETER ::                      &
+      &     ppdzmin = 6._wp           ,        &  !: (meters) vertical thickness of the top layer
+      &     pphmax  = 5750._wp                    !: (meters) Maximum depth of the ocean gdepw(jpk)
+   !!
+   LOGICAL,  PARAMETER ::                      &
+      &     ldbletanh = .FALSE.                   !: Use/do not use double tanf function for vertical coordinates
+   REAL(wp), PARAMETER ::                      &
+      &     ppa2  =   100.760928500000_wp ,  &  ! IDC, 26/6/09
+      &     ppacr2 =   13.000000000000_wp ,  &  ! IDC, 26/6/09
+      &     ppkth2 =   48.029893720000_wp       ! IDC, 26/6/09
+
+   !!---------------------------------------------------------------------
+#elif key_depth==46
+   !!---------------------------------------------------------------------
+   REAL(wp), PARAMETER  ::       &
+      &     ppsur = pp_to_be_computed ,        &  !: Computed in domzgr, set ppdzmin and pphmax below
+      &     ppa0  = pp_to_be_computed ,        &  !:    "           "
+      &     ppa1  = pp_to_be_computed ,        &  !:    "           "
+      !
+      &     ppkth =  23.563_wp        ,        &  !: (non dimensional): gives the approximate
+      !                                           !: layer number above which  stretching will
+      !                                           !: be maximum. Usually of order jpk/2.
+      &     ppacr =   9.00000000000_wp            !: (non dimensional): stretching factor
+      !                                           !: for the grid. The highest zacr, the smallest
+      !                                           !: the stretching.
+   !!
+   !!  If both ppa0 ppa1 and ppsur are specified to pp_to_be_computed, then
+   !!  they are computed from ppdzmin, pphmax , ppkth, ppacr in dom_zgr
+   !!
+   REAL(wp), PARAMETER ::                      &
+      &     ppdzmin = 6._wp           ,        &  !: (meters) vertical thickness of the top layer
+      &     pphmax  = 5750._wp                    !: (meters) Maximum depth of the ocean gdepw(jpk)
+   !!
+   LOGICAL,  PARAMETER ::                      &
+      &     ldbletanh = .FALSE.                   !: Use/do not use double tanf function for vertical coordinates
+   REAL(wp), PARAMETER ::                      &
+      &     ppa2    = pp_not_used           ,  &  !: Double tanh function parameters
+      &     ppkth2  = pp_not_used           ,  &  !:
+      &     ppacr2  = pp_not_used                 !:
+#endif
+   !!---------------------------------------------------------------------

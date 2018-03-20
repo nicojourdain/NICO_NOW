@@ -1,0 +1,6 @@
+cfg_name=fcm1_pp_empty_subroutine_inherit
+test_name=test_$cfg_name
+build_1=succeed_known
+. ./perform_test
+
+# This case does not fail as expected (see #335)

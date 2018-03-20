@@ -1,0 +1,93 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use File::Basename qw{dirname};
+use File::Spec;
+use FCM::Admin::Util qw{run_html2pdf};
+use Getopt::Long qw{GetOptions};
+use Pod::Usage qw{pod2usage};
+
+main();
+
+sub main {
+    my %option = ();
+    my $result = GetOptions(
+        \%option,
+        q{config|c=s},
+        q{help|usage|h},
+    );
+    if (!$result) {
+        pod2usage(1);
+    }
+    if (exists($option{help})) {
+        pod2usage(q{-verbose} => 1);
+    }
+    if (@ARGV != 2) {
+        my $message = sprintf(qq{Expect 2 arguments, %d given}, scalar(@ARGV));
+        pod2usage({q{-exitval} => 1, q{-message} => $message});
+    }
+    my ($html_path, $out_name) = @ARGV;
+    my $pdf_path = File::Spec->catfile(dirname($html_path), "$out_name.pdf");
+    run_html2pdf($html_path, $pdf_path, \%option);
+}
+
+__END__
+
+=head1 NAME
+
+fcm-html2pdf
+
+=head1 SYNOPSIS
+
+    fcm-html2pdf [--config=HTML2PS-CSS] HTML-PATH OUT-NAME
+
+=head1 DESCRIPTION
+
+Converts a self contained set of HTML documents into a PDF.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item HTML-PATH
+
+The path to the input HTML file.
+
+=item OUT-NAME
+
+The root name (basename without the extension) of the output file. The output is
+normally written to a file called I<OUT-NAME>.pdf in the directory containing
+L<HTML-PATH|/"HTML-PATH">
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item --help, -h, --usage
+
+Prints help and exits.
+
+=item --config=HTML2PS -c HTML2PS
+
+Specifies a configuration file for the I<html2ps> command. If not specified, the
+configuration file is assumed to be a file called I<style.html2ps.css> in the
+directory containing L<HTML-PATH|/"HTML-PATH">.
+
+=back
+
+=head1 COPYRIGHT
+
+E<169> Crown copyright Met Office. All rights reserved.
+
+=cut

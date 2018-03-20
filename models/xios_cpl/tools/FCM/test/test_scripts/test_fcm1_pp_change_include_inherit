@@ -1,0 +1,6 @@
+cfg_name=fcm1_pp_change_include_inherit
+test_name=test_$cfg_name
+. ./perform_test
+
+# The wrong include file gets used as demonstrated by the lack of anything being compiled.
+# See ticket:206

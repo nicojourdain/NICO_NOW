@@ -1,0 +1,136 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use FCM::Admin::System qw{
+    backup_trac_environment
+    backup_trac_ini_file
+    backup_trac_passwd_file
+    filter_projects
+    get_projects_from_trac_live
+};
+use FCM::Admin::Util qw{option2config};
+use Getopt::Long qw{GetOptions};
+use Pod::Usage qw{pod2usage};
+
+main();
+
+sub main {
+    my %option;
+    my $result = GetOptions(
+        \%option,
+        q{help|usage|h},
+        q{no-ini-file},
+        q{no-passwd-file},
+        q{no-verify-integrity},
+        q{trac-backup-dir=s},
+        q{trac-ini-file=s},
+        q{trac-live-dir=s},
+        q{trac-passwd-file=s},
+    );
+    if (!$result) {
+        pod2usage(1);
+    }
+    if (exists($option{help})) {
+        pod2usage(q{-verbose} => 1);
+    }
+    option2config(\%option);
+    my @projects = filter_projects([get_projects_from_trac_live()], \@ARGV);
+    for my $project (@projects) {
+        backup_trac_environment($project, !$option{q{no-verify-integrity}});
+    }
+    if (!@ARGV && !exists($option{q{no-ini-file}})) {
+        backup_trac_ini_file();
+    }
+    if (!@ARGV && !exists($option{q{no-passwd-file}})) {
+        backup_trac_passwd_file();
+    }
+}
+
+__END__
+
+=head1 NAME
+
+fcm-backup-trac-env
+
+=head1 SYNOPSIS
+
+    fcm-backup-trac-env [OPTIONS] [PROJECT ...]
+
+=head1 OPTIONS
+
+=over 4
+
+=item --help, -h, --usage
+
+Prints help and exits.
+
+=item --no-ini-file
+
+Do not backup the (central) INI file. This option is automatic if one or more
+project name is specified in the argument list.
+
+=item --no-passwd-file
+
+Do not backup the password file. This option is automatic if one or more project
+name is specified in the argument list.
+
+=item --no-verify-integrity
+
+If this option is specified, the program will not verify the integrity of the
+database before running the backup.
+
+=item --trac-backup-dir=DIR
+
+Specifies the root location of the backup directory. See
+L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=item --trac-ini-file=FILE
+
+Specifies the base name of the Trac INI file. See
+L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=item --trac-live-dir=DIR
+
+Specifies the root location of the live directory. See
+L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=item --trac-passwd-file=FILE
+
+Specifies the base name of the Trac password file. See
+L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=back
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item PROJECT
+
+Specifies one or more project to back up. If no project is specified, the
+program searches the live directory for projects to back up.
+
+No attempt to backup the (central) INI file and the password file is made if one
+or more project name is specified.
+
+=back
+
+=head1 DESCRIPTION
+
+This program archives Trac environments, the (central) INI file and the password
+file in the live directory to the backup directory.
+
+=head1 COPYRIGHT
+
+E<169> Crown copyright Met Office. All rights reserved.
+
+=cut

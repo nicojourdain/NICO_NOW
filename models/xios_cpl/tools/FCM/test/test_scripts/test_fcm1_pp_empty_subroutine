@@ -1,0 +1,4 @@
+cfg_name=fcm1_pp_empty_subroutine
+test_name=test_$cfg_name
+build_1=fail
+. ./perform_test

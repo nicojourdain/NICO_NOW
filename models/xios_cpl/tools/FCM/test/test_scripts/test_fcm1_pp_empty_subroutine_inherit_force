@@ -1,0 +1,8 @@
+cfg_name=fcm1_pp_empty_subroutine_inherit_force
+test_name=test_$cfg_name
+build_1=fail
+. ./perform_test
+
+# This case does fail as expected.
+# However, the failure is at the link stage whereas it ought to fail
+# due to a missing dependency (see #335)

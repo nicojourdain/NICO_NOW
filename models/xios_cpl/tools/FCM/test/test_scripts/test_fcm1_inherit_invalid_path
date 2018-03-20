@@ -1,0 +1,7 @@
+cfg_name=fcm1_inherit_invalid_path
+test_name=test_$cfg_name
+extract_1=fail
+. ./perform_test
+
+# Incorrect error message using FCM 1
+# Fixed in FCM 2 ?

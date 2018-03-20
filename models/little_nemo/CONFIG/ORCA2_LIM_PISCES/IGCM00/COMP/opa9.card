@@ -1,0 +1,123 @@
+[Compatibility]
+libIGCM=1.0
+
+[UserChoices]
+OPA_NDT_DAY=15
+#==============================================================
+#-- Name of directory for COMMON ACCOUNT at idris or CCRT
+#-- available directories are:  v3, v3_1, v3_2
+#-- related to NEMO_tag_revision (nemo_v3, nemo_v3_1, nemo_v3_2_beta)
+#-- NOTE: if you use COMMON ACCOUNT you have to de-comment it
+#OPA_version=v3_2
+#==============================================================
+
+#===================================
+#-- Use (y) or not (n) of io_server
+io_server=n
+#===================================
+
+#-- if you run interannual is "y", if not (=climatology) is "n"
+Interannual_Run=n
+
+[Interannual]
+#==================================================================================================
+#-- Surface Boundary Condition original files name ( get by the job ) same as the ones in namelist
+#==================================================================================================
+#-- NOTE: MANDATORY STRUCTURE OF FILE NAMES GET BY THE JOB : 
+#-- "basename_yyyy.nc"  	( for interannual data )
+#-- "basename.nc"	  	( for climatologycal data )
+#-- MANDATORY: NAMES USED IN List_jobsbc VARIABLE MUST BE ONLY THE BASENAME
+
+# default climatology, bulk_clio: 
+#List_jobsbc=(flx, taux_1m, tauy_1m)
+# example for interannual, bulk core, forcing CORE2:
+List_jobsbc=(u_10.15JUNE2009_orca2, v_10.15JUNE2009_orca2, ncar_rad.15JUNE2009_orca2, t_10.15JUNE2009_orca2, q_10.15JUNE2009_orca2, ncar_precip.15JUNE2009_orca2)
+# example for interannual, bulk core, forcing DRAKKAR:
+#List_jobsbc=(radlw_DFS4-ORCA2, radsw_DFS4-ORCA2, q2_DFS4-ORCA2, t2_DFS4-ORCA2, u10_DFS4-ORCA2, v10_DFS4-ORCA2, snow_DFS4-ORCA2, precip_DFS4-ORCA2)
+
+
+[InitialStateFiles]
+List=	()
+
+[BoundaryFiles]
+List=	()
+ListNonDel= (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/ahmcoef, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/bathy_level.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/bathy_meter.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/coordinates.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_potential_temperature_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_salinity_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/geothermal_heating.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/runoff_core_monthly.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/sss_data.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/sst_data.nc, .),\
+	    (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/subbasins.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/chlorophyll.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/K1rowdrg.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/M2rowdrg.nc, .),\
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/mask_itf.nc, .)
+
+
+
+
+[ParametersFiles]
+List=	(${SUBMIT_DIR}/PARAM/namelist,         namelist), \
+	(${SUBMIT_DIR}/PARAM/iodef.xml,        iodef.xml),      \
+        (${SUBMIT_DIR}/PARAM/xmlio_server.def, xmlio_server.def)
+
+[RestartFiles]
+List=	(${config_UserChoices_JobName}_${NEMO_END}_restart.nc,  restart.nc, restart.nc)
+
+[OutputText]
+List=   (ocean.output, solver.stat, STRAIT.dat, out_nemo)
+
+[OutputFiles]
+List=   (${PREFIX_WF1}_grid_T.nc,         ${R_OUT_OCE_WF1}/${PREFIX}_${WF1}_grid_T.nc,               Post_1Y_grid_T),\
+        (${PREFIX_WF2}_grid_T.nc,         ${R_OUT_OCE_WF2}/${PREFIX}_${WF2}_grid_T.nc,               Post_1M_grid_T),\
+        (${PREFIX_WF3}_grid_T.nc,         ${R_OUT_OCE_WF3}/${PREFIX}_${WF3}_grid_T.nc,               Post_1M_grid_T),\
+        (${PREFIX_WF3}_grid_U.nc,         ${R_OUT_OCE_WF3}/${PREFIX}_${WF3}_grid_U.nc,               Post_1M_grid_U) ,\
+        (${PREFIX_WF3}_grid_V.nc,         ${R_OUT_OCE_WF3}/${PREFIX}_${WF3}_grid_V.nc,               Post_1M_grid_V),\
+        (${PREFIX_WF3}_grid_W.nc,         ${R_OUT_OCE_WF3}/${PREFIX}_${WF3}_grid_W.nc,               Post_1M_grid_W),\
+        (${PREFIX_WF4}_grid_T_0n180w.nc,  ${R_OUT_OCE_WF4}/${PREFIX}_${WF4}_grid_T_0n180w.nc,        NONE ),\
+        (${PREFIX_WF4}_grid_T_Eq.nc,      ${R_OUT_OCE_WF4}/${PREFIX}_${WF4}_grid_T_Eq.nc,            NONE ),\
+        (${PREFIX_WF4}_diaptr.nc,         ${R_OUT_OCE_WF4}/${PREFIX}_${WF4}_diaptr.nc,               Post_1D_diaptr),\
+        (mesh_mask.nc     ,               ${R_OUT_OCE_O}/${config_UserChoices_JobName}_mesh_mask.nc, NONE),\
+        (output.abort.nc  ,               ${R_OUT_OCE_D}/${PREFIX}_output.abort.nc,                  NONE),\
+        (output.init.nc   ,               ${R_OUT_OCE_O_I}/${config_UserChoices_JobName}_${PeriodDateBegin}_output.init.nc, NONE)
+
+
+[Post_1Y_grid_T]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal = (nav_lon, nav_lat, deptht, time_counter)
+TimeSeriesVars = (sohtc300, sohefldo, soicecov, somxl010, sosaline, sossheig, sosstsst, sowaflcd, sowaflup)
+
+[Post_1M_grid_T]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal = (nav_lon, nav_lat, deptht, time_counter)
+TimeSeriesVars = (sohtc300, sohefldo, soicecov, somxl010, sosaline, sossheig, sosstsst, sowaflcd, sowaflup)
+
+[Post_1M_grid_U]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal = (nav_lon, nav_lat, depthu, time_counter)
+TimeSeriesVars = (sozotaux)
+
+[Post_1M_grid_V]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal = (nav_lon, nav_lat, depthv, time_counter)
+TimeSeriesVars = (sometauy)
+
+[Post_1M_grid_W]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal = (nav_lon, nav_lat, depthw, time_counter)
+TimeSeriesVars =
+
+[Post_1D_diaptr]
+Patches = ()
+GatherWithInternal = (lat, deptht, depthw, time_counter)
+TimeSeriesVars = (zotemglo, zosalglo, zomsfglo, zotematl, zosalatl, zomsfatl, zotempac, zosalpac, zomsfpac, zotemind, zosalind, zomsfind, zotemipc, zosalipc, zomsfipc, sohtatl, sostatl, sohtpac, sostpac, sohtind, sostind, sohtipc, sostipc, sophtadv, sophtove, sophtldf, sopstadv, sopstove, zomsfeiv, sophteiv, sopsteiv)
+
+[Post_time]
+Patches = (Patch_20091030_histcom_time_axis)
+GatherWithInternal =
+TimeSeriesVars =
+

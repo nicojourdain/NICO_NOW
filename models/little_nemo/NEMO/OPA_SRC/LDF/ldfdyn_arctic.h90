@@ -1,0 +1,43 @@
+   !!----------------------------------------------------------------------
+   !!  ldftra_arctic.h90              2D (i,j) arctic zoom viscosity coeff.
+   !!----------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: ldfdyn_arctic.h90 2528 2010-12-27 17:33:53Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+! 1.2 Modify ahm 
+! --------------
+      IF(lwp)WRITE(numout,*) ' inildf: Arctic ocean'
+      IF(lwp)WRITE(numout,*) '         no tropics, no reduction of ahm'
+      IF(lwp)WRITE(numout,*) '         south and west boundary increase'
+
+
+      ahm1(:,:) = ahm0
+      ahm2(:,:) = ahm0
+
+      ijpt0=max(1,min(98-jpjzoom+1-njmpp+1,jpj))
+      ijpt1=max(0,min(98-jpjzoom+1-njmpp+1,jpj-1))
+      DO jj=ijpt0,ijpt1
+         ahm2(:,jj)=ahm0*2.
+         ahm1(:,jj)=ahm0*2.
+      END DO
+      ijpt0=max(1,min(99-jpjzoom+1-njmpp+1,jpj))
+      ijpt1=max(0,min(99-jpjzoom+1-njmpp+1,jpj-1))
+      DO jj=ijpt0,ijpt1
+         ahm2(:,jj)=ahm0*1.9
+         ahm1(:,jj)=ahm0*1.75
+      END DO
+      ijpt0=max(1,min(100-jpjzoom+1-njmpp+1,jpj))
+      ijpt1=max(0,min(100-jpjzoom+1-njmpp+1,jpj-1))
+      DO jj=ijpt0,ijpt1
+         ahm2(:,jj)=ahm0*1.5
+         ahm1(:,jj)=ahm0*1.25
+      END DO
+      ijpt0=max(1,min(101-jpjzoom+1-njmpp+1,jpj))
+      ijpt1=max(0,min(101-jpjzoom+1-njmpp+1,jpj-1))
+      DO jj=ijpt0,ijpt1
+         ahm2(:,jj)=ahm0*1.1
+      END DO
+

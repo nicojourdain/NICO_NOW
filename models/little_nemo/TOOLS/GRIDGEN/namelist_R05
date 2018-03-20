@@ -1,0 +1,19 @@
+&input_output
+    ln_iom_activated = true 
+/
+
+&coarse_grid_files    
+    cn_parent_coordinate_file = 'coordinates_ORCA_R05.nc'
+    cn_position_pivot = 'F-grid'
+/    
+
+&nesting    
+    nn_imin = 0
+    nn_imax = 1
+    nn_jmin = 1
+    nn_jmax = 1
+    nn_rhox  = 2
+    nn_rhoy = 2
+/
+
+

@@ -1,0 +1,56 @@
+#!/bin/ksh
+
+#-----------------------------------
+function ICE_Initialize
+{ 
+    IGCM_debug_PushStack "ICE_Initialize"
+
+    echo INITIALIZE ICE !!!
+
+    IGCM_debug_PopStack "ICE_Initialize"
+}
+
+#-----------------------------------
+function ICE_Update
+{
+    IGCM_debug_PushStack "ICE_Update"
+
+    NbFreq=$( echo ${config_ICE_WriteFrequency} | wc -w )
+
+    ##--Write Frequency Purpose ....
+    typeset -Z1 i=1
+    while [ $i -le ${NbFreq} ]; do
+        frequency=$( echo ${config_ICE_WriteFrequency} | awk -v var="$i" "-F " '{print $var}' )
+        factor=$( echo ${frequency} | sed -e "s/[yYmMdD]//" )
+        case ${frequency} in
+            *Y|*y)
+                eval PREFIX_WFI${i}=${config_UserChoices_JobName}_${factor}y_${DatesPeriod} ;
+                eval R_OUT_ICE_WFI${i}=${R_OUT_ICE_O_Y} ;
+                eval WFI${i}=${factor}Y ;;
+            *M|*m)
+                eval PREFIX_WFI${i}=${config_UserChoices_JobName}_${factor}m_${DatesPeriod} ;
+                eval R_OUT_ICE_WFI${i}=${R_OUT_ICE_O_M} ;
+                eval WFI${i}=${factor}M ;;
+            *D|*d)
+                eval PREFIX_WFI${i}=${config_UserChoices_JobName}_${factor}d_${DatesPeriod} ;
+                eval R_OUT_ICE_WFI${i}=${R_OUT_ICE_O_D} ;
+                eval WFI${i}=${factor}D ;;
+            *)
+        esac
+        let i=$i+1
+
+    done
+    echo UPDATE ICE !!!
+
+    IGCM_debug_PopStack "ICE_Update"
+}
+
+#-----------------------------------
+function ICE_Finalize
+{
+    IGCM_debug_PushStack "ICE_Finalize"
+
+    echo FINALIZE ICE !!!
+
+    IGCM_debug_PopStack "ICE_Finalize"
+}

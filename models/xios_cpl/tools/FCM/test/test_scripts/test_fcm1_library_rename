@@ -1,0 +1,4 @@
+cfg_name=fcm1_library_rename
+test_name=test_$cfg_name
+run_1=no
+. ./perform_test

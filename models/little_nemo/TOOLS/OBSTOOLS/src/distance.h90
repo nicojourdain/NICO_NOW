@@ -1,0 +1,33 @@
+   REAL FUNCTION distance( plon1, plat1, plon2, plat2 )
+      ! Arggumnts
+      REAL :: plon1,plat1,plat2,plon2
+      ! Local variables
+      REAL :: zplat1,zplon1,zplat2,zplon2
+      REAL :: za1,za2,zb1,zb2,zc1,zc2,zcos1,zcos2
+      REAL, PARAMETER :: zrad = 3.141592653589793/180.0
+      REAL, parameter :: rearth = 6371229
+
+      zplon1 = plon1
+      zplon2 = plon2
+      IF ( zplon1 <  -180 ) zplon1 = zplon1 + 360.0
+      IF ( zplon1 >=  180 ) zplon1 = zplon1 - 360.0
+      IF ( zplon2 <  -180 ) zplon2 = zplon2 + 360.0
+      IF ( zplon2 >=  180 ) zplon2 = zplon2 - 360.0
+
+      zplon1 = zplon1 * zrad
+      zplon2 = zplon2 * zrad
+      zplat1 = plat1  * zrad
+      zplat2 = plat2  * zrad
+      zcos1  = COS( zplat1 )
+      zcos2  = COS( zplat2 )
+      za1    = SIN( zplat1 )
+      za2    = SIN( zplat2 )
+      zb1    = zcos1 * COS( zplon1 )
+      zb2    = zcos2 * COS( zplon2 )
+      zc1    = zcos1 * SIN( zplon1 )
+      zc2    = zcos2 * SIN( zplon2 )
+
+      distance  =  rearth  *  &
+         &  ASIN( SQRT( ABS ( 1.0 - ( za1 * za2 + zb1 * zb2 + zc1 * zc2) ** 2) ) )
+      
+    END FUNCTION distance

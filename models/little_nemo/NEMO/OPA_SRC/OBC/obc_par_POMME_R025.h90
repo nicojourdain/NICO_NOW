@@ -1,0 +1,100 @@
+   !!----------------------------------------------------------------------
+   !!                  ***  obc_par_POMME_R025.h90  ***
+   !!----------------------------------------------------------------------
+   !! open boundary parameter : POMME configuration
+   !!---------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: obc_par_POMME_R025.h90 2528 2010-12-27 17:33:53Z rblod $
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+   INTEGER, PARAMETER ::  jptobc  =	      14   
+   !: time dimension of the BCS fields on input
+
+   !! * EAST open boundary
+   LOGICAL, PARAMETER ::     &  !:
+      lp_obc_east = .TRUE.      !:
+
+     INTEGER   &
+#if !defined key_agrif
+     , PARAMETER   & 
+#endif
+    ::     & 
+      ! * default values *
+      !jpieob = jpiglo-2,    &  !: i-localization of the East open boundary (must be ocean U-point)
+      !jpjed  =        2,    &  !: j-starting indice of the East open boundary (must be land T-point)
+      !jpjef  = jpjglo-1,    &  !: j-ending   indice of the East open boundary (must be land T-point)
+      jpieob = jpiglo-2,    &  !: i-localization of the East open boundary (must be ocean U-point)
+      jpjed  =        1,    &  !: j-starting indice of the East open boundary (must be land T-point)
+      jpjef  =   jpjglo,    &  !: j-ending   indice of the East open boundary (must be land T-point)
+      jpjedp1 =  jpjed+1,    &  !: first ocean point         "                 "
+      jpjefm1 =  jpjef-1        !: last  ocean point         "                 "
+
+   !! * WEST open boundary
+   LOGICAL, PARAMETER ::     &  !:
+      lp_obc_west = .TRUE.     !: to active or not the West open boundary
+
+     INTEGER   &
+#if !defined key_agrif
+     , PARAMETER   & 
+#endif
+    ::     & 
+      ! * default values *
+      !jpiwob  =        2,   &  !: i-localization of the West open boundary (must be ocean U-point)
+      !jpjwd   =        2,   &  !: j-starting indice of the West open boundary (must be land T-point)
+      !jpjwf   = jpjglo-1,   &  !: j-ending   indice of the West open boundary (must be land T-point)
+      jpiwob  =        2,   &  !: i-localization of the West open boundary (must be ocean U-point)
+      jpjwd   =        1,   &  !: j-starting indice of the West open boundary (must be land T-point)
+      jpjwf   =   jpjglo,   &  !: j-ending   indice of the West open boundary (must be land T-point)
+      jpjwdp1 =  jpjwd+1,    &  !: first ocean point         "                 "
+      jpjwfm1 =  jpjwf-1        !: last  ocean point         "                 "
+
+   !! * NORTH open boundary
+   LOGICAL, PARAMETER ::     &  !:
+      lp_obc_north = .TRUE.     !:
+
+     INTEGER   &
+#if !defined key_agrif
+     , PARAMETER   & 
+#endif
+    ::     & 
+      ! * default values *
+      !jpjnob = jpjglo-2,    &  !: j-localization of the North open boundary (must be ocean V-point)
+      !jpind  =        2,    &  !: i-starting indice of the North open boundary (must be land T-point)
+      !jpinf  = jpiglo-1,    &  !: i-ending   indice of the North open boundary (must be land T-point)
+      jpjnob = jpjglo-2,    &  !: j-localization of the North open boundary (must be ocean V-point)
+      jpind  =        1,    &  !: i-starting indice of the North open boundary (must be land T-point)
+      jpinf  =   jpiglo,    &  !: i-ending   indice of the North open boundary (must be land T-point)
+      jpindp1 =  jpind+1,    &  !: first ocean point         "                 "
+      jpinfm1 =  jpinf-1        !: last  ocean point         "                 "
+
+   !! * SOUTH open boundary
+   LOGICAL, PARAMETER ::     &  !:
+      lp_obc_south = .TRUE.     !: INDICE to active or not the South open boundary
+
+     INTEGER   &
+#if !defined key_agrif
+     , PARAMETER   & 
+#endif
+    ::     & 
+      ! * default values *
+      !jpjsob =        2,    &  !: j-localization of the South open boundary (must be ocean V-point)
+      !jpisd  =        2,    &  !: i-starting indice of the South open boundary (must be land T-point)
+      !jpisf  = jpiglo-1,    &  !: i-ending   indice of the South open boundary (must be land T-point)
+      jpjsob =        2,    &  !: j-localization of the South open boundary (must be ocean V-point)
+      jpisd  =        1,    &  !: i-starting indice of the South open boundary (must be land T-point)
+      jpisf  =   jpiglo,    &  !: i-ending   indice of the South open boundary (must be land T-point)
+      jpisdp1 =  jpisd+1,    &  !: first ocean point         "                 "
+      jpisfm1 =  jpisf-1        !: last  ocean point         "                 "
+   
+   !! * CHOSE WHERE YOU WANT TO LOCATE THE BAROTROPIC CORRECTION VELOCITY
+   !chd IND025
+   LOGICAL, PARAMETER ::     &  !:
+        lp_obc_east_barotp_corr  = .TRUE.,   & !:
+        lp_obc_west_barotp_corr  = .TRUE.,   & !:
+        lp_obc_north_barotp_corr = .TRUE.,   & !:
+        lp_obc_south_barotp_corr = .TRUE.      !:
+
+   INTEGER, PARAMETER ::     &  !:
+      jpnic = 2700              !: maximum number of isolated coastlines points 
+   !!---------------------------------------------------------------------------------------------

@@ -1,0 +1,58 @@
+ config.card
+ ORCA2_OFF_PISCES
+ 5 years run -  trunk of 1 year per job with diagnostics ( key_trc_diaadd & key_trc_dia3d activated )
+
+ - NEMO    trunk revision 1656
+ - mpi on 4 processors ( 1x4 domain decomposition )
+ - libIGCM trunk revision 183
+ - dynamical files from IPSLCM5-VA66 runs from Olivier Marti
+
+without monitoring and atlas
+
+Tested on  NEC SX9 mercure at CCRT.
+
+Ouputs on : /dmnfs10/cont003/p48ethe/IGCM_OUT/ORCA2_OFF_PISCES/VA66P
+
+========================================================================
+run.card
+
+# $Date: $
+# $Name: $
+# $Revision: $
+# IPSL (2006)
+#  This software is governed by the CeCILL licence see libIGCM/libIGCM_CeCILL.LIC
+
+#========================================================================
+[Configuration]
+#last PREFIX
+OldPrefix= VA66P_20051231
+#Compute date of loop
+PeriodDateBegin= 2006-01-01
+PeriodDateEnd= 2006-12-31
+CumulPeriod= 6
+# State of Job "Start", "Running", "OnQueue", "Completed"
+PeriodState= Completed
+
+#========================================================================
+[PostProcessing]
+
+#RebuildRunning=y/n
+#RebuildToComplete=number of dir to rebuild
+#RebuildDateID=PeriodDateEnd correspondant au dernier flag de RebuildFrequency=true
+
+TimeSeriesRunning=n
+TimeSeriesCompleted=
+
+#========================================================================
+[Log]
+# Executables Size
+LastExeSize= ( 11596207 )
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# CumulPeriod | PeriodDateBegin |   PeriodDateEnd |        RunDateBegin |          RunDateEnd |     RealCpuTime |     UserCpuTime |      SysCpuTime | ExeDate
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#           1 |        20010101 |        20011231 | 2009-10-14T15:05:34 | 2009-10-14T15:10:39 |       304.19207 |      1191.95484 |         4.41881 | MBG_Oct_14_15:02
+#           2 |        20020101 |        20021231 | 2009-10-14T15:14:18 | 2009-10-14T15:20:13 |       354.59008 |      1412.65806 |         2.16025 | MBG_Oct_14_15:02
+#           3 |        20030101 |        20031231 | 2009-10-14T15:24:17 | 2009-10-14T15:30:10 |       353.09587 |      1407.03031 |         2.22349 | MBG_Oct_14_15:02
+#           4 |        20040101 |        20041231 | 2009-10-14T15:34:16 | 2009-10-14T15:40:18 |       362.49957 |      1430.77230 |         3.31767 | MBG_Oct_14_15:02
+#           5 |        20050101 |        20051231 | 2009-10-14T15:44:16 | 2009-10-14T15:50:17 |       360.82695 |       717.62953 |         1.79535 | MBG_Oct_14_15:02

@@ -1,0 +1,12 @@
+dataplot.pro - IDL widget based program to read in netcdf feedback and data
+files and plot observation and background values.
+
+example calls:
+
+dataplot,filenamearray
+dataplot,filenamearray,/batchplot,/gif
+dataplot,filenamearray,/batchplot,/ps
+
+use
+
+man,'dataplot' in idl for more information

@@ -1,0 +1,92 @@
+#!/bin/ksh
+# ------------------------------------------------------------------------------
+# NAME
+#   post-commit-background
+#
+# SYNOPSIS
+#   post-commit-background REPOS REV
+#
+# DESCRIPTION
+#   This script performs the Subversion post-commit tasks in the background. The
+#   first argument must be the path to the current Subversion repository, and
+#   the second argument must be the revision of the current commit. Errors in
+#   the script are automatically e-mailed to the FCM user account.
+#
+#   The script does the following:
+#    1. updates the "latest" file in the log directory with the latest revision
+#       number of the repository.
+#    2. creates an incremental revision dump of the current revision.
+#    3. runs "background_updates.pl" if it exists in the hook script directory.
+#
+# COPYRIGHT
+#   (C) Crown copyright Met Office. All rights reserved.
+#   For further details please refer to the file COPYRIGHT.txt
+#   which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+REPOS=$1
+REV=$2
+
+REPOS_NAME=${REPOS##*/}
+LOG_DIR=~fcm/svn/post-commit
+LOG_FILE=$LOG_DIR/${REPOS_NAME}.log
+DUMP_DIR=~fcm/svn/dumps/$REPOS_NAME
+DUMP_FILE=$DUMP_DIR/$REV
+ERR=''
+
+{
+  # Update the "latest" file with the latest revision number
+  # ----------------------------------------------------------------------------
+  echo "$(date): Updating ${REPOS_NAME}.latest ..."
+  echo $REV > $LOG_DIR/${REPOS_NAME}.latest
+
+  if (($? != 0)); then
+    ERR="${ERR}Update of ${REPOS_NAME}.latest: failed. "
+  fi
+
+  # Dump the current revision
+  # ----------------------------------------------------------------------------
+  if [[ ! -d $DUMP_DIR ]]; then
+    mkdir -p $DUMP_DIR
+  fi
+
+  svnadmin dump -r $REV --incremental --deltas $REPOS 1>$DUMP_FILE
+
+  if (($? != 0)); then
+    ERR="${ERR}$REPOS_NAME@$REV: svnadmin dump: failed. "
+  fi
+
+  # Warn us of large changesets (>1Mb)
+  dump_size=$(du -b -s $DUMP_FILE | cut -f 1)
+
+  if (($dump_size > 1048576)); then
+    dump_size=$(du -h -s $DUMP_FILE | cut -f 1)
+    ERR="${ERR}Dump size exceeds 1Mb. "
+    echo "WARNING: large changeset dump, size = ${dump_size}">&2 
+  fi
+
+  # Perform background update, if necessary
+  # ----------------------------------------------------------------------------
+  if [[ -e ${REPOS}/hooks/background_updates.pl ]]; then
+    echo "$(date): Running background tasks and exiting ..."
+    export TMPDIR=/var/tmp
+    ${REPOS}/hooks/background_updates.pl $REPOS_NAME $LOG_DIR
+
+    if (($? != 0)); then
+      ERR="${ERR}background_updates.pl: failed. "
+    fi
+
+  else
+    echo "$(date): No background tasks required - exiting"
+  fi
+
+} 1>$LOG_FILE 2>&1
+
+# If there are errors, e-mail the log message to FCM
+# ------------------------------------------------------------------------------
+if [[ -n $ERR ]]; then
+  ERR=${ERR% *}
+  /bin/mail -s "$REPOS@$REV: $ERR" my.name@somewhere.org <<EOF
+$(<$LOG_FILE)
+EOF
+fi

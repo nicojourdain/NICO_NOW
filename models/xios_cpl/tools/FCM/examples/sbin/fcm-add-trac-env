@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use FCM::Admin::System qw{add_trac_environment};
+use FCM::Admin::Util qw{option2config};
+use Getopt::Long qw{GetOptions};
+use Pod::Usage qw{pod2usage};
+
+main();
+
+sub main {
+    my %option;
+    my $result = GetOptions(
+        \%option,
+        q{admin-user|u=s@},
+        q{authorised|a},
+        q{help|usage|h},
+        q{svn-live-dir=s},
+        q{svn-project-suffix=s},
+        q{trac-live-dir=s},
+    );
+    if (!$result) {
+        pod2usage(1);
+    }
+    if (exists($option{help})) {
+        pod2usage(q{-verbose} => 1);
+    }
+    if (exists($option{'admin-user'})) {
+        $option{'admin-user'} = [
+            split(q{,}, join(q{,}, @{$option{'admin-user'}})),
+        ];
+    }
+    option2config(\%option);
+    if (@ARGV != 1) {
+        my $message = sprintf(
+            qq{Expected exactly 1 argument, %d given.}, scalar(@ARGV),
+        );
+        pod2usage({q{-exitval} => 1, q{-message} => $message});
+    }
+    my ($project_name) = @ARGV;
+    add_trac_environment(
+        $project_name,
+        (exists($option{'admin-user'}) ? $option{'admin-user'} : []),
+        exists($option{'authorised'}),
+    );
+}
+
+__END__
+=head1 NAME
+
+fcm-add-trac-env
+
+=head1 SYNOPSIS
+
+    fcm-add-trac-env [OPTIONS] PROJECT
+
+=head1 OPTIONS
+
+=over 4
+
+=item --admin-user=LIST, -uLIST
+
+Specifies one or more admin users, in a comma separated list.
+
+=item --authorised, -a
+
+Adds an "authorised" permission. Only those users granted this permission
+will have "_CREATE" and "_MODIFY" access. The default is to grant all
+authenticated users "_CREATE" and "_MODIFY" access.
+
+=item --help, -h, --usage
+
+Prints help and exits.
+
+=item --svn-live-dir=DIR
+
+Specifies the root location of the live directory of Subversion repositories.
+See L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=item --svn-project-suffix=NAME
+
+Specifies the suffix added to the project name for Subversion repositories. The
+default is "_svn".
+
+=item --trac-live-dir=DIR
+
+Specifies the root location of the live directory of Trac environments. See
+L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=back
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item PROJECT
+
+Specifies the name of the project to add.
+
+=back
+
+=head1 DESCRIPTION
+
+This program adds a new Trac environment to the live directory.
+
+=head1 COPYRIGHT
+
+E<169> Crown copyright Met Office. All rights reserved.
+
+=cut

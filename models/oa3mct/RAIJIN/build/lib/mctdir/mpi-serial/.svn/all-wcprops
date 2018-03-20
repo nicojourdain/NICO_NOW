@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial
+END
+time.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/time.c
+END
+recv.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/recv.c
+END
+listP.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/listP.h
+END
+ftest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/ftest.F90
+END
+listops.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/listops.h
+END
+mpiP.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpiP.h
+END
+list.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/list.c
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/README
+END
+mpif.real8double16.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpif.real8double16.h
+END
+handles.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/handles.c
+END
+pack.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/pack.c
+END
+list.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/list.h
+END
+ctest.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/ctest.c
+END
+mpi.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpi.c
+END
+make-mpif
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/make-mpif
+END
+fort.F90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/fort.F90
+END
+req.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/req.c
+END
+collective.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/collective.c
+END
+mpif.real4double8.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpif.real4double8.h
+END
+send.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/send.c
+END
+mpi.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpi.h
+END
+mpif.master.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpif.master.h
+END
+comm.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/comm.c
+END
+group.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/group.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/Makefile
+END
+protify.awk
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/protify.awk
+END
+mpif.real8double8.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/mpi-serial/mpif.real8double8.h
+END

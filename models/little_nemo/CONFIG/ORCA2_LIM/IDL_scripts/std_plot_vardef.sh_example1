@@ -1,0 +1,105 @@
+#!/bin/sh 
+#
+# AUTHOR - date
+# ===========
+# Sebastien Masson - 04/2011 - LOCEAN
+#
+# DESCRIPTION
+# ===========
+# define all varibles needed by std_plot.sh and std_plot.pro
+#
+# EXAMPLES
+# ========
+# $ . ./std_plot_vardef.sh
+#
+#
+#===================== User PATHS =====================
+#
+idl_command=/Applications/itt/idl64/bin/idl
+#
+PS_DIR=$( pwd )/ps
+PDF_DIR=$( pwd )/pdf
+HTML_DIR=$( pwd )/html
+SAXO_DIR=/Users/smasson/SAXO_DIR
+#
+DIR_DATA=/Users/smasson/tmp/idlorca2/res      # path of data in NetCDF format
+DIR_CLIMATO=/Users/smasson/tmp/idlorca2/clim  # path of climatological data
+DIR_MASK=/Users/smasson/tmp/idlorca2/clim     # path of mask files (ex: subbasins)
+#
+#===================== Model GRID =====================
+#
+FILE_MESH_MASK=/Users/smasson/data/vp33beta_mesh_mask_7.nc # meshmask
+FILE_MASK_SUBDOMAIN=subbasins_orca21_nored.nc              # sub-bassin masks
+#
+#===================== DATA =====================
+#
+VAR_TEMP_3D=votemper   ;   FILE_TEMP_3D=data_1y_potential_temperature_nomask.nc    # Levitus_T
+VAR_SAL_3D=vosaline    ;   FILE_SAL_3D=data_1y_salinity_nomask.nc                  # Levitus_S
+VAR_SST=sst            ;   FILE_SST=NewREY_ORCA2_1991_2000_1y.nc                   # Reynolds
+VAR_FLUX=qnet          ;   FILE_FLUX=OAFlux_1my_01_12_1984_2004_orca2_qnet.nc      # flux
+VAR_MLD=mld            ;   FILE_MLD=mld_DR003_c1m_ORCA2_1y.nc                      # Mixed layer depth
+#
+# Geothermal heating -> define FILE_GEOHEAT to 'NO' if there is not such forcing
+#                    -> define VAR_GEOHEAT to a constant if geothermal heating is constant over the domain
+VAR_GEOHEAT=heatflow   ;   FILE_GEOHEAT=geothermal_heating.nc 
+#
+#===================== EXP1 =====================
+#
+FILE1_T=tr33beta_00910101_01001231_1Y_grid_T.nc   # exp1 grid T input file
+FILE1_U=tr33beta_00910101_01001231_1Y_grid_U.nc   # exp1 grid U input file
+FILE1_V=tr33beta_00910101_01001231_1Y_grid_V.nc   # exp1 grid V input file
+FILE1_I=tr33beta_00910101_01001231_1M_icemod.nc   # exp1 ice    input file
+VAR1_T=thetao
+VAR1_S=so
+VAR1_QNET=qt
+VAR1_ERP=wfcorr
+VAR1_EMP=wfo
+VAR1_MLD=mldr10_1
+VAR1_U=uocetr_eff
+VAR1_V=vocetr_eff
+VAR1_Ithick=sit
+VAR1_Ifrac=sic
+#
+#===================== EXP2 =====================
+#
+FILE2_T=tr33beta_00910101_01001231_1Y_grid_T.nc   # exp1 grid T input file
+FILE2_U=tr33beta_00910101_01001231_1Y_grid_U.nc   # exp1 grid U input file
+FILE2_V=tr33beta_00910101_01001231_1Y_grid_V.nc   # exp1 grid V input file
+FILE2_I=tr33beta_00910101_01001231_1M_icemod.nc   # exp1 ice    input file
+VAR2_T=thetao
+VAR2_S=so
+VAR2_QNET=qt
+VAR2_ERP=wfcorr
+VAR2_EMP=wfo
+VAR2_MLD=mldr10_1
+VAR2_U=uocetr_eff
+VAR2_V=vocetr_eff
+VAR2_Ithick=sit
+VAR2_Ifrac=sic
+#
+######################### Export Variables ###############################
+#
+#===================== User PATHS =====================
+export PS_DIR PDF_DIR HTML_DIR SAXO_DIR
+export DIR_DATA DIR_CLIMATO DIR_MASK
+#===================== Model GRID =====================
+export FILE_MESH_MASK FILE_MASK_SUBDOMAIN
+#===================== DATA =====================
+export FILE_TEMP_3D  VAR_TEMP_3D
+export FILE_SAL_3D   VAR_SAL_3D
+export FILE_SST      VAR_SST
+export FILE_GEOHEAT  VAR_GEOHEAT
+export FILE_FLUX     VAR_FLUX
+export FILE_MLD      VAR_MLD
+#===================== EXP1 =====================
+export READ_ONLY_FIRST_RECORD
+export FILE1_T FILE1_U FILE1_V FILE1_I
+export VAR1_T VAR1_S VAR1_QNET VAR1_ERP VAR1_EMP VAR1_MLD 
+export VAR1_U VAR1_V
+export VAR1_Ithick VAR1_Ifrac
+#===================== EXP2 =====================
+export FILE2_T FILE2_U FILE2_V FILE2_I
+export VAR2_T VAR2_S VAR2_QNET VAR2_ERP VAR2_EMP VAR2_MLD 
+export VAR2_U VAR2_V
+export VAR2_Ithick VAR2_Ifrac
+#

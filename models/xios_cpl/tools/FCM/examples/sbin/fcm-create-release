@@ -1,0 +1,317 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Fcntl qw{:mode}; # for S_IXUSR, S_IXGRP, S_IXOTH, etc
+use File::Basename qw{dirname basename};
+use File::Spec;
+use File::Temp qw{tempdir};
+use FCM::Admin::Project;
+use FCM::Admin::Runner;
+use FCM::Admin::Util qw{
+    option2config
+    run_create_archive
+    run_html2pdf
+    run_mkpath
+    run_rename
+    run_rmtree
+    sed_file
+    write_file
+};
+use Getopt::Long qw{GetOptions};
+use IO::Dir;
+use Pod::Usage qw{pod2usage};
+use SVN::Client;
+
+main();
+
+sub main {
+    my %option = ();
+    my $result = GetOptions(
+        \%option,
+        q{help|usage|h},
+        q{revision|r=s},
+        q{svn-live-dir=s},
+        q{svn-project-suffix=s},
+    );
+    if (!$result) {
+        pod2usage(1);
+    }
+    if (exists($option{help})) {
+        pod2usage(q{-verbose} => 1);
+    }
+    option2config(\%option);
+    my $user_revision = exists($option{revision}) ? $option{revision} : q{HEAD};
+    if (@ARGV != 1) {
+        my $message = sprintf(
+            qq{Expected exactly 1 argument, %d given.}, scalar(@ARGV),
+        );
+        pod2usage({q{-exitval} => 1, q{-message} => $message});
+    }
+    my ($release_name) = @ARGV;
+    my $out_file = "fcm-$release_name.tgz";
+    if (-e $out_file) {
+        die("$out_file: already exists.\n");
+    }
+
+    my $fcm_project = FCM::Admin::Project->new({name => q{FCM}});
+    my $fcm_repos_uri = $fcm_project->get_svn_file_uri();
+    my $revision = svn_info_revision($fcm_repos_uri, $user_revision);
+
+    # Exports the trees of FCM and Admin to a temporary working area
+    my $work_dir = tempdir(CLEANUP => 1);
+    my $fcm_work_path = File::Spec->catfile($work_dir, q{fcm-} . $release_name);
+    my $admin_work_path = File::Spec->catfile($work_dir, q{admin});
+    svn_export(
+        join(q{/}, $fcm_repos_uri , qw{FCM trunk}),
+        $fcm_work_path,
+        $revision,
+    );
+    svn_export(
+        join(q{/}, $fcm_repos_uri , qw{Admin trunk}),
+        $admin_work_path,
+        $revision,
+    );
+
+    manipulate_src_tree($fcm_work_path);
+    manipulate_doc_tree($fcm_work_path);
+    add_examples($fcm_work_path, $admin_work_path);
+    add_tutorial(($fcm_work_path, $admin_work_path));
+    add_readme($fcm_work_path, $release_name, $revision);
+
+    run_create_archive($out_file, $work_dir, basename($fcm_work_path));
+}
+
+# ------------------------------------------------------------------------------
+# Adds a README to the distribution.
+sub add_readme {
+    my ($fcm_work_path, $release_name, $revision) = @_;
+    write_file(
+        File::Spec->catfile($fcm_work_path, q{README}),
+        <<"README_FILE",
+FCM release $release_name created from revision $revision.
+
+For further details please refer to the release notes
+which can be found in the directory doc/release_notes.
+README_FILE
+    );
+}
+
+# ------------------------------------------------------------------------------
+# Adds admin examples to the distribution.
+sub add_examples {
+    my ($fcm_work_path, $admin_work_path) = @_;
+    # Add utilities
+    my $fcm_examples_path = File::Spec->catfile($fcm_work_path, qw{examples});
+    run_mkpath($fcm_examples_path);
+    for my $path (
+        File::Spec->catfile($admin_work_path, qw{etc regular-update.eg}),
+        glob(File::Spec->catfile($admin_work_path, qw{lib FCM*})),
+        glob(File::Spec->catfile($admin_work_path, qw{sbin fcm-*})),
+    ) {
+        my $rel_path = File::Spec->abs2rel($path, $admin_work_path);
+        my $new_path = File::Spec->catfile($fcm_examples_path, $rel_path);
+        run_rename($path, $new_path);
+    }
+
+    # Add hooks
+    my $fcm_example_hook_path
+        = File::Spec->catfile($fcm_work_path, qw{examples svn-hooks});
+    my $admin_hook_path = File::Spec->catfile($admin_work_path, qw{svn-hooks});
+    run_mkpath($fcm_example_hook_path);
+    for my $path (glob(File::Spec->catfile($admin_hook_path, q{*}))) {
+        if (!-d $path) {
+            my $new_path
+                = File::Spec->catfile($fcm_example_hook_path, basename($path));
+            run_rename($path, $new_path);
+        }
+    }
+    run_rename(
+        File::Spec->catfile($admin_hook_path, qw{FCM background_updates.pl}),
+        File::Spec->catfile($fcm_example_hook_path, q{background_updates.pl}),
+    );
+
+    # Replaces FCM e-mail with an anonymous one
+    for my $path (
+        glob(File::Spec->catfile($fcm_examples_path, qw{FCM Admin *})),
+        glob(File::Spec->catfile($fcm_example_hook_path, q{*})),
+    ) {
+        sed_file(
+            $path,
+            sub {
+                my ($line) = @_;
+                $line =~ s{fcm\@metoffice\.gov\.uk}
+                          {my.name\@somewhere.org}gxms;
+                return $line;
+            },
+        );
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Adds the tutorial to the distribution.
+sub add_tutorial {
+    my ($fcm_work_path, $admin_work_path) = @_;
+    my $fcm_tutorial_path = File::Spec->catfile($fcm_work_path, q{tutorial});
+    my $admin_tutorial_path
+        = File::Spec->catfile($admin_work_path, q{tutorial});
+    run_rename($admin_tutorial_path, $fcm_tutorial_path);
+    my $admin_hook_tutorial_path
+        = File::Spec->catfile($admin_work_path, qw{svn-hooks tutorial});
+    my $fcm_tutorial_hook_path
+        = File::Spec->catfile($fcm_tutorial_path, q{hooks});
+    for my $path (glob(File::Spec->catfile($admin_hook_tutorial_path, q{*}))) {
+        my $new_path
+            = File::Spec->catfile($fcm_tutorial_hook_path, basename($path));
+        run_rename($path, $new_path);
+    }
+    my $fcm_example_svnperms_path = File::Spec->catfile(
+        $fcm_work_path, qw{examples svn-hooks svnperms.py},
+    );
+    my $fcm_tutorial_svnperms_path
+        = File::Spec->catfile($fcm_tutorial_hook_path, q{svnperms.py});
+    run_rename($fcm_example_svnperms_path, $fcm_tutorial_svnperms_path);
+}
+
+# ------------------------------------------------------------------------------
+# Modifies the doc/ tree for the distribution.
+sub manipulate_doc_tree {
+    my ($fcm_work_path) = @_;
+    # Renames items in the documentation tree
+    for my $path (glob(File::Spec->catfile($fcm_work_path, qw{doc * *.ppt}))) {
+        run_rmtree($path);
+    }
+    sed_file(
+        File::Spec->catfile($fcm_work_path, qw{doc etc fcm.js}),
+        sub {
+            my ($line) = @_;
+            $line =~ s{\A(\s*URL_OF_TEAM:)\s*'.*',}{$1 null,}gxms;
+            return $line;
+        },
+    );
+
+    # Creates PDF versions of the documentations
+    for (
+        [[qw{user_guide    index.html}           ], q{fcm-user-guide}      ],
+        [[qw{collaboration index.html}           ], q{fcm-collaboration}   ],
+        [[qw{standards     fortran_standard.html}], q{fcm-fortran-standard}],
+        [[qw{standards     perl_standard.html}   ], q{fcm-perl-standard}   ],
+    ) {
+        my ($html_path_ref, $pdf_name) = @{$_};
+        my $html_path
+            = File::Spec->catfile($fcm_work_path, q{doc}, @{$html_path_ref});
+        my $pdf_path
+            = File::Spec->catfile(dirname($html_path), "$pdf_name.pdf");
+        run_html2pdf($html_path, $pdf_path);
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Modifies the src/ tree for the distribution.
+sub manipulate_src_tree {
+    my ($fcm_work_path) = @_;
+    run_rename(
+        File::Spec->catfile($fcm_work_path, qw{etc fcm.cfg}),
+        File::Spec->catfile($fcm_work_path, qw{etc fcm.cfg.eg}),
+    );
+}
+
+# ------------------------------------------------------------------------------
+# Exports the Subversion URI "$from" (at $revision) to a path at "$to".
+sub svn_export {
+    my ($from, $to, $revision) = @_;
+    my $svn_client = SVN::Client->new();
+    FCM::Admin::Runner->instance()->run(
+        "exporting $from to $to",
+        sub {return $svn_client->export($from, $to, $revision, 0)},
+    );
+}
+
+# ------------------------------------------------------------------------------
+# Returns the actual revision of $svn_repos_uri (at a specified $user_revision).
+sub svn_info_revision {
+    my ($svn_repos_uri, $user_revision) = @_;
+    my $revision;
+    my $svn_client = SVN::Client->new();
+    $svn_client->info(
+        $svn_repos_uri,
+        $user_revision,
+        $user_revision,
+        sub {$revision = $_[1]->rev()},
+        1,
+    );
+    if (!$revision) {
+        die("$svn_repos_uri: cannot determine actual revision.\n");
+    }
+    return $revision;
+}
+
+__END__
+
+=head1 NAME
+
+fcm-create-release
+
+=head1 SYNOPSIS
+
+    fcm-create-release [--revision=REV] RELEASE-NAME
+
+=head1 DESCRIPTION
+
+Creates a release of FCM in a compressed-tar ball.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item RELEASE-NAME
+
+The name of the release
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item --help, -h, --usage
+
+Prints help and exits.
+
+=item --revision=REV, -rREV
+
+Specifies a revision of the trunk for creating the release. If not specified,
+the program uses the last commit revision at the HEAD of the trunk.
+
+=item --svn-live-dir=DIR
+
+Specifies the root location of the live directory of Subversion repositories.
+See L<FCM::Admin::Config|FCM::Admin::Config> for the current default.
+
+=item --svn-project-suffix=NAME
+
+Specifies the suffix added to the project name for Subversion repositories. The
+default is "_svn".
+
+=back
+
+=head1 SEE ALSO
+
+L<FCM::Admin::Config|FCM::Admin::Config>,
+L<FCM::Admin::Project|FCM::Admin::Project>,
+L<FCM::Admin::Runner|FCM::Admin::Runner>,
+L<FCM::Admin::Util|FCM::Admin::Util>
+
+=head1 COPYRIGHT
+
+E<169> Crown copyright Met Office. All rights reserved.
+
+=cut

@@ -1,0 +1,18 @@
+   !!----------------------------------------------------------------------
+   !!                   ***  vectopt_loop_substitute  ***
+   !!----------------------------------------------------------------------
+   !! ** purpose :   substitute the inner loop starting and inding indices 
+   !!      to allow unrolling of do-loop using CPP macro.
+   !!----------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: vectopt_loop_substitute.h90 2528 2010-12-27 17:33:53Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+#if defined key_vectopt_loop
+#  define fs_2     1
+#  define fs_jpim1 jpi
+#else
+#  define fs_2     2
+#  define fs_jpim1 jpim1
+#endif

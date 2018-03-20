@@ -1,0 +1,1554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1st December 2004), see www.w3.org" />
+
+  <title>FCM User Guide: FCM Command Reference</title>
+  <meta name="author" content="FCM development team" />
+  <meta name="descriptions" content="User Guide - FCM Command Reference" />
+  <meta name="keywords" content="FCM, user guide, command reference" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="fcm.js">
+</script>
+</head>
+
+<body onload=
+"javascript: FCM.load('doc/user_guide/', null, [['.', 'FCM User Guide']]);">
+  <div id="document-info">
+    <address id="fcm-js-trail"></address>
+
+    <address id="fcm-js-maintenance"></address>
+  </div>
+
+  <h1>FCM Command Reference</h1>
+
+  <div id="fcm-content"></div>
+
+  <h2 id="fcm_config">fcm Configuration File</h2>
+
+  <p>The FCM system uses simple line based text files to store configuration
+  settings. All configuration files used by FCM are based on the same
+  principles:</p>
+
+  <ul>
+    <li>All configurations are stored in plain text files.</li>
+
+    <li>A line in a file may contain a configuration setting or a comment.</li>
+
+    <li>Blank lines are ignored.</li>
+
+    <li>A line that begins with a <code>#</code> is a <dfn>comment</dfn>
+    line.</li>
+
+    <li>Each configuration line has a <dfn>label</dfn>, a <dfn>value</dfn> and
+    optionally a trailing <dfn>comment</dfn>. For example:
+      <pre>
+my::label  this is the value  # some comment
+</pre>
+    </li>
+
+    <li>A <dfn>label</dfn> in a configuration line may contain any non-space
+    character. A space character marks the end of the <dfn>label</dfn>.</li>
+
+    <li>Words or fields in the <dfn>label</dfn> are delimited by a double colon
+    <code>::</code> or slash <code>/</code>. To improve readability, the
+    convention is to only use slash as the delimiter when referring to package
+    names.</li>
+
+    <li>The first non-space character after the <dfn>label</dfn> is the
+    beginning of the <dfn>value</dfn>. The <dfn>value</dfn> may contain space
+    characters. The newline character or the character sequence <code>" #
+    "</code> marks the end of the <dfn>value</dfn>.</li>
+
+    <li>The first non-space character after the character sequence <code>" #
+    "</code> at the end of the <dfn>value</dfn> is the <dfn>comment</dfn>. The
+    <dfn>comment</dfn> is normally ignored by the parser of the configuration
+    file.</li>
+
+    <li>If it is indicated in the documentation that a declaration is expecting
+    a <code>true</code> or <code>false</code> value, the following can all be
+    used to indicate a value of <code>false</code>: an empty string, the
+    numeric <code>0</code>, the string <code>off</code> or the string
+    <code>no</code>. All other values will be considered
+    <code>true</code>.</li>
+
+    <li>If the last character of the <dfn>value</dfn> is a backslash
+    <code>\</code>, the next non-comment line will be the continuation of the
+    current line. Please note that trailing spaces before the continuation mark
+    are preserved, and leading spaces are removed from the beginning of a
+    continuation. If you want to have leading spaces in a continued line, start
+    the line with a backslash <code>\</code> before the leading spaces. It is
+    also worth bearing in mind that the backslash <code>\</code> character is
+    only significant if it appears at the end of a value or the beginning of a
+    continuation line. It is not a special character if it appears elsewhere.
+    For example:
+      <pre>
+foo bar\
+    egg\
+    ham
+# will become:
+foo bareggham
+
+foo bar \
+    egg \
+    ham
+# will become:
+foo bar egg ham
+
+foo bar\
+    \ egg\
+    \ ham
+# will become:
+foo bar egg ham
+
+foo bar\
+    \ egg\ham
+# will become:
+foo bar egg\ham
+</pre>
+    </li>
+  </ul>
+
+  <p>The FCM central and user configuration files can be used to add or modify
+  some of the default settings of FCM. When the <code>fcm</code> command is
+  invoked, it normally attempts to search for a central configuration file at
+  <samp>$BINDIR/../etc/fcm.cfg</samp> and then <samp>$BINDIR/fcm.cfg</samp>,
+  where <samp>$BINDIR</samp> is the container directory of the <code>fcm</code>
+  command. If a central configuration file can be located, the settings in the
+  file will replace the pre-defined ones. After searching/reading the central
+  configuration file, the system will attempt to search for a user
+  configuration file located at <samp>$HOME/.fcm</samp> of the current user. If
+  such a file can be found, its settings will replace the pre-defined ones as
+  well as those defined in the central configuration file.</p>
+
+  <p>For information on the valid entries in the central and user configuration
+  files, please refer to the <a href="annex_fcm_cfg.html">Annex: Declarations
+  in FCM central/user configuration file</a>.</p>
+
+  <h2 id="fcm_bld">fcm build</h2>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm build [OPTIONS...] [CFGFILE]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm build</code> invokes the FCM build system.</p>
+
+      <p>The path to a valid build configuration file <var>CFGFILE</var> may be
+      provided as either a URL or a pathname. Otherwise, the build system
+      searches the default locations for a build configuration file.</p>
+
+      <p>If no option is specified, the system uses the <code>-s 5 -t all -j 1
+      -v 1</code> by default.</p>
+
+      <dl>
+        <dt><code>-a [--archive]</code></dt>
+
+        <dd>This option can be specified to switch on the archive mode. In
+        archive mode, sub-directories produced by the build will be archived in
+        <code>tar</code> format at the end of a successful build. This option
+        should not be used if the current build is intended to be re-used as a
+        pre-compiled build.</dd>
+
+        <dt><code>--clean</code></dt>
+
+        <dd>If this option is specified, the build system will parse the
+        configuration file, remove contents generated by the build system in
+        the destination and exit.</dd>
+
+        <dt><code>-f [--full]</code></dt>
+
+        <dd>If this option is specified, the build system will attempt to
+        perform a full/clean build by removing any previous build files.
+        Otherwise, the build system will attempt to perform an incremental
+        build where appropriate.</dd>
+
+        <dt><code>--ignore-lock</code></dt>
+
+        <dd>When the build system is invoked, it sets a lock file in the build
+        root directory to prevent other extracts/builds taking place in the
+        same location. The lock file is normally removed when the build system
+        exits. (However, a lock file may be left behind if the user interrupts
+        the command, e.g. by typing <kbd>Ctrl-C</kbd>.) You can bypass the
+        check for lock files by using this option.</dd>
+
+        <dt><code>-j [--jobs] arg</code></dt>
+
+        <dd>This option can be used to specify the number of parallel jobs that
+        can be handled by the <code>make</code> command. The argument
+        <var>arg</var> must be a natural integer to represent the number of
+        jobs. If not specified, the default is to perform serial
+        <code>make</code> (i.e. 1 job).</dd>
+
+        <dt><code>-s [--stage] arg</code></dt>
+
+        <dd>
+          This option can be used to limit the actions performed by the build
+          system, up to a named stage determined by the argument
+          <var>arg</var>. If not specified, the default is 5. The stages are:
+
+          <ul>
+            <li><dfn>1, s or setup</dfn>: Stage 1, read configuration and set
+            up the build</li>
+
+            <li><dfn>2, pp or pre_process</dfn>: Stage 2, perform
+            pre-processing for source files that require pre-processing</li>
+
+            <li><dfn>3, gd or generate_dependency</dfn>: Stage 3, scan source
+            files for dependency information and generate <code>make</code>
+            rules for them</li>
+
+            <li><dfn>4, gi or generate_interface</dfn>: Stage 4, generate
+            interface files for Fortran 9X source files</li>
+
+            <li><dfn>5, m or make</dfn>: Stage 5, invoke the <code>make</code>
+            command to build the project</li>
+          </ul>
+        </dd>
+
+        <dt><code>-t [--targets] arg</code></dt>
+
+        <dd>This option can be used to specify the targets to be built. The
+        argument <var>arg</var> must be a colon-separated list of valid
+        targets. If not specified, the default to be built is the
+        <samp>all</samp> target.</dd>
+
+        <dt><code>-v [--verbose] arg</code></dt>
+
+        <dd>This option can be specified to alter the level of diagnostic
+        output. The argument <var>arg</var> to this option must be an integer
+        greater than or equal to 0. The verbose level increases with this
+        number. If not specified, the default verbose level is 1.</dd>
+      </dl>
+
+      <p>For further details, please refer to the chapter on <a href=
+      "build.html">The Build System</a>.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>bld</dd>
+  </dl>
+
+  <h2 id="fcm_ext">fcm extract</h2>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm extract [OPTIONS...] [CFGFILE]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm extract</code> invokes the FCM extract system.</p>
+
+      <p>The path to a valid extract configuration file <var>CFGFILE</var> may
+      be provided as either a URL or a pathname. Otherwise, the extract system
+      searches the default locations for an extract configuration file.</p>
+
+      <dl>
+        <dt><code>--clean</code></dt>
+
+        <dd>If this option is specified, the extract system will parse the
+        configuration file, remove contents generated by previous extract in
+        the destination and exit.</dd>
+
+        <dt><code>-f [--full]</code></dt>
+
+        <dd>If this option is specified, the extract system will attempt to
+        perform a full extract by removing any previous extracted files.
+        Otherwise, the extract system will attempt to perform an incremental
+        extract where appropriate.</dd>
+
+        <dt><code>--ignore-lock</code></dt>
+
+        <dd>When the extract system is invoked, it sets a lock file in the
+        extract destination root directory to prevent other extracts/builds
+        taking place in the same location. The lock file is normally removed
+        when the extract system exits. (However, a lock file may be left behind
+        if the user interrupts the command, e.g. by typing <kbd>Ctrl-C</kbd>.)
+        You can bypass the check for lock files by using this option.</dd>
+
+        <dt><code>-v [--verbose] arg</code></dt>
+
+        <dd>This option can be specified to alter the level of diagnostic
+        output. The argument <var>arg</var> to this option must be an integer
+        greater than or equal to 0. The verbose level increases with this
+        number. If not specified, the default verbose level is 1.</dd>
+      </dl>
+
+      <p>For further details, please refer to the chapter on <a href=
+      "extract.html">The Extract System</a>.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>ext</dd>
+  </dl>
+
+  <h2 id="fcm_cmp-ext-cfg">fcm cmp-ext-cfg</h2>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm cmp-ext-cfg [--verbose (-v) arg] [--wiki (-w) arg] CFG1
+    CFG2</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm cmp-ext-cfg</code> compares the extract configurations of
+      two similar extract configuration files <var>CFG1</var> and
+      <var>CFG2</var>. It reports repository branches and source directories
+      that are declared in one file but not another. If a source directory is
+      declared in both files, it compares their versions. If they differ, it
+      uses <code>svn log</code> to obtain a list of revision numbers at which
+      changes are made to the source directory. It then reports, for each
+      declared repository branch, the revisions at which changes occur in their
+      declared source directories.</p>
+
+      <p>The list of revisions for each declared repository branch is normally
+      printed out as a simple list in plain text.</p>
+
+      <dl>
+        <dt><code>--verbose ARG</code></dt>
+
+        <dd>You can use this option to print the log of each revision, by
+        setting <var>ARG</var> to 2.</dd>
+
+        <dt><code>--wiki</code></dt>
+
+        <dd>Alternatively, you can use this option to change that into an
+        tabular output suitable for inserting into a Trac wiki page. This
+        option must be specified with an argument, which must be the Subversion
+        URL or FCM URL keyword of a FCM project associated with the intended
+        Trac system. The URL allows the command to work out the correct wiki
+        syntax to use.</dd>
+      </dl>
+    </dd>
+  </dl>
+
+  <h2 id="fcm_gui">fcm gui</h2>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm gui [DIR]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm gui</code> starts up the FCM GUI. If <var>DIR</var> is
+      specified then this is used as the working directory.</p>
+
+      <p>For further details, please refer to the section <a href=
+      "code_management.html#svn_gui">Using the GUI</a>.</p>
+    </dd>
+  </dl>
+
+  <h2 id="fcm_keyword-print">fcm keyword-print</h2>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm keyword-print [TARGET]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p>If no argument is specified, <code>fcm keyword-print</code> prints all
+      the registered FCM location keywords. Otherwise, it prints the location
+      and revision keywords according to the argument <var>TARGET</var>, which
+      must be a FCM URL keyword, a Subversion URL or a path to a Subversion
+      working copy.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>kp</dd>
+  </dl>
+
+  <h2 id="fcm_svn">FCM Code Management Commands</h2>
+
+  <p>This section describes all of the code management commands supported by
+  <code>fcm</code>.</p>
+
+  <ul>
+    <li>In some cases <code>fcm</code> simply passes the command directly on to
+    <code>svn</code> (after expanding any URL keywords). These commands are
+    listed in the <a href="#fcm_svn_other">Other Code Management Commands</a>
+    section.</li>
+
+    <li>Where <code>fcm</code> adds functionality these commands are discussed
+    individually.</li>
+
+    <li>In all cases, all the command abbreviations supported by
+    <code>svn</code> work with <code>fcm</code>.</li>
+  </ul>
+
+  <h3 id="fcm_svn_add">fcm add</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm add --check (-c)</code><br />
+    <code>fcm add &lt;any valid <em>svn add</em> options&gt;</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm add</code> supports all of the switches and arguments
+      supported by <code>svn add</code> (refer to the <a href=
+      "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.add.html">Subversion
+      book</a> for details).</p>
+
+      <p>In addition, <code>fcm add</code> supports a <code>--check</code>
+      switch (no other switches or arguments). When this is specified then
+      <code>fcm</code> checks for any files which are not currently under
+      version control (i.e. those marked with a <samp>?</samp> by <code>svn
+      status</code>) and prompts to see if you wish to schedule them for
+      addition at the next commit (using <code>svn add</code>).</p>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_basic_check">Adding and Removing Files</a>.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_br">fcm branch</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm branch [--info (-i)] [&lt;info-options&gt;]
+    [TARGET]</code><br />
+    <code>fcm branch --delete (-d) [&lt;info-options&gt;]
+    [&lt;commit-options&gt;] [TARGET]</code><br />
+    <code>fcm branch --create (-c) --name (-n) arg [--revision arg]
+    [&lt;create-options&gt;] [&lt;commit-options&gt;] [TARGET]</code><br />
+    <code>fcm branch --list (-l) [&lt;branch-list-options&gt;]
+    [TARGET]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p>If <var>TARGET</var> is specified, it must either be a URL or a path
+      to a local working copy. Otherwise, the current working directory must be
+      a working copy. For <code>--info</code> and <code>--delete</code>, the
+      specified URL or that of the working copy must be a valid branch
+      (including the trunk) in a standard FCM project. For
+      <code>--create</code> and <code>--list</code>, it must be a valid URL of
+      a standard FCM project.</p>
+
+      <dl>
+        <dt><code>fcm branch --info</code></dt>
+
+        <dd>
+          <p>Displays information about a branch. This is the default if no
+          options are specified. It performs the following actions:</p>
+
+          <ul>
+            <li>It reports the basic information of the branch URL, as returned
+            by <code>svn info</code>.</li>
+
+            <li>If <code>--verbose</code> is set, it also prints the log
+            message of the last change revision.</li>
+
+            <li>If the URL is not the trunk:
+
+              <ul>
+                <li>It reports the branch creation information, including the
+                revision, author and date. It also reports the parent URL@REV
+                of the branch. If <code>--verbose</code> is set, it prints the
+                log message of the branch creation revision.</li>
+
+                <li>If the branch does not exist at the HEAD, it reports the
+                revision at which it is deleted.</li>
+
+                <li>It reports the last merges into and from the parent branch.
+                If <code>--verbose</code> is set, it also prints the log
+                message of these merges.</li>
+
+                <li>It reports the revisions available for merging into and
+                from the parent branch. If <code>--verbose</code> is set, it
+                also prints the log message of these revisions.</li>
+              </ul>
+            </li>
+
+            <li>If <code>--show-children</code> is specified, it lists the
+            current children of the branch and their create revisions. Where
+            appropriate, it reports the revision of each child, which is last
+            merged from/into the current branch. It also reports the available
+            merges from/into each child into the current branch.</li>
+
+            <li>If <code>--show-siblings</code> is specified, it reports recent
+            merges from/into sibling branches. It also reports the available
+            merges from/into sibling branches where recent merges are detected.
+            If <code>--verbose</code> is set, it also prints the log message of
+            these merges.</li>
+
+            <li>If <code>--show-other</code> is specified, it reports all
+            custom and reverse merges into the current branch.</li>
+
+            <li>You can turn on <code>--show-children</code>,
+            <code>--show-siblings</code> and <code>--show-other</code>
+            simultaneously by specifying <code>--show-all</code>.</li>
+          </ul>
+
+          <p>For further details refer to the section <a href=
+          "code_management.html#svn_branching_info">Getting Information About
+          Branches</a>.</p>
+        </dd>
+
+        <dt><code>fcm branch --delete</code></dt>
+
+        <dd>
+          <p>Deletes a branch. This command performs the following actions:</p>
+
+          <ul>
+            <li>Firstly, it provides exactly the same output as <code>fcm
+            branch --info</code>.</li>
+
+            <li>If you do not specify the <code>--non-interactive</code>
+            option, it starts an editor (using a similar convention as <a href=
+            "#fcm_svn_ci">commit</a>) to allow you to add further comment to
+            the commit log message. A standard commit log template and change
+            summary is provided for you below the line that says <samp>--Add
+            your commit message ABOVE - do not alter this line or those
+            below--</samp>. If you need to add any extra message to the log,
+            please do so <strong>above</strong> this line. When you exit the
+            editor, the command will report the commit log before prompting for
+            confirmation that you wish to proceed with deleting the branch (it
+            aborts if not).</li>
+          </ul>
+
+          <p>If you specify the <code>--non-interactive</code> option, the
+          command will not prompt you for anything. (The
+          <code>--svn-non-interactive</code> option is set automatically when
+          you specify <code>--non-interactive</code>.)</p>
+
+          <p>Subversion may prompt you for authentication if it is the first
+          time you access the repository. The command fails if the
+          authentication fails. If you specify the
+          <code>--svn-non-interactive</code> option, Subversion will not prompt
+          you for authentication. In such case, the command will simply fail if
+          authentication is required. You can use the <code>--password</code>
+          option to specify a password. Please note that the
+          <code>--svn-non-interactive</code> option is always specified if you
+          are running <code>branch --delete</code> from the FCM GUI. If
+          authentication is required, you should specify your password using
+          the <code>--password</code> option in <kbd>Other options</kbd>.</p>
+
+          <p>For further details refer to the section <a href=
+          "code_management.html#svn_branching_delete">Deleting
+          Branches</a>.</p>
+        </dd>
+
+        <dt><code>fcm branch --create</code></dt>
+
+        <dd>
+          <p>Creates a new branch.</p>
+
+          <p>You have to choose a name for your branch. This must be specified
+          as the argument of the <code>--name (-n)</code> option. The name of
+          the branch must contain only characters in the set
+          [A-Za-z0-9_-.].</p>
+
+          <p>You can specify the type of branch you are creating using the
+          <code>--type (-t)</code> option. The argument to the option must be
+          one of the following:</p>
+
+          <dl>
+            <dt><code>DEV::USER</code></dt>
+
+            <dd>A development branch for the current user (e.g.
+            <samp>branches/dev/&lt;user_id&gt;/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>DEV::SHARE</code></dt>
+
+            <dd>A shared development branch (e.g.
+            <samp>branches/dev/Share/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>DEV</code></dt>
+
+            <dd>Same as <code>DEV::USER</code></dd>
+
+            <dt><code>TEST::USER</code></dt>
+
+            <dd>A test branch for the current user (e.g.
+            <samp>branches/test/&lt;user_id&gt;/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>TEST::SHARE</code></dt>
+
+            <dd>A shared test branch (e.g.
+            <samp>branches/test/Share/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>TEST</code></dt>
+
+            <dd>Same as <code>TEST::USER</code></dd>
+
+            <dt><code>PKG::USER</code></dt>
+
+            <dd>A package branch for the current user (e.g.
+            <samp>branches/pkg/&lt;user_id&gt;/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>PKG::SHARE</code></dt>
+
+            <dd>A shared package branch (e.g.
+            <samp>branches/pkg/Share/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>PKG::CONFIG</code></dt>
+
+            <dd>A configuration branch (e.g.
+            <samp>branches/pkg/Config/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>PKG::REL</code></dt>
+
+            <dd>A release branch (e.g.
+            <samp>branches/pkg/Rel/&lt;branch_name&gt;</samp>)</dd>
+
+            <dt><code>PKG</code></dt>
+
+            <dd>Same as <code>PKG::USER</code></dd>
+
+            <dt><code>CONFIG</code></dt>
+
+            <dd>Same as <code>PKG::CONFIG</code></dd>
+
+            <dt><code>REL</code></dt>
+
+            <dd>Same as <code>PKG::REL</code></dd>
+
+            <dt><code>SHARE</code></dt>
+
+            <dd>Same as <code>DEV::SHARE</code></dd>
+
+            <dt><code>USER</code></dt>
+
+            <dd>Same as <code>DEV::USER</code></dd>
+          </dl>
+
+          <p>If the <code>--type</code> option is not specified, it defaults to
+          DEV::USER.</p>
+
+          <p>Your branch name will normally be prefixed by the revision number
+          from which it is branched. (E.g. if the branch name is
+          <samp>my_branch</samp> and you are branching from revision 123 of the
+          trunk, the final name will be <samp>r123_my_branch</samp>.) If this
+          revision number is associated with a revision keyword, the keyword
+          will be used in place of the revision number. (E.g. if revision 123
+          is associated with the keyword vn6.1, <samp>r123_my_branch</samp>
+          will become <samp>vn6.1_my_branch</samp>.) You can alter this
+          behaviour using the argument to the <code>--rev-flag</code> option.
+          If <code>NORMAL</code> is specified, it uses the default behaviour.
+          If <code>NUMBER</code> is specified, it will always use the revision
+          number as the prefix, regardless of whether the revision number is
+          defined as a keyword or not. If <code>NONE</code> is specified, it
+          will not add a prefix to your branch name.</p>
+
+          <p>The command will normally create your branch from the last changed
+          revision of the trunk of the specified project.</p>
+
+          <ul>
+            <li>You can use the <code>--revision</code> option to specify an
+            earlier revision of the source.</li>
+
+            <li>If the source URL is a valid URL of a branch in a standard FCM
+            project, you can use the <code>--branch-of-branch</code> option to
+            create a branch of the source branch.</li>
+          </ul>
+
+          <p>The <code>--ticket</code> option can be used to specify one or
+          more Trac ticket numbers, which the branch relates to. Multiple
+          ticket numbers can be set by specifying this option multiple times,
+          or by using a comma-separated list of ticket numbers as the argument
+          to the option. If set, the line <samp>Relates to ticket
+          #&lt;number&gt;[, #&lt;number&gt;...]</samp> will be added to the
+          template commit log.</p>
+
+          <p>If you specify the <code>--non-interactive</code> option, the
+          command will not prompt you for anything. (The
+          <code>--svn-non-interactive</code> option is set automatically when
+          you specify <code>--non-interactive</code>.)</p>
+
+          <p>Subversion may prompt you for authentication if it is the first
+          time you access the repository. The command fails if the
+          authentication fails. If you specify the
+          <code>--svn-non-interactive</code> option, Subversion will not prompt
+          you for authentication. In such case, the command will simply fail if
+          authentication is required. You can use the <code>--password</code>
+          option to specify a password. Please note that the
+          <code>--svn-non-interactive</code> option is always specified if you
+          are running <code>branch --create</code> from the FCM GUI. If
+          authentication is required, you should specify your password using
+          the <code>--password</code> option in <kbd>Other options</kbd>.</p>
+
+          <p>This command performs the following actions:</p>
+
+          <ul>
+            <li>It determines the last changed revision of the trunk/source
+            branch at the HEAD (or the specified) revision.</li>
+
+            <li>It constructs the branch name from the option you have
+            specified and reports it.</li>
+
+            <li>It checks that the chosen branch name does not currently exist.
+            If so, the command aborts with an error.</li>
+
+            <li>If you do not specify the <code>--non-interactive</code>
+            option, it starts an editor (using a similar convention as <a href=
+            "#fcm_svn_ci">commit</a>) to allow you to add further comment to
+            the commit log message. A standard commit log template and change
+            summary is provided for you below the line that says <samp>--Add
+            your commit message ABOVE - do not alter this line or those
+            below--</samp>. If you need to add any extra message to the log,
+            please do so <strong>above</strong> this line. When you exit the
+            editor, the command will report the commit log before prompting for
+            confirmation that you wish to proceed (it aborts if not).</li>
+
+            <li>It uses <code>svn mkdir</code> to create any sub-directories
+            required for the copy to succeed.</li>
+
+            <li>It uses <code>svn copy</code> to create the branch.</li>
+          </ul>
+
+          <p>For further details refer to the section <a href=
+          "code_management.html#svn_branching_create">Creating
+          Branches</a>.</p>
+        </dd>
+
+        <dt><code>fcm branch --list</code></dt>
+
+        <dd>
+          <p>Lists the branches created by you (and/or other users) at the HEAD
+          revision of a standard FCM project.</p>
+
+          <p>By default, it lists the branches created by you at the HEAD
+          revision. To display the branches at a different revision, you can
+          use the <code>--revision arg</code> option.</p>
+
+          <p>You can specify a list of users with the <code>--user arg</code>
+          option, where <var>arg</var> is a colon separated list of users.
+          (Alternatively, you can specify this option multiple times.) When
+          this option is set, the command lists the branches created by the
+          specified list of users instead. Note that you can also list shared
+          branches by specifying the user as <code>Share</code>, configuration
+          branches by specifying the user as <code>Config</code> and release
+          branches by specifying the user as <code>Rel</code>.</p>
+
+          <p>You can list all branches in the project by specifying the
+          <code>--show-all</code> option. (This option overrides the
+          <code>--user arg</code> option.)</p>
+
+          <p>By default, it lists the branches in the FCM URL keyword format.
+          If you want to print the full Subversion URL of the branches, you can
+          use the <code>--verbose</code> option.</p>
+
+          <p>The command returns 0 (success) if one or more branches is found
+          for the specified users, or 1 (failure) if no branch is found.</p>
+        </dd>
+      </dl>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>br</dd>
+  </dl>
+
+  <h3 id="fcm_svn_ci">fcm commit</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm commit [--dry-run] [--svn-non-interactive] [--password arg]
+    [PATH]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm commit</code> sends changes from your working copy in the
+      current working directory (or from <var>PATH</var> if it is specified) to
+      the repository.</p>
+
+      <p>This command performs the following actions:</p>
+
+      <ul>
+        <li>It checks that the current working directory (or <var>PATH</var> if
+        it is specified) is a working copy. (If not, it aborts with an
+        error).</li>
+
+        <li>It always commits from the top level of the working copy.</li>
+
+        <li>It checks that there are no files in conflict, missing or out of
+        date (it aborts if there are).</li>
+
+        <li>It checks that any files which have been added have the
+        <var>svn:executable</var> property set correctly (in case a script was
+        added before the execute bit was set correctly).</li>
+
+        <li>It reads in any existing commit message.
+
+          <ul>
+            <li>The commit message is stored in the file
+            <samp>#commit_message#</samp> in the top level of your working
+            copy.</li>
+          </ul>
+        </li>
+
+        <li>It adds the following line to the commit log message: <samp>--Add
+        your commit message ABOVE - do not alter this line or those
+        below--</samp>. This line, and anything below it, is automatically
+        ignored by <code>svn commit</code>. If you need to add any extra message
+        to the log, please do so <strong>above</strong> this line.</li>
+
+        <li>If you have run the <a href="fcm_svn_merge">merge</a> command
+        before the commit, you will get a standard commit log template below
+        a line that says <samp>--FCM message (will be inserted
+        automatically)--</samp>. Please do not try to alter this message (your
+        changes will be ignored if you do).</li>
+
+        <li>It adds current status information to the commit message showing
+        the list of modifications below a line that says <samp>--Change summary
+        (not part of commit message)--</samp>.</li>
+
+        <li>It starts an editor to allow you to edit the commit message.
+
+          <ul>
+            <li>If defined, the environment variable <var>SVN_EDITOR</var>
+            specifies the editor.</li>
+
+            <li>Otherwise the environment variable <var>VISUAL</var> specifies
+            the editor.</li>
+
+            <li>Otherwise the environment variable <var>EDITOR</var> specifies
+            the editor.</li>
+
+            <li>Otherwise the editor <code>nedit</code> is used.</li>
+          </ul>
+        </li>
+
+        <li>It reports the commit message that will be sent to Subversion and
+        then asks if you want to proceed (it aborts if not).</li>
+
+        <li>It calls <code>svn commit</code> to send the changes to the
+        repository.</li>
+
+        <li>It calls <code>svn update</code> to bring your working copy up to
+        the new revision.</li>
+      </ul>
+
+      <p>Subversion may prompt you for authentication if it is the first time
+      you access the repository. The command fails if the authentication fails.
+      If you specify the <code>--non-interactive</code> option, Subversion will
+      not prompt you for authentication. In such case, the command will simply
+      fail if authentication is required. You can use the
+      <code>--password</code> option to specify a password. Please note that
+      the <code>--svn-non-interactive</code> option is always specified if you
+      are running <code>commit</code> from the FCM GUI. If authentication is
+      required, you should specify your password using the
+      <code>--password</code> option in <kbd>Other options</kbd>.</p>
+
+      <p>The <code>--dry-run</code> switch prevents the command from committing
+      any changes. This can be used to allow you to add notes to your commit
+      message whilst you are still preparing your change.</p>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_basic_commit">Committing Changes</a>.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>ci</dd>
+  </dl>
+
+  <h3 id="fcm_svn_cf">fcm conflicts</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm conflicts [PATH]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm conflicts</code> helps you to resolve any text files in your
+      working copy which have conflicts by using the graphical merge tool
+      <code>xxdiff</code>. If <var>PATH</var> is set, it must be a working
+      copy, and the command will operate in it. If <var>PATH</var> is not set,
+      the command will operate in your current working directory.</p>
+
+      <p>This command performs the following actions:</p>
+
+      <ul>
+        <li>For each text file reported as being in conflict (i.e. marked with
+        a <samp>C</samp> by <code>svn status</code>) it calls
+        <code>xxdiff</code>.</li>
+
+        <li>If <code>xxdiff</code> reports all conflicts resolved then if asks
+        if you wish to run <code>svn resolved</code> on that file.</li>
+      </ul>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_basic_conflicts">Resolving Conflicts</a>.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>cf</dd>
+  </dl>
+
+  <h3 id="fcm_svn_rm">fcm delete</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm delete --check (-c)</code><br />
+    <code>fcm delete &lt;any valid <em>svn delete</em> options&gt;</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm delete</code> supports all of the switches, arguments and
+      alternate names supported by <code>svn delete</code> (refer to the
+      <a href=
+      "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.delete.html">Subversion
+      book</a> for details).</p>
+
+      <p>In addition, <code>fcm delete</code> supports a <code>--check</code>
+      switch (no other switches or arguments). When this is specified then
+      <code>fcm</code> checks for any files which are missing (i.e. marked with
+      a <samp>!</samp> by <code>svn status</code>) and prompts to see if you
+      wish to schedule them for deletion at the next commit (using <code>svn
+      delete</code>).</p>
+
+      <p>Subversion may prompt you for authentication if it is the first time
+      you access the repository. The command fails if the authentication fails.
+      If you specify the <code>--non-interactive</code> option, Subversion will
+      not prompt you for authentication. In such case, the command will simply
+      fail if authentication is required. Please note that the
+      <code>--non-interactive</code> option is automatically specified if you
+      are running <code>delete</code> from the FCM GUI and you have not checked
+      the box <kbd>Check for files and directories...</kbd>. If authentication
+      is required, you should run <code>delete</code> in interactive mode on a
+      command line.</p>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_basic_check">Adding and Removing Files</a>.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_diff">fcm diff</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm diff --branch (-b) [--graphical (-g) | --summarise | --wiki |
+    --trac (-t)] [TARGET]</code><br />
+    <code>fcm diff [--graphical (-g) | --summarise | &lt;any valid <em>svn
+    diff</em> options&gt;]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm diff</code> supports all of the switches, arguments and
+      alternate names supported by <code>svn diff</code> (refer to the <a href=
+      "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.diff.html">Subversion
+      book</a> for details). In addition, <code>fcm diff</code> supports the
+      following switches:</p>
+
+      <dl>
+        <dt><code>--graphical (-g)</code></dt>
+
+        <dd>If this option is specified, the command uses a graphical tool to
+        display the differences. (The default graphical diff tool is
+        <code>xxdiff</code>, but you can alter the behaviour by following the
+        instruction discussed in the sub-section on <a href=
+        "code_management.html#svn_basic_diff">Examining Changes</a>.) This
+        switch can be used in combination with all other valid switch
+        (including <code>--branch</code>) except <code>--diff-cmd</code>,
+        <code>--extensions</code>, <code>--trac</code> and
+        <code>--wiki</code>.</dd>
+
+        <dt><code>--summarise</code></dt>
+
+        <dd>This option is implemented in FCM as a wrapper to the Subversion
+        <code>--summarize</code> option. It prints only a summary of the
+        results.</dd>
+
+        <dt><code>--branch</code></dt>
+
+        <dd>
+          If this option is specified, the command displays the differences
+          between the target branch and its parent. This should show you the
+          differences which you would get if you tried to merge the changes in
+          the branch into its parent. It performs the following actions:
+
+          <ul>
+            <li>If <var>TARGET</var> is specified, it must either be a URL or a
+            path to a local working copy. Otherwise, the current working
+            directory must be a working copy. The specified URL or that of the
+            working copy must be a valid branch in a standard FCM project.</li>
+
+            <li>It determines the base of the branch relative to its parent.
+            This is adjusted to account for any merges from the branch to its
+            parent or vice-versa.</li>
+
+            <li>It reports what path and revision it is comparing against.</li>
+
+            <li>If <code>--trac</code> is specified, it launches Trac with your
+            default web browser to display it. Note: if <var>TARGET</var> is a
+            working copy, local changes in it will not be displayed by
+            Trac.</li>
+
+            <li>If <code>--wiki</code> is specified, it prints a Trac wiki
+            syntax for the differences between the base and the specified
+            branch.</li>
+
+            <li>Otherwise, it calls <code>svn diff</code> to report the
+            differences between the base and the specified branch (or working
+            copy).</li>
+          </ul>
+        </dd>
+      </dl>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_basic_diff">Examining Changes</a>.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_merge">fcm merge</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm merge [--dry-run] [--non-interactive] [--verbose (-v)]
+    SOURCE</code><br />
+    <code>fcm merge --custom --revision N[:M] [--dry-run] [--non-interactive]
+    [--verbose (-v)] SOURCE</code><br />
+    <code>fcm merge --custom [--dry-run] [--non-interactive] [--verbose (-v)]
+    URL1[@REV1] URL2[@REV2]</code><br />
+    <code>fcm merge --reverse --revision [M:]N [--dry-run] [--non-interactive]
+    [--verbose (-v)]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm merge</code> allows you to merge changes from a source into
+      your working copy.</p>
+
+      <p>Before it begins, the command does the following:</p>
+
+      <ul>
+        <li>If a <var>SOURCE</var> or <var>URL</var> is specified, it can be a
+        full URL or a partial URL starting at the branches, trunk or tags
+        level.
+
+          <ul>
+            <li>If a partial URL is given, and the path name does not begin
+            with <samp>trunk</samp>, <samp>tags</samp> or <samp>branches</samp>
+            then <samp>branches/</samp> is automatically added to the beginning
+            of your path.</li>
+          </ul>
+        </li>
+
+        <li>It determines the <var>TARGET</var> URL by examining your working
+        copy.</li>
+
+        <li>If the current directory is not the top of your working copy, it
+        changes the current directory to the top of your working copy.</li>
+
+        <li>If your working copy is not pointing to a branch of a project
+        managed by FCM, the command aborts with an error.</li>
+
+        <li>If you do not specify the <code>--non-interactive</code> option, it
+        checks for any local modifications in your working copy. If it finds
+        any it reports them and asks you to confirm that you wish to continue
+        (it aborts if not).</li>
+      </ul>
+
+      <dl>
+        <dt>Automatic mode (i.e. neither <code>--custom</code> nor
+        <code>--reverse</code> is specified)</dt>
+
+        <dd>
+          <p>Automatic merges are used to merge changes between two directly
+          related branches, (i.e. the branches must either be created from the
+          same parent or have a parent/child relationship). These merges are
+          tracked by FCM and can be used by subsequent FCM commands. The merge
+          delta is calculated by doing the following:</p>
+
+          <ul>
+            <li>It checks that the <var>SOURCE</var> and <var>TARGET</var> are
+            directly related.</li>
+
+            <li>It determines the base revision and path of the <em>common
+            ancestor</em> of the <var>SOURCE</var> and <var>TARGET</var>.</li>
+
+            <li>The base revision and path are adjusted to account for any
+            merges from the <var>SOURCE</var> to the <var>TARGET</var> or
+            vice-versa.</li>
+
+            <li>It reports the revisions from <var>SOURCE</var> available for
+            merging into <var>TARGET</var>. If the <code>--verbose</code>
+            option is set, it prints the log for these revisions. It aborts if
+            no revision is available for merging.</li>
+
+            <li>If there are 2 or more revisions available for merging and you
+            do not specify the <code>--non-interactive</code> target, it asks
+            you which revision of the <var>SOURCE</var> you wish to merge from.
+            The default is the last changed revision of the <var>SOURCE</var>.
+            The merge delta is between the base and the specified revision of
+            the <var>SOURCE</var>.</li>
+
+            <li>If your working copy is a sub-tree of the <var>TARGET</var>, it
+            ensures that the <var>SOURCE</var> contains only changes in the
+            same sub-tree. Otherwise, the merge is unsafe, and the command will
+            abort with an error.
+
+              <p>N.B.: The command looks for changes in the <var>SOURCE</var>
+              by going through the list of changed files since the the
+              <var>SOURCE</var> was last merged into the <var>TARGET</var>. (If
+              there is no previous merge from SOURCE to <var>TARGET</var>, the
+              common ancestor is used.) It is worth noting that there are
+              situations when the command will regard your merge as
+              <em>unsafe</em> (and so will fail incorrectly) even if the
+              changes in the <var>SOURCE</var> outside of the current sub-tree
+              will result in a null merge. This can happen if the changes are
+              the results of a previous merge from the <var>TARGET</var> to the
+              <var>SOURCE</var> or if these changes have been reversed. In such
+              case, you will have to perform your merge in a working copy of a
+              full tree.</p>
+            </li>
+          </ul>
+        </dd>
+
+        <dt>Custom mode (i.e. <code>--custom</code> is specified)</dt>
+
+        <dd>
+          <p>The custom mode is useful if you need to merge changes selectively
+          from another branch. The custom mode can be used in two forms:</p>
+
+          <ul>
+            <li>In the first form, you must specify a <var>SOURCE</var> as well
+            as a revision (range) using the <code>--revision</code> option. If
+            you specify a single revision <var>N</var>, the merge delta is
+            between revision <var>N - 1</var> and revision <var>N</var> of the
+            SOURCE. Otherwise, the merge delta is between revision <var>N</var>
+            and revision <var>M</var>, where <var>N</var> &lt;
+            <var>M</var>.</li>
+
+            <li>In the second form, you must specify two URLs. The merge delta
+            is simply between the two URLs. (For each URL, if you do not
+            specify a peg revision, the command will peg the URL with its last
+            changed revision.)</li>
+          </ul>
+
+          <p>N.B. Unlike automatic merges, custom merges are not tracked or
+          used by subsequent FCM <code>diff</code> or <code>merge</code>
+          commands, (although <code>branch --info</code> can be set to report
+          them). Custom merges are always allowed, even if your working copy is
+          pointing to a sub-tree of a branch. However, there is no checking
+          mechanism to ensure the safety of your sub-tree custom merge so you
+          should only do this if you are confident it is what you want.
+          Therefore, it is recommended that you use automatic merges where
+          possible, and use custom merges only if you know what you are
+          doing.</p>
+        </dd>
+
+        <dt>Reverse mode (i.e. <code>--reverse</code> is specified)</dt>
+
+        <dd>
+          <p>The reverse mode is useful if you need to reverse a changeset (or
+          a range of changesets) in the current branch of the working copy. In
+          this mode, you must specify a revision (range) using the
+          <code>--revision</code> option. If you specify a single revision
+          <var>N</var>, the merge delta is between revision <var>N</var> and
+          revision <var>N - 1</var> of the current branch. Otherwise, the merge
+          delta is between revision <var>M</var> and revision <var>N</var>,
+          where <var>M</var> &gt; <var>N</var>.</p>
+
+          <p>N.B. Like custom merges, reverse merges are not tracked or used by
+          subsequent FCM <code>diff</code> or <code>merge</code> commands,
+          (although <code>branch --info</code> can be set to report them).
+          Likewise, reverse merges in sub-trees are always allowed, although
+          there is no checking mechanism to ensure the safety of your sub-tree
+          reverse merge.</p>
+        </dd>
+      </dl>
+
+      <p>Once the merge delta is determined, the command performs the
+      following:</p>
+
+      <ul>
+        <li>If you set the <code>--dry-run</code> option or if you are running
+        in the interactive mode, it reports what changes will result from
+        performing this merge by calling <code>svn merge --dry-run</code>.
+
+          <ul>
+            <li>It prints the actual <code>svn merge --dry-run</code> command
+            if the <code>--verbose</code> option is specified.</li>
+
+            <li>If you specify the <code>--dry-run</code> option, it exits
+            after reporting what changes will result from performing the
+            merge.</li>
+          </ul>
+        </li>
+
+        <li>If you are running in the interactive mode, it asks if you want to
+        go ahead with the merge (it aborts if not).</li>
+
+        <li>It performs the merge by calling <code>svn merge</code> to apply
+        the delta between the base and the <var>SOURCE</var> on your working
+        copy.
+
+          <ul>
+            <li>It prints the actual <code>svn merge</code> command if the
+            <code>--verbose</code> option is specified.</li>
+          </ul>
+        </li>
+
+        <li>It adds a standard template into the commit message to provide
+        details of the merge. The template is written below the line that says
+        <samp>--FCM message (will be inserted automatically)--</samp>. The
+        <a href="fcm_svn_commit">fcm commit</a> command will detect the
+        existence of the template, so that you will not be able to alter it
+        by accident.
+
+          <ul>
+            <li>The commit message is stored in the file
+            <samp>#commit_message#</samp> in the top level of your working
+            copy. It is created by the merge command if it does not already
+            exist.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_branching_merge">Merging</a>.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_mkpatch">fcm mkpatch</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm mkpatch [OPTIONS] URL [OUTDIR]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm mkpatch</code> creates patches from the specified revisions
+      of the specified <var>URL</var>, which must be a branch URL of a valid
+      FCM project. If the <var>URL</var> is a sub-directory of a branch, it
+      will use the root of the branch.</p>
+
+      <p>If <var>OUTDIR</var> is specified, the output is sent to
+      <var>OUTDIR</var>. Otherwise, the output will be sent to a default
+      location in the current directory (<samp>$PWD/fcm-mkpatch-out/</samp>).
+      The output directory will contain the patch for each revision as well as
+      a script for importing the patch.</p>
+
+      <p>If a revision is specified using the <code>--revision</code> option,
+      it will attempt to create a patch based on the changes at that revision.
+      If a revision is not specified, it will attempt to create a patch based
+      on the changes at the HEAD revision. If a revision range is specified, it
+      will attempt to create a patch for each revision in that range (including
+      the change in the lower range) where changes have taken place in the URL.
+      No output will be written if there is no change in the given revision
+      (range).</p>
+
+      <p>The <code>--exclude</code> option can be used to exclude a path in the
+      URL. The specified path must be a relative path of the URL. Glob patterns
+      such as <code>*</code> and <code>?</code> are acceptable. Changes in an
+      excluded path will not be considered in the patch. A changeset containing
+      changes only in the excluded path will not be considered at all. Multiple
+      paths can be specified by using a colon-separated list of paths, or by
+      specifying this option multiple times.</p>
+
+      <p>The <code>--organisation</code> option can be used to specify the name
+      of your organisation. The command will attempt to parse the commit log
+      message for each revision in the patch. It will remove all merge
+      templates, replace Trac links with a modified string, and add information
+      about the original changeset. If you specify the name of your
+      organisation, it will replace Trac links such as <samp>ticket:123</samp>
+      with <samp>$organisation_ticket:123</samp>, and report the orginal
+      changeset with a message such as
+      <samp>$organisation_changeset:1000</samp>. If the organisation name is
+      not specified then it defaults to <samp>original</samp>.</p>
+
+      <p>Within the output directory are the <em>patches</em> and the log
+      message file for each revision. It also contains a generated script
+      <code>fcm-import-patch</code> for importing the patches. The user of the
+      script can invoke the script with either a URL or a working copy
+      argument, and the script will attempt to import the patches into the
+      given URL or working copy.</p>
+
+      <p>It is worth noting that changes in Subversion properties, including
+      changes in executable permissions, are not handled by the import
+      script.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_switch">fcm switch</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm switch [OPTIONS] URL [PATH]</code><br />
+    <code>fcm switch --relocate [OPTIONS] FROM TO [PATH]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm switch</code> supports the arguments and alternate names
+      supported by <code>svn switch</code>. If <code>--relocate</code> is
+      specified, it supports all options supported by <code>svn switch</code>.
+      Otherwise, it supports <code>--non-interactive</code>, <code>-r
+      [--revision]</code> and <code>-q [--quiet]</code> only. (Please refer to
+      the <a href=
+      "http://svnbook.red-bean.com/en/1.4/svn.branchmerge.switchwc.html">Subversion
+      book</a> for details).</p>
+
+      <p>If <code>--relocate</code> is specified, FCM will pass the options and
+      arguments directly to the corresponding Subversion command. Otherwise,
+      FCM will ensure that your working copy switches safely through the
+      following actions:</p>
+
+      <ul>
+        <li>If <var>PATH</var> (or the current working directory if
+        <var>PATH</var> is not specified) is not at the top of a working copy,
+        the command will automatically search for the top of the working copy,
+        and the switch command will always apply recursively from that
+        level.</li>
+
+        <li>You can specify only the <em>branch</em> part of the URL, such as
+        <samp>trunk</samp>, <samp>branches/dev/fred/r1234_bob</samp> or even
+        <samp>dev/fred/r1234_bob</samp> and the command will work out the full
+        URL for you.</li>
+
+        <li>If you do not specify the <code>--non-interactive</code> option, it
+        checks for any local modifications in your working copy. If it finds
+        any it reports them and asks you to confirm that you wish to continue
+        (it aborts if not).</li>
+
+        <li>If you have some template messages in the
+        <samp>#commit_message#</samp> file in the top level of your working
+        copy, (e.g. after you have performed a merge), the command will report
+        an error. You should remove the template message manually from the
+        <samp>#commit_message#</samp> file before re-running
+        <code>switch</code>.</li>
+
+        <li>The command will analyse the current working copy URL and the
+        specified URL to ensure that they are in the same project. If your
+        working copy is a sub-tree of a project, the command will assume that
+        you want the same sub-tree in the new URL.</li>
+      </ul>
+
+      <p>For further details refer to the section <a href=
+      "code_management.html#svn_branching_switch">Switching your working copy
+      to point to another branch</a>.</p>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_trac">fcm trac</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm trac [--browser (-b) ARG] [PATH]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm trac</code> invokes the web-browser to launch the
+      corresponding URL of the web-based repository browser (currently Trac
+      browser) to view the Subversion repository specified by
+      <var>PATH</var>.</p>
+
+      <p>If the <code>--browser</code> option is specified, <var>ARG</var> must
+      be a valid command to a web browser. If this option is not specified, the
+      default is to use <code>firefox</code>, or whatever setting you have
+      declared in the user configuration file (<samp>$HOME/.fcm</samp>) using
+      the label <code>SET::MISC::WEB_BROWSER</code>. For example:</p>
+      <pre>
+set::misc::web_browser  mozilla
+</pre>
+
+      <p>If <var>PATH</var> is specified, it must be a path to a local working
+      copying, a Subversion URL or a FCM URL keyword. If <var>PATH</var> is not
+      specified, it is set to <samp>.</samp>, the current working directory. If
+      <var>PATH</var> is a directory in the local file system, the command will
+      determine whether it is a working copy. If so, its associated Subversion
+      URL will be used. The command fails if the directory is not a working
+      copy. If <var>PATH</var> is a Subversion URL or a FCM URL keyword, the
+      URL can be <em>pegged</em> with a revision number using the
+      <code>@</code> symbol. For example, to view the trunk of the FCM
+      repository at revision 400, you can use <samp>fcm:fcm_tr@400</samp>. The
+      URL declared by or associated with <var>PATH</var> must also be
+      associated with a Trac browser URL, which is declared using the
+      <code>SET::TRAC::&lt;pck&gt;</code> label in the FCM central/user
+      configuration file. The command fails if an associated Trac browser URL
+      is not found.</p>
+    </dd>
+
+    <dt>Alternate Names</dt>
+
+    <dd>www</dd>
+  </dl>
+
+  <h3 id="fcm_svn_update">fcm update</h3>
+
+  <dl>
+    <dt>Usage</dt>
+
+    <dd><code>fcm update [OPTIONS] [PATH ...]</code></dd>
+
+    <dt>Description</dt>
+
+    <dd>
+      <p><code>fcm update</code> supports the arguments and alternate names
+      supported by <code>svn update</code>. It supports the options
+      <code>--non-interactive</code>, <code>-r [--revision]</code> and
+      <code>-q [--quiet]</code> only. (Please refer to the <a href=
+      "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.update.html">Subversion
+      book</a> for details).</p>
+
+      <p>FCM will ensure that your working copies updates safely through the
+      following actions:</p>
+
+      <ul>
+        <li>If <var>PATH</var> (or the current working directory if
+        <var>PATH</var> is not specified) is not at the top of a working copy,
+        the command will automatically search for the top of the working copy,
+        and the update command will always apply recursively from that
+        level.</li>
+
+        <li>If you do not specify the <code>--non-interactive</code> option, it
+        uses <code>svn status --show-updates</code> to display what will be
+        updated in your working copies and to check for local modifications (if
+        you specify <code>-r [--revision]</code> then it just uses <code>svn
+        status</code>). If it finds any it reports them and asks you to confirm
+        that you wish to continue (it aborts if not).</li>
+      </ul>
+    </dd>
+  </dl>
+
+  <h3 id="fcm_svn_other">Other Code Management Commands</h3>
+
+  <p>Other <code>svn</code> commands are supported by <code>fcm</code> without
+  any change in functionality, with the following minor enhancements:</p>
+
+  <ul>
+    <li>Where appropriate, FCM performs repository and revision keywords
+    expansion.</li>
+
+    <li>The <code>fcm checkout</code> command fails if you attempt to checkout
+    into an existing working copy.</li>
+
+    <li>FCM prints the corresponding <code>svn</code> command, except for
+    <code>cat</code> and any commands with the <code>--xml</code> option
+    specified.</li>
+  </ul>
+
+  <p>The following is a list of the commands:</p>
+
+  <ul>
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.blame.html">svn
+    blame</a></li>
+
+    <li><a href="http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.cat.html">svn
+    cat</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.checkout.html">svn
+    checkout</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.cleanup.html">svn
+    cleanup</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.copy.html">svn
+    copy</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.export.html">svn
+    export</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.import.html">svn
+    import</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.info.html">svn
+    info</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.list.html">svn
+    list</a></li>
+
+    <li><a href="http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.log.html">svn
+    log</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.lock.html">svn
+    lock</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.mkdir.html">svn
+    mkdir</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.move.html">svn
+    move</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.propdel.html">svn
+    propdel</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.propedit.html">svn
+    propedit</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.propget.html">svn
+    propget</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.proplist.html">svn
+    proplist</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.propset.html">svn
+    propset</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.resolved.html">svn
+    resolved</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.revert.html">svn
+    revert</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.status.html">svn
+    status</a></li>
+
+    <li><a href=
+    "http://svnbook.red-bean.com/en/1.4/svn.ref.svn.c.unlock.html">svn
+    unlock</a></li>
+  </ul>
+
+  <p>Please refer to the <a href=
+  "http://svnbook.red-bean.com/en/1.4/svn.ref.html">Subversion Complete
+  Reference</a> in the Subversion book for details of these commands.</p>
+</body>
+</html>

@@ -1,0 +1,149 @@
+!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!! LOBSTER :    1  - biological parameters for phytoplankton    (namlobphy)
+!! namelists    2  - biological parameters for nutrients        (namlobnut)
+!!              3  - biological parameters for zooplankton      (namlobzoo)    
+!!              4  - biological parameters for detritus         (namlobdet)
+!!              5  - biological parameters for DOM              (namlobdom)
+!!              6  - parameters from aphotic layers to sediment (namlobsed)
+!!              7  - general coefficients                       (namlobrat)
+!!              8  - optical parameters                         (namlobopt)
+!!              9  - additional 2D/3D  diagnostics              (namlobdia)
+!!              10 - biological diagnostics trends              (namlobdbi) 
+!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobphy     !   biological parameters for phytoplankton
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   apmin   =  0.        ! fixed phytoplancton concentration            [mmol/m3]
+   tmumax  =  1.21e-5   ! maximal phytoplankton growth rate            [s-1] 
+   rgamma  =  0.05      ! phytoplankton exudation fraction             [%]
+   fphylab =  0.75      ! NH4 fraction of phytoplankton exsudation     
+   tmmaxp  =  0.0       ! maximal phytoplancton mortality rate         [s-1] 
+   tmminp  =  5.8e-7    ! minimal phytoplancton mortality rate         [0.05/86400 s-1=20 days] 
+   rcchl   =  60.       ! Carbone/Chlorophyl ratio                     [mgC.mgChla-1]
+   aki     =  33.       ! light photosynthesis half saturation constant[W/m2]
+   toptp   =  0.        ! optimal photosynthesis temperature
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobnut     !   biological parameters for nutrients
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   anmin   =  0.        ! minimum nutrients concentration              [mmol/m3]
+   akno3   =  0.7       ! nitrate limitation half-saturation value     [mmol/m3]
+   aknh4   =  0.001     ! ammonium limitation half-saturation value    [mmol/m3]
+   taunn   =  5.80e-7   ! nitrification rate                           [s-1]  
+   psinut  =  3.        ! inhibition of nitrate uptake by ammonium
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobzoo     !   biological parameters for zooplankton
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   azmin   = 0.         ! minimum zooplancton concentration                      [mmol/m3]
+   eggzoo  = 0.0        ! minimum for zooplankton concentration, egg effect      [mmolN.m-3]
+   rgz     = 0.         ! ivlev coeff for zoo mortality
+   rppz    = 0.8        ! zooplankton nominal preference for phytoplancton food  [%]
+   taus    = 9.26E-6    ! specific zooplankton maximal grazing rate              [s-1] 
+!                       ! 0.75/86400 s-1=8.680555E-6    1/86400 = 1.15e-5
+   aks     = 1.         ! half-saturation constant for total zooplankton grazing [mmolN.m-3]
+   rpnaz   = 0.3        ! non-assimilated phytoplankton by zooplancton           [%]
+   rdnaz   = 0.3        ! non-assimilated detritus by zooplankton                [%] 
+   tauzn   = 8.1e-7     ! zooplancton specific excretion rate                    [0.1/86400 s-1=10 days] 
+   fzoolab = 0.5        ! NH4 fraction of zooplankton excretion
+   fdbod   = 0.5        ! zooplankton mortality fraction that goes to detritus
+   tmmaxz  = 0.         ! maximal zooplankton mortality rate
+   tmminz  = 2.31e-6    ! minimal zooplankton mortality rate                     [(mmolN/m3)-1 d-1]
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobdet     !   biological parameters for detritus
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   admin   = 0.         ! minimum detritus concentration                 [mmol/m3]
+   taudn   = 5.80e-7    ! detritus breakdown rate                        [0.1/86400 s-1=10 days]
+   fdetlab = 0.         ! NH4 fraction of detritus dissolution           
+   vsed    = 3.47e-5    ! detritus sedimentation speed                   [m/s]
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobdom     !   biological parameters for DOM
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   taudomn = 6.43e-8    ! DOM breakdown rate                             [s-1] 
+!                       ! slow remineralization rate of semi-labile dom to nh4 (1 month)
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobsed     !   parameters from aphotic layers to sediment
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   sedlam     = 3.86e-7 ! time coefficient of POC remineralization in sediments [s-1]
+   sedlostpoc = 0.      ! mass of POC lost in sediments
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobrat     !   general coefficients
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   redf    = 6.56       ! redfield ratio (C:N) for phyto
+   reddom  = 6.56       ! redfield ratio (C:N) for DOM
+   slopet  = 0.         ! van t Hoff "coefficient"
+   tmaxr   = 0.         ! maximal damping coeff under euphotic layer
+   tminr   = 5.80e-7    ! minimal damping coeff under euphotic layer
+   xhr     = -0.858     ! coeff for martin''s remineralisation profile
+   filmax  = 0.         ! ????
+   toptgz  = 0.         ! ???? 
+   tmaxgz  = 0.         ! ???? 
+   anumin  = 0.         ! ???? 
+   afdmin  = 0.         ! ???? 
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobopt     !   optical parameters
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   xkg0   = 0.0232     ! green absorption coefficient of water
+   xkr0   = 0.225      ! red absorption coefficent of water
+   xkgp   = 0.074      ! green absorption coefficient of chl
+   xkrp   = 0.037      ! red absorption coefficient of chl
+   xlg    = 0.674      ! green chl exposant for absorption
+   xlr    = 0.629      ! red chl exposant for absorption
+   rpig   = 0.7        ! chla/chla+pheo ratio
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobdia     !   additional 2D/3D tracers diagnostics
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+!              !    name   ! title of   ! units !
+!              !           ! the field  !       !  
+   lobdia2d(1)   = 'TNO3PHY' , 'TNO3PHY',  '-'
+   lobdia2d(2)   = 'TNH4PHY' , 'TNH4PHY',  '-'
+   lobdia2d(3)   = 'TPHYDOM' , 'TPHYDOM',  '-'
+   lobdia2d(4)   = 'TPHYNH4' , 'TPHYNH4',  '-'
+   lobdia2d(5)   = 'TPHYZOO' , 'TPHYZOO',  '-'
+   lobdia2d(6)   = 'TPHYDET' , 'TPHYDET',  '-'
+   lobdia2d(7)   = 'TDETZOO' , 'TDETZOO',  '-'
+   lobdia2d(8)   = 'TDETSED' , 'TDETSED',  '-'
+   lobdia2d(9)   = 'TZOODET' , 'TZOODET',  '-'
+   lobdia2d(10)  = 'TZOOBOD' , 'TZOOBOD',  '-'
+   lobdia2d(11)  = 'TZOONH4' , 'TZOONH4',  '-'
+   lobdia2d(12)  = 'TZOODOM' , 'TZOODOM',  '-'
+   lobdia2d(13)  = 'TNH4NO3' , 'TNH4NO3',  '-'
+   lobdia2d(14)  = 'TDOMNH4' , 'TDOMNH4',  '-'
+   lobdia2d(15)  = 'TDETNH4' , 'TDETNH4',  '-'
+   lobdia2d(16)  = 'TPHYTOT' , 'TPHYTOT',  '-'
+   lobdia2d(17)  = 'TZOOTOT' , 'TZOOTOT',  '-'
+   lobdia2d(18)  = 'TDETDOM' , 'TDETDOM',  '-'
+   lobdia2d(19)  = 'SEDPOC ' , 'SEDPOC ',  '-'
+   lobdia3d(1)   = 'FNO3PHY' , 'FNO3PHY',  '-'
+   lobdia3d(2)   = 'FNH4PHY' , 'FNH4PHY',  '-'
+   lobdia3d(3)   = 'FNH4NO3' , 'FNH4NO3',  '-'
+/
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namlobdbi     !   biological diagnostics trends     
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+!                !  2D bio diagnostics   units : mmole/m2/s   ("key_trdmld_trc")
+!                !  name    !       title of the field      !     units      !
+   lobdiabio(1)  = 'NO3PHY' , 'Flux from NO3 to PHY          ',  'mmole/m3/s'
+   lobdiabio(2)  = 'NH4PHY' , 'Flux from NH4 to PHY          ',  'mmole/m3/s'
+   lobdiabio(3)  = 'PHYNH4' , 'Flux from PHY to NH4          ',  'mmole/m3/s'
+   lobdiabio(4)  = 'PHYDOM' , 'Flux from PHY to DOM          ',  'mmole/m3/s'
+   lobdiabio(5)  = 'PHYZOO' , 'Flux from PHY to ZOO          ',  'mmole/m3/s'
+   lobdiabio(6)  = 'PHYDET' , 'Flux from PHY to DET          ',  'mmole/m3/s'
+   lobdiabio(7)  = 'DETZOO' , 'Flux from DET to ZOO          ',  'mmole/m3/s'
+   lobdiabio(8)  = 'DETSED' , 'Flux from DET to SED          ',  'mmole/m3/s'
+   lobdiabio(9)  = 'ZOODET' , 'Flux from ZOO to DET          ',  'mmole/m3/s'
+   lobdiabio(10)  = 'ZOOBOD' , 'Zooplankton closure          ',  'mmole/m3/s'
+   lobdiabio(11)  = 'ZOONH4' , 'Flux from ZOO to NH4         ',  'mmole/m3/s'
+   lobdiabio(12)  = 'ZOODOM' , 'Flux from ZOO to DOM         ',  'mmole/m3/s'
+   lobdiabio(13)  = 'NH4NO3' , 'Flux from NH4 to NO3         ',  'mmole/m3/s'
+   lobdiabio(14)  = 'DOMNH4' , 'Flux from DOM to NH4         ',  'mmole/m3/s'
+   lobdiabio(15)  = 'DETNH4' , 'Flux from DET to NH4         ',  'mmole/m3/s'
+   lobdiabio(16)  = 'DETDOM' , 'Flux from DET to DOM         ',  'mmole/m3/s'
+   lobdiabio(17)  = 'SEDNO3' , 'NO3 remineralization from SED',  'mmole/m3/s'
+/

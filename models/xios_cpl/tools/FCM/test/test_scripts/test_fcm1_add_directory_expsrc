@@ -1,0 +1,7 @@
+cfg_name=fcm1_add_directory_expsrc
+test_name=test_$cfg_name
+. ./perform_test
+
+# Although this case works, the output from the extract system does not correctly
+# identify the file as added from branch1 (unlike in test_add_file).
+# Fixed in FCM 2 ?

@@ -1,0 +1,8 @@
+1) create your own arch-MY_MACHINE.fcm, arch-MY_MACHINE.path and arch-MY_MACHINE.env files following the examples availables in the arch directory. Note that the arch-MY_MACHINE.env is optional
+I personally used arch-X64_CURIE.fcm 
+
+2) compile xios
+./make_xios --help
+./make_xios --prod --full --arch X64_CURIE --job 8 --use_oasis
+
+-> restults of the compilation are in lib and bin directories

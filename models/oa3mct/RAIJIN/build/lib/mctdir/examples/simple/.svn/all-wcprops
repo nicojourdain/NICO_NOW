@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple
+END
+twocmp.con.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/twocmp.con.F90
+END
+twocmp.seqUnvn.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/twocmp.seqUnvn.F90
+END
+script.babyblue
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/script.babyblue
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/.cvsignore
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/Makefile
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/README
+END
+twocmp.seq.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/twocmp.seq.F90
+END
+twocmp.seqNB.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/669/branches/OASIS3-MCT_2.0_branch/oasis3-mct/lib/mct/examples/simple/twocmp.seqNB.F90
+END

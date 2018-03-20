@@ -1,0 +1,95 @@
+&input_output
+iom_activated = true
+/
+&coarse_grid_files
+parent_coordinate_file = '/short/e14/ncj561/now/input_new/coordinates_trop075.nc'
+parent_meshmask_file = '/short/e14/ncj561/now/input_new/mesh_mask_trop075.nc'
+/
+&bathymetry
+new_topo = true
+elevation_database = '/short/e14/ncj561/now/input_new/ETOPO1_bathy.nc'
+elevation_name = 'bathy'
+smoothing = false
+smoothing_factor = 0.6
+nb_connection_pts = 3
+removeclosedseas = true
+type_bathy_interp = 0
+/
+&nesting
+imin = 95
+imax = 212
+jmin = 27
+jmax = 88
+rho = 3 ! horizontal refinement
+rhot = 3 ! time refinement
+bathy_update = true
+updated_parent_file = 'bathy_updated.nc'
+/
+&vertical_grid
+ppkth = 15.35101370000000
+ppacr = 7.
+ppdzmin = 0
+pphmax = 0
+psur = -3958.951371276829
+pa0 = 103.9530096000000
+pa1 = 2.415951269000000
+ldbletanh = .TRUE.
+pa2 = 100.7609285000000
+ppkth2= 48.02989372000000
+ppacr2= 13.00000000000
+N = 75
+/
+&partial_cells
+partial_steps = true
+parent_bathy_meter = '/short/e14/ncj561/now/input_new/bathy_meter_trop075.nc'
+parent_batmet_name = 'Bathymetry'
+e3zps_min = 25.
+e3zps_rat = 0.2
+/
+&nemo_coarse_grid
+jpizoom = 1
+jpjzoom = 1
+/
+&forcing_files
+!U_FILES = 'taux_1m.nc'
+!'dyna_grid_U.nc' ! needed for Offline
+!V_FILES = 'tauy_1m.nc'
+!'dyna_grid_V.nc' ! needed for Offline
+FLX_FILES = 
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_T2_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_Q2_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_U10_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_V10_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_GLW_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_SWDOWN_1989.nc',
+'/short/e14/ncj561/now/run/extract_wrf_for_nemo/wrf_trop075_BMJv2_SMOOTH2pass_NH_PRECIP_1989.nc'
+!'/short/e14/ncj561/now/input/nemo_trop075/alltides_trop075_time_K1.nc'
+!'/short/e14/ncj561/now/input/nemo_trop075/alltides_trop075_time_M2.nc'
+!'/short/e14/ncj561/now/input/nemo_trop075/alltides_trop075_time_tmaskitf.nc'
+!'/short/e14/ncj561/now/input/nemo_trop075/bathy_meter_trop075.nc',
+!'/short/e14/ncj561/now/input/nemo_trop075/chlorophyll_trop075.nc',
+!'/short/e14/ncj561/now/input/nemo_trop075/runoff_trop075.nc',
+!'/short/e14/ncj561/now/input/nemo_trop075/trop075_restart_00000000_nan_filled.nc'
+/
+&interp
+VAR_INTERP =
+'votemper/bicubic',
+'vosaline/bicubic'
+! 'dust/bilinear',
+! 'riverdic/bilinear',
+! 'riverpoc/bilinear',
+! 'riverdoc/bilinear',
+! 'nedep/bilinear',
+! 'bathy/bilinear'
+/
+&restart
+restart_file ='/short/e14/ncj561/now/input/nemo_trop075/restart_00008760.nc'
+shlat = 0
+dimg = false
+dimg_output_file = 'test_dimg'
+adatrj = 360.25
+interp_type = 'bilinear'
+/
+&restart_trc
+restart_trc_file = 'restart_trc.nc'
+/

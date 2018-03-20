@@ -1,0 +1,129 @@
+   !!----------------------------------------------------------------------
+   !!                      ***  ldftra_c1d.h90  ***
+   !!----------------------------------------------------------------------
+
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: ldftra_c1d.h90 2715 2011-03-30 15:58:35Z rblod $ 
+   !! Software governed by the CeCILL licence     (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+   SUBROUTINE ldf_tra_c1d( ld_print )
+      !!----------------------------------------------------------------------
+      !!                  ***  ROUTINE ldftra_c1d  ***
+      !!              
+      !! ** Purpose :   1D eddy diffusivity coefficient
+      !!
+      !! ** Method  :   1D eddy diffusivity coefficients ( depth )
+      !!       biharmonic operator    : ahtt = defined at T-level
+      !!                                ahtu,ahtv,ahtw never used
+      !!
+      !!       harmonic operator      : ahtt never used
+      !!          -1-  iso-model level: ahtu = ahtv defined at T-level
+      !!                                ahtw never used
+      !!          -2-  isopycnal or   : ahtu = ahtv defined at T-level
+      !!               geopotential     ahtw defined at w-level
+      !!
+      !!       eddy induced velocity
+      !!         always harmonic      : aeiu = aeiv defined at T-level
+      !!				  aeiw defined at w-level
+      !!----------------------------------------------------------------------
+      LOGICAL, INTENT (in) ::   ld_print   ! If true, print arrays in numout
+      !
+      INTEGER  ::   jk   ! dummy loop indices
+      REAL(wp) ::   zkah, zahr, za00 , za01    ! local scalars
+      REAL(wp) ::   zahf, zahs, zahtf, zahts   !   -      -
+      !!----------------------------------------------------------------------
+
+      IF( lk_traldf_eiv ) THEN 
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) ' ldf_tra_c1d : 1D eddy diffusivity and eddy induced velocity coefficients'
+         IF(lwp) WRITE(numout,*) ' ~~~~~~~~~~~   -- ' 
+         IF(lwp) WRITE(numout,*)
+      ELSE
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) ' inildf : 1D eddy diffusivity coefficient '
+         IF(lwp) WRITE(numout,*) ' ~~~~~~   -- '
+         IF(lwp) WRITE(numout,*)
+      ENDIF
+
+      ! initialization of the profile
+
+      ! ahts, ahtf: surface and bottom values
+      zahts = aht0
+      zahtf = aht0/4. 
+      ! zkah, zahr: depth of the inflection pt and width of inflection
+      zkah =  -300.
+      zahr =   300.
+      ! computation coefficients
+      za00 = TANH( ( -fsdept(1,1,1  ) - zkah ) / zahr )
+      za01 = TANH( ( -fsdept(1,1,jpk) - zkah ) / zahr )
+      zahf = ( zahts-zahtf ) / ( za00 - za01 )
+      zahs = zahts - zahf * za00
+
+      ! biharmonic operator : (T-point)
+      ! ==================== 
+
+      ! set ahtt at T-level
+      DO jk = 1, jpk
+         ahtt(jk) = zahs + zahf * TANH( (-fsdept(1,1,jk)-zkah) / zahr )
+      END DO
+
+      ! control print
+      IF(lwp .AND. ld_print ) THEN
+         WRITE(numout,*)
+         WRITE(numout,*) '         aht profile at T-level : '
+         WRITE(numout,*)
+         WRITE(numout,*) ' level    aht          depth t-level '
+         DO jk = 1, jpk
+            WRITE(numout,'(i6,2f12.4)') jk, ahtt(jk), fsdept(1,1,jk)
+         END DO
+      ENDIF
+
+      ! harmonic operator : (U-, V-, W-points)
+      ! ================== 
+
+      ! set ahtu = ahtv at T-level, and ahtw at w-level
+      DO jk = 1, jpk
+         ahtu(jk) = zahs + zahf * TANH( ( -fsdept(1,1,jk) - zkah ) / zahr )
+         ahtv(jk) = ahtu(jk)
+         ahtw(jk) = zahs + zahf * TANH( ( -fsdepw(1,1,jk) - zkah ) / zahr )
+      END DO
+
+      ! control print
+      IF(lwp .AND. ld_print ) THEN
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) '         aht profile at T-level : '
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) ' level    aht          depth t-level '
+         DO jk = 1, jpk
+            IF(lwp) WRITE(numout,"(i6,2f12.4)") jk, ahtu(jk), fsdept(1,1,jk)
+         END DO
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) '         aht profile at W-level : '
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) '  jk      aht          depth w-level '
+         DO jk = 1, jpk
+            IF(lwp)WRITE(numout,"(i6,2f12.4)") jk, ahtw(jk), fsdepw(1,1,jk)
+         END DO
+      ENDIF
+
+# if defined key_traldf_eiv
+      ! set aeiu = aeiv and set aeiw (here same profile as on aht)
+      aeiu(:) = ahtu(:)
+      aeiv(:) = aeiu(:)
+      aeiw(:) = ahtw(:)
+      
+      ! Control print
+      IF(lwp .AND. ld_print ) THEN
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) '         aeiv profile at T-level : '
+         IF(lwp) WRITE(numout,*)
+         IF(lwp) WRITE(numout,*) '  jk      aeiv           depth t-level '
+         DO jk = 1, jpk
+            IF(lwp) WRITE(numout,"(i6,2f12.4)") jk, aeiu(jk), fsdept(1,1,jk)
+         END DO
+      ENDIF
+#endif
+      !
+   END SUBROUTINE ldf_tra_c1d

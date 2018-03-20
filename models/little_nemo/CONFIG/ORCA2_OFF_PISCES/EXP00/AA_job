@@ -1,0 +1,166 @@
+#-Q- sxnec ##################
+#-Q- sxnec ## SXNEC IDRIS
+#-Q- sxnec ##################
+#-Q- sxnec #@$-r :XXX:XXX:XXX:           # job name
+#-Q- sxnec #@$-o output_XXXXXXX.1        # outputfile name
+#-Q- sxnec #@$-me                        # sends a mail at the end of execution
+#-Q- sxnec #@$-eo                        # merge standard error and output
+#-Q- sxnec #@$-jo                        # print a short performance analysis
+#-Q- sxnec #@$-lT 3:00:00                # Max total CPU time
+#-Q- sxnec #@$-lt 2:59:00                # Max CPU time per process
+#-Q- sxnec #@$-lM 4Gb                    # Max memory
+#-Q- sxnec ##@$-c 4                     # Max number of simultaneous procs used (here=4)
+#-Q- sxnec ##@$-q multi                 # Use more than 1 proc
+#-Q- aix ##################
+#-Q- aix ## IBM   IDRIS  ##
+#-Q- aix ##################
+#-Q- aix #@job_name= :XXX:XXX:XXX:          
+#-Q- aix #@output= output_XXXXXXX.1          
+#-Q- aix #@error= error_XXXXXXX.1          
+#-Q- aix #@cpu_limit= 14200
+#-Q- aix #@stack_limit= 200Mb        
+#-Q- aix #@data_limit= 4.8Gb         
+#-Q- aix #@notification= complete
+#-Q- aix #@total_tasks= 1 
+#-Q- aix #@job_type= parallel
+#-Q- aix #@queue
+#-Q- sx8brodie ##################
+#-Q- sx8brodie ## SX8NEC IDRIS ##
+#-Q- sx8brodie ##################
+#-Q- sx8brodie #PBS -N :XXX:XXX:XXX:        # job name
+#-Q- sx8brodie #PBS -o output_XXXXXXX.1     # outputfile name
+#-Q- sx8brodie #PBS -j o                    # merge standard error and output
+#-Q- sx8brodie #PBS -S /usr/bin/ksh         # user shell
+#-Q- sx8brodie #PBS -l memsz_job=4.6gb      # Max memory
+#-Q- sx8brodie #PBS -l cputim_prc=3:30:00   # Max CPU time/prc
+#-Q- sx8brodie #PBS -l cputim_job=3:30:00   # Max CPU time/job
+#-Q- sx8brodie ##PBS -l cpunum_job=4
+#-Q- sx8brodie ##PBS -q multi
+#-Q- sx8mercure ##################
+#-Q- sx8mercure ## SX8NEC   CEA ##
+#-Q- sx8mercure ##################
+#-Q- sx8mercure #PBS -N :XXX:XXX:XXX:        # job name
+#-Q- sx8mercure #PBS -o output_XXXXXXX.1     # outputfile name
+#-Q- sx8mercure #PBS -j o                    # merge standard error and output
+#-Q- sx8mercure #PBS -S /usr/bin/ksh         # user shell
+#-Q- sx8mercure #PBS -l memsz_job=4.6gb      # Max memory
+#-Q- sx8mercure #PBS -l cputim_job=3:30:00   # Max CPU time
+#-Q- sx8mercure ##PBS -l cpunum_job=4
+########################################################################
+##
+##      Script to run a short experiment when installing the
+##      ORCA2_LIM configuration 
+##
+##            Rachid Benshila, OPA System Team
+##
+##
+#########################################################################
+##-- print echo of commands before and after shell interpretation
+date
+set -vx
+
+#################################
+# Beginning of user modification
+#################################
+
+##-- define some directories : 
+#- Input file storing 
+#-Q- sxnec R_FORCING="gaya:/u/rech/eee/reee512/NEMO"
+#-Q- sx8brodie R_FORCING="gaya:/u/rech/eee/reee512/NEMO"
+#-Q- aix R_FORCING="gaya:/u/rech/eee/reee512/NEMO"
+#-Q- sx8mercure R_FORCING="/dmnfs10/cont003/p48ethe/FORCINGS/ORCA_R2/NEMO"
+#- Launching run repository
+#-Q- sxnec R_EXPER=${QSUB_WORKDIR:-${PWD}}
+#-Q- sx8brodie R_EXPER=${PBS_O_WORKDIR}
+#-Q- aix R_EXPER=${QSUB_WORKDIR:-${PWD}}
+#-Q- sx8mercure R_EXPER=${PWD}
+#- modipsl repository
+R_EXEDIR=MMMMMMM     
+#- output files storing 
+R_SORTIE_OCE=AAAAAAA/ORCA2_OFF_PISCES
+#- execution repository
+R_TMP=$TMPDIR         
+
+##-- define processus number : to change when running in mpp
+NB_PROC=1
+
+#################################
+# End of user modification
+#################################
+
+#--  define a fonction to get the input tarfile
+#-Q- sxnec Rapatrie () { [ -f $1/$2 ] || ( rcp ${R_FORCING}/$2 $1 ; cd $1; tar xvf $2 ;) }
+#-Q- sx8brodie Rapatrie () { [ -f $1/$2 ] || ( rcp ${R_FORCING}/$2 $1 ; cd $1; tar xvf $2 ;) }
+#-Q- aix Rapatrie () { [ -f $1/$2 ] || ( rcp ${R_FORCING}/$2 $1 ; cd $1; tar xvf $2 ;) }
+#-Q- sx8mercure Rapatrie () { [ -f $1/$2 ] || ( cp ${R_FORCING}/$2 $1 ; cd $1; tar xvf $2 ;) }
+
+[ -d ${R_TMP} ] || mkdir ${R_TMP}
+cd ${R_TMP}
+
+#--  get the executable
+#-Q- sxnec rcp ${LOGNAME}@rhodes:${R_EXEDIR}/bin/opa opa.xx
+#-Q- sx8brodie rcp ${LOGNAME}@brodie:${R_EXEDIR}/bin/opa opa.xx
+#-Q- aix cp ${R_EXEDIR}/bin/opa opa.xx
+#-Q- sx8mercure cp ${R_EXEDIR}/bin/opa opa.xx
+chmod 777 opa.xx
+
+## --  Copy ancillary files
+#
+
+#- Namelist for the configuration
+cp ${R_EXPER}/namelist            namelist
+cp ${R_EXPER}/namelist_top        namelist_top
+cp ${R_EXPER}/namelist_pisces     namelist_pisces
+cp ${R_EXPER}/kRGB61.txt          kRGB61.txt
+
+ls -alF
+
+#- Files for the configuration 
+Rapatrie ${R_TMP} INPUTS_INIT_v3.tar
+Rapatrie ${R_TMP} INPUTS_DYNA_v3.tar
+Rapatrie ${R_TMP} INPUTS_PISCES_v3.tar
+
+ls -alF
+
+#-Q- sxnec export F_PROGINF=yes
+#-Q- sxnec export F_ERRCNT=5
+#-Q- sx8brodie export F_PROGINF=yes
+#-Q- sx8brodie export F_ERRCNT=5
+#-Q- sx8mercure export F_PROGINF=yes
+#-Q- sx8mercure export F_ERRCNT=5
+
+#-Q- sxnec #- To be use for a mpp run
+#-Q- sxnec #mpirun -np ${NB_PROC} ./opa.xx
+#-Q- sx8brodie #- To be use for a mpp run
+#-Q- sx8brodie #mpirun -np ${NB_PROC} ./opa.xx
+#-Q- sx8mercure #- To be use for a mpp run
+#-Q- sx8mercure #mpirun -np ${NB_PROC} ./opa.xx
+
+./opa.xx
+
+## -- Save output files
+ls -alF
+#- to copy on a storage machine
+#-Q- sxnec DPUT=mfput
+#-Q- sx8brodie DPUT=mfput
+#-Q- aix DPUT=mfput
+#-Q- sx8mercure DPUT=cp 
+#-Q- sx8mercure [ -d ${R_SORTIE_OCE} ] || mkdir -p ${R_SORTIE_OCE}
+
+#- Save ocean output files
+$DPUT *ocean.output ${R_SORTIE_OCE}/.
+$DPUT *solver.stat ${R_SORTIE_OCE}/.
+[ -f *mpp.output* ] && $DPUT *mpp.output* ${R_SORTIE_OCE}/.
+for file_netcdf in *_diad_T*.nc *_ptrc_T*.nc
+do
+$DPUT ${file_netcdf} ${R_SORTIE_OCE}/${file_netcdf}
+done
+#
+#- Save restart files
+for restart in *restart*
+do
+$DPUT ${restart} ${R_SORTIE_OCE}/${restart} 
+done
+#
+#- Save ftrace file
+[ -f ftrace.out* ] && $DPUT ftrace.out* ${R_SORTIE_OCE}/.

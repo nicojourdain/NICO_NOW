@@ -1,0 +1,7 @@
+cfg_name=fcm1_delete_directory
+test_name=test_$cfg_name
+extract_1=fail_known
+. ./perform_test
+
+# This case fails since the extract system does not handle deleted directories.
+# Fixed in FCM 2 ?

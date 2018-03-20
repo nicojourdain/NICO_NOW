@@ -1,0 +1,110 @@
+#!/bin/sh 
+#
+# AUTHOR - date
+# ===========
+# Sebastien Masson - 04/2011 - LOCEAN
+#
+# DESCRIPTION
+# ===========
+# define all varibles needed by std_ts.sh and std_ts.pro
+#
+# EXAMPLES
+# ========
+# $ . ./std_ts_vardef.sh
+#
+#
+#===================== User PATHS =====================
+#
+idl_command=/Applications/itt/idl64/bin/idl
+#
+PS_DIR=$( pwd )/ps_tag33_tag331
+PDF_DIR=$( pwd )/pdf_tag33_tag331
+HTML_DIR=$( pwd )/html_tag33_tag331
+SAXO_DIR=/Users/smasson/SAXO_DIR
+#
+DIR_DATA=/Users/smasson/tmp/idlorca2/res      # path of data in NetCDF format
+DIR_CLIMATO=/Users/smasson/tmp/idlorca2/clim  # path of climatological data
+DIR_MASK=/Users/smasson/tmp/idlorca2/clim     # path of mask files (ex: subbasins)
+#
+#===================== Model GRID =====================
+#
+FILE_MESH_MASK=/Users/smasson/data/vp33beta_mesh_mask_7.nc # meshmask
+FILE_MASK_SUBDOMAIN=subbasins_orca21_nored.nc              # sub-bassin masks
+#
+#===================== DATA =====================
+#
+VAR_TEMP_3D=votemper   ;   FILE_TEMP_3D=data_1y_potential_temperature_nomask.nc    # Levitus_T
+VAR_SAL_3D=vosaline    ;   FILE_SAL_3D=data_1y_salinity_nomask.nc                  # Levitus_S
+VAR_SST=sst            ;   FILE_SST=NewREY_ORCA2_1991_2000_1y.nc                   # Reynolds
+VAR_FLUX=qnet          ;   FILE_FLUX=OAFlux_1my_01_12_1984_2004_orca2_qnet.nc      # flux
+VAR_MLD=mld            ;   FILE_MLD=mld_DR003_c1m_ORCA2_1y.nc                      # Mixed layer depth
+#
+# Geothermal heating -> define FILE_GEOHEAT to 'NO' if there is not such forcing
+#                    -> define VAR_GEOHEAT to a constant if geothermal heating is constant over the domain
+VAR_GEOHEAT=heatflow   ;   FILE_GEOHEAT=geothermal_heating.nc 
+#
+#===================== EXP1 =====================
+#
+READ_ONLY_FIRST_RECORD=0   # if 0 then read all records in files else read only the first reacord in each file
+#
+DATE1=20010101   ;   DATE2=21001231
+#
+VAR1_T=thetao     ;   V1T_PREF=tag33     ;   V1T_SUFF=_1Y_grid_T.nc
+VAR1_S=so         ;   V1S_PREF=tag33     ;   V1S_SUFF=_1Y_grid_T.nc
+VAR1_SSH=zos      ;   V1SSH_PREF=tag33   ;   V1SSH_SUFF=_1Y_grid_T.nc
+VAR1_Q=qt         ;   V1Q_PREF=tag33     ;   V1Q_SUFF=_1Y_grid_T.nc
+VAR1_EMP=wfo      ;   V1EMP_PREF=tag33   ;   V1EMP_SUFF=_1Y_grid_T.nc
+VAR1_U=uocetr_eff ;   V1U_PREF=tag33     ;   V1U_SUFF=_1Y_grid_U.nc
+VAR1_V=vocetr_eff ;   V1V_PREF=tag33     ;   V1V_SUFF=_1Y_grid_V.nc
+VAR1_ICE=sic      ;   V1ICE_PREF=tag33   ;   V1ICE_SUFF=_1Y_icemod.nc
+#
+#===================== EXP2 =====================
+#
+DATE1_2=20010101   ;   DATE2_2=21001231
+#
+VAR2_T=thetao     ;   V2T_PREF=trunk331     ;   V2T_SUFF=_1Y_grid_T.nc
+VAR2_S=so         ;   V2S_PREF=trunk331     ;   V2S_SUFF=_1Y_grid_T.nc
+VAR2_SSH=zos      ;   V2SSH_PREF=trunk331   ;   V2SSH_SUFF=_1Y_grid_T.nc
+VAR2_Q=qt         ;   V2Q_PREF=trunk331     ;   V2Q_SUFF=_1Y_grid_T.nc
+VAR2_EMP=wfo      ;   V2EMP_PREF=trunk331   ;   V2EMP_SUFF=_1Y_grid_T.nc
+VAR2_U=uocetr_eff ;   V2U_PREF=trunk331     ;   V2U_SUFF=_1Y_grid_U.nc
+VAR2_V=vocetr_eff ;   V2V_PREF=trunk331     ;   V2V_SUFF=_1Y_grid_V.nc
+VAR2_ICE=sic      ;   V2ICE_PREF=trunk331   ;   V2ICE_SUFF=_1Y_icemod.nc
+#
+######################### Export Variables ###############################
+#
+#===================== User PATHS =====================
+export PS_DIR PDF_DIR HTML_DIR SAXO_DIR
+export DIR_DATA DIR_CLIMATO DIR_MASK
+#===================== Model GRID =====================
+export FILE_MESH_MASK FILE_MASK_SUBDOMAIN
+#===================== DATA =====================
+export FILE_TEMP_3D  VAR_TEMP_3D
+export FILE_SAL_3D   VAR_SAL_3D
+export FILE_SST      VAR_SST
+export FILE_GEOHEAT  VAR_GEOHEAT
+export FILE_FLUX     VAR_FLUX
+export FILE_MLD      VAR_MLD
+#===================== EXP1 =====================
+export READ_ONLY_FIRST_RECORD
+#
+export DATE1 DATE2
+export VAR1_T    V1T_PREF    V1T_SUFF
+export VAR1_S    V1S_PREF    V1S_SUFF
+export VAR1_SSH  V1SSH_PREF  V1SSH_SUFF
+export VAR1_Q    V1Q_PREF    V1Q_SUFF
+export VAR1_EMP  V1EMP_PREF  V1EMP_SUFF
+export VAR1_U    V1U_PREF    V1U_SUFF
+export VAR1_V    V1V_PREF    V1V_SUFF
+export VAR1_ICE  V1ICE_PREF  V1ICE_SUFF
+#===================== EXP2 =====================
+export DATE1_2 DATE2_2
+export VAR2_T    V2T_PREF    V2T_SUFF
+export VAR2_S    V2S_PREF    V2S_SUFF
+export VAR2_SSH  V2SSH_PREF  V2SSH_SUFF
+export VAR2_Q    V2Q_PREF    V2Q_SUFF
+export VAR2_EMP  V2EMP_PREF  V2EMP_SUFF
+export VAR2_U    V2U_PREF    V2U_SUFF
+export VAR2_V    V2V_PREF    V2V_SUFF
+export VAR2_ICE  V2ICE_PREF  V2ICE_SUFF
+#

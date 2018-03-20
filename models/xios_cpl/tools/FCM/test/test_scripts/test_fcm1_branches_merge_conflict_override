@@ -1,0 +1,3 @@
+cfg_name=fcm1_branches_merge_conflict_override
+test_name=test_$cfg_name
+. ./perform_test

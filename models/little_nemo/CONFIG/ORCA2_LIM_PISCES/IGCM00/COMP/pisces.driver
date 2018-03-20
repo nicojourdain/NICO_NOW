@@ -1,0 +1,110 @@
+#!/bin/ksh
+
+#-----------------------------------
+function MBG_Initialize
+{ 
+    IGCM_debug_PushStack "MBG_Initialize"
+
+# Local function to find namelists parameters
+supergrep () {
+    grep "^ *$1 *=" $2 | sed -e "s% *\!.*%%"
+}
+
+    ##--Variables used by MBG --
+
+    # lrsttr    boolean term for tracer model restart (true or false)
+    # nrsttr    control of the time step (0, 1 or 2)
+    
+    ##--Variables used by PISCES --
+ 
+    PAT_TOP_LRSTTR=$( supergrep ln_rsttr                 ${SUBMIT_DIR}/PARAM/namelist_top )
+    PAT_TOP_NRSTTR=$( supergrep nrsttr                   ${SUBMIT_DIR}/PARAM/namelist_top )
+    PAT_PIS_LRIVER=$( supergrep ln_river                 ${SUBMIT_DIR}/PARAM/namelist_pisces )
+
+    IGCM_debug_PopStack "MBG_Initialize"
+}
+
+#-----------------------------------
+function MBG_Update
+{
+    IGCM_debug_PushStack "MBG_Update"
+
+
+    ##--Write Frequency Purpose
+    Nbfreq=$( echo ${config_MBG_WriteFrequency} | wc -w )
+    typeset -Z1 i=1
+    while [ $i -le ${Nbfreq} ]; do
+       topfrequency=$( echo ${config_MBG_WriteFrequency} | awk -v var="$i" "-F " '{print $var}' )
+       topfactor=$( echo ${topfrequency} | sed -e "s/[yYmMdD]//" )
+       case ${topfrequency} in
+         *Y|*y)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}y_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_Y} ;
+            eval WFT${i}=${topfactor}Y ;;
+         *M|*m)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}m_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_M} ;
+            eval WFT${i}=${topfactor}M ;;
+         *D|*d)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}d_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_D} ;
+            eval WFT${i}=${topfactor}D ;;
+         *)
+      esac
+       let i=$i+1
+    done
+
+    ##-- Restart configuration
+    if ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_MBG_Restart}" = "n" ] ) ; then
+
+        #echo "NO RESTART FOR TOP"
+        TOP_LRSTTR=.FALSE.
+        TOP_NRSTTR=0
+
+        PISCES_LRIVER=.FALSE.
+
+    elif ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_MBG_Restart}" = "y" ] ) ; then
+
+        #echo "RESTART TOP"
+        TOP_LRSTTR=.TRUE.
+        TOP_NRSTTR=0
+
+        PISCES_LRIVER=.TRUE.
+
+    else
+
+        #echo "RESTART TOP"
+        TOP_LRSTTR=.TRUE.
+        TOP_NRSTTR=2
+
+        PISCES_LRIVER=.TRUE.
+
+    fi
+
+# on force les sorties PISCES comme les sorties OPA
+
+    sed -e "s%${PAT_TOP_LRSTTR}%          ln_rsttr=${TOP_LRSTTR}%"                   \
+        -e "s%${PAT_TOP_NRSTTR}%          nrsttr=${TOP_NRSTTR}%"                   \
+        namelist_top > namelist_top.tmp
+
+    IGCM_sys_Mv namelist_top.tmp namelist_top
+
+    sed -e "s%${PAT_PIS_LRIVER}%          ln_river=${PISCES_LRIVER}%"                \
+        namelist_pisces > namelist_pisces.tmp
+
+    IGCM_sys_Mv namelist_pisces.tmp namelist_pisces
+
+
+    IGCM_debug_PopStack "MBG_Update"
+}
+
+#-----------------------------------
+function MBG_Finalize
+{
+    IGCM_debug_PushStack "MBG_Finalize"
+
+    echo FINALIZE MBG !!!
+
+    IGCM_debug_PopStack "MBG_Finalize"
+}
+

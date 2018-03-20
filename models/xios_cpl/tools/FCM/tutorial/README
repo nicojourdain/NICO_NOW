@@ -1,0 +1,25 @@
+This directory contains the files necessary to set up a Subversion repository
+for the FCM tutorial.
+
+The "svn.dump" file should be loaded into an empty Subversion repository using
+the "svnadmin load" command.
+
+The hook scripts in "hooks/" should then be installed in this repository in
+order to prevent any commits to the trunk. Note that the configuration file
+"svnperms.conf" assumes that the tutorial repository is called "tutorial_svn".
+Please edit this file if you use a different name.
+
+For example (in bash/ksh):
+
+(shell)$ cd fcm-release/tutorial/ # to this directory
+(shell)$ path_to_tutorial_repos=/path/to/repos/tutorial_svn
+(shell)$ svnadmin create $path_to_tutorial_repos
+(shell)$ svnadmin load $path_to_tutorial_repos <svn.dump
+(shell)$ cp hooks/* $path_to_repos/tutorial_svn/hooks/
+
+The repository should be configured to allow users write access. You may find
+it easiest to simply allow anonymous access.
+
+A Trac environment should be configured to be associated with the tutorial
+repository. You then need to allow users write access. You may find it easiest
+to set up a number of guest accounts for this purpose.

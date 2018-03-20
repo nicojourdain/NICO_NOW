@@ -1,0 +1,140 @@
+#!/bin/ksh
+
+REPOS_FILES=$PWD/repos
+
+echo "$(date): Creating repository ..."
+rm -rf $REPOS_DIR
+svnadmin create --fs-type fsfs $REPOS_DIR
+
+echo "$(date): Initial import ..."
+
+svn import -q $REPOS_FILES/trunk $REPOS_URL/trunk -m" "
+svn mkdir -q $REPOS_URL/branches -m" "
+svn mkdir -q $REPOS_URL/tags -m" "
+
+# Modify some files
+branch=modify_files_base
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+rm -rf $BASE_DIR/work
+svn co -q $REPOS_URL/branches/dev/Share/$branch $BASE_DIR/work
+cd $BASE_DIR/work
+perl -pi -e 's/IMPLICIT NONE/implicit none/' program/hello.F90
+perl -pi -e 's/Hello Earth/Hello Earthlings/' module/hello_constants.inc
+svn ci -m" "
+
+# Modify some files, one of which can be merged with modify_files_base branch
+branch=modify_files_merge1
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e "s/this = 'Hello'/this = 'HELLO'/" program/hello.F90
+perl -pi -e 's/Hello Earth/Hello Earthlings/' subroutine/hello_c.c
+svn ci -m" "
+
+# Modify a file which can be merged with the modify_files_base & modify_files_merge1 branches
+branch=modify_files_merge2
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/PROGRAM/program/' program/hello.F90
+svn ci -m" "
+
+# Modify a file which clashes with modify_files_base branch
+branch=modify_files_clash
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/IMPLICIT NONE/implicit NONE/' program/hello.F90
+svn ci -m" "
+
+# Modify a subroutine without altering its interface
+branch=modify_subroutine
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/integer (common)/integer (com)/' subroutine/hello_sub.F90
+svn ci -m" "
+
+# Modify a subroutine and alter its interface
+branch=modify_subroutine_interface
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/integer_arg/int_arg/' subroutine/hello_sub.F90
+svn ci -m" "
+
+# Modify a pre-processing include file
+branch=modify_pp_include
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/:/: Message - /' subroutine/hello_sub.h
+svn ci -m" "
+
+# Add a new file
+branch=add_file
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+cp $REPOS_FILES/add_subroutine/hello.F90 program/hello.F90
+cp $REPOS_FILES/add_subroutine/hello_sub2.f90 subroutine
+svn add subroutine/hello_sub2.f90
+svn ci -m" "
+
+# Add a new directory
+branch=add_directory
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+cp $REPOS_FILES/add_subroutine/hello.F90 program/hello.F90
+mkdir subroutine2
+cp $REPOS_FILES/add_subroutine/hello_sub2.f90 subroutine2
+svn add subroutine2
+svn ci -m" "
+
+# Delete a file
+branch=delete_file
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+svn rm subroutine/hello_c.c
+svn ci -m" "
+
+# Delete a Fortran include file
+branch=delete_inc_file
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+svn rm module/hello_constants.inc
+svn ci -m" "
+
+# Delete a CPP include file
+branch=delete_ppinc_file
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+svn rm subroutine/hello_sub.h
+svn ci -m" "
+
+# Delete a directory
+branch=delete_directory
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+svn rm subroutine
+svn ci -m" "
+
+# Rename the executable
+branch=exe_rename
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/hello.exe/hello_world.exe/' script/hello.sh
+svn ci -m" "
+
+# Use a .f90 file as an include file
+branch=change_src_type
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+perl -pi -e 's/hello_constants.inc/hello_constants_inc.f90/g' module/hello_constants.f90
+svn mv module/hello_constants.inc module/hello_constants_inc.f90
+svn ci -m" "
+
+# Add a symbolic link
+branch=symbolic_link
+fcm br -c -n $branch -t SHARE -r 1 --rev-flag NONE --non-interactive $REPOS_URL
+svn sw $REPOS_URL/branches/dev/Share/$branch
+cd subroutine
+ln -s hello_sub.F90 hello_sub2.F90
+svn add hello_sub2.F90
+cd $OLDPWD
+svn ci -m" "
+
+echo "$(date): Finished"

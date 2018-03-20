@@ -1,0 +1,97 @@
+   !!----------------------------------------------------------------------
+   !!                    ***  domzgr_substitute.h90   ***
+   !!----------------------------------------------------------------------
+   !! ** purpose :   substitute fsdep. and fse.., the vert. depth and scale
+   !!      factors depending on the vertical coord. used, using CPP macro.
+   !!----------------------------------------------------------------------
+   !! History :  1.0  !  2005-10  (A. Beckmann, G. Madec) generalisation to all coord.
+   !!            3.1  !  2009-02  (G. Madec, M. Leclair)  pure z* coordinate
+   !!----------------------------------------------------------------------
+! reference for s- or zps-coordinate (3D no time dependency)
+#   define  fsdept_0(i,j,k)  gdept(i,j,k)
+#   define  fsdepw_0(i,j,k)  gdepw(i,j,k)
+#   define  fsde3w_0(i,j,k)  gdep3w(i,j,k)
+#   define  fse3t_0(i,j,k)   e3t(i,j,k)
+#   define  fse3u_0(i,j,k)   e3u(i,j,k)
+#   define  fse3v_0(i,j,k)   e3v(i,j,k)
+#   define  fse3f_0(i,j,k)   e3f(i,j,k)
+#   define  fse3w_0(i,j,k)   e3w(i,j,k)
+#   define  fse3uw_0(i,j,k)  e3uw(i,j,k)
+#   define  fse3vw_0(i,j,k)  e3vw(i,j,k)
+#if defined key_vvl
+! s* or z*-coordinate (3D + time dependency) + use of additional now arrays (..._1)
+#   define  fsdept(i,j,k)  gdept_1(i,j,k)
+#   define  fsdepw(i,j,k)  gdepw_1(i,j,k)
+#   define  fsde3w(i,j,k)  gdep3w_1(i,j,k)
+#   define  fse3t(i,j,k)   e3t_1(i,j,k)
+#   define  fse3u(i,j,k)   e3u_1(i,j,k)
+#   define  fse3v(i,j,k)   e3v_1(i,j,k)
+#   define  fse3f(i,j,k)   e3f_1(i,j,k)
+#   define  fse3w(i,j,k)   e3w_1(i,j,k)
+#   define  fse3uw(i,j,k)  e3uw_1(i,j,k)
+#   define  fse3vw(i,j,k)  e3vw_1(i,j,k)
+
+#   define  fse3t_b(i,j,k)   e3t_b(i,j,k)
+#   define  fse3u_b(i,j,k)   e3u_b(i,j,k)
+#   define  fse3v_b(i,j,k)   e3v_b(i,j,k)
+#   define  fse3uw_b(i,j,k)  (fse3uw_0(i,j,k)*(1.+sshu_b(i,j)*muu(i,j,k)))
+#   define  fse3vw_b(i,j,k)  (fse3vw_0(i,j,k)*(1.+sshv_b(i,j)*muv(i,j,k)))
+
+#   define  fsdept_n(i,j,k)  (fsdept_0(i,j,k)*(1.+sshn(i,j)*mut(i,j,k)))
+#   define  fsdepw_n(i,j,k)  (fsdepw_0(i,j,k)*(1.+sshn(i,j)*mut(i,j,k)))
+#   define  fsde3w_n(i,j,k)  (fsde3w_0(i,j,k)*(1.+sshn(i,j)*mut(i,j,k))-sshn(i,j))
+#   define  fse3t_n(i,j,k)   (fse3t_0(i,j,k)*(1.+sshn(i,j)*mut(i,j,k)))
+#   define  fse3u_n(i,j,k)   (fse3u_0(i,j,k)*(1.+sshu_n(i,j)*muu(i,j,k)))
+#   define  fse3v_n(i,j,k)   (fse3v_0(i,j,k)*(1.+sshv_n(i,j)*muv(i,j,k)))
+#   define  fse3f_n(i,j,k)   (fse3f_0(i,j,k)*(1.+sshf_n(i,j)*muf(i,j,k)))
+#   define  fse3w_n(i,j,k)   (fse3w_0(i,j,k)*(1.+sshn(i,j)*mut(i,j,k)))
+#   define  fse3uw_n(i,j,k)  (fse3uw_0(i,j,k)*(1.+sshu_n(i,j)*muu(i,j,k)))
+#   define  fse3vw_n(i,j,k)  (fse3vw_0(i,j,k)*(1.+sshv_n(i,j)*muv(i,j,k)))
+
+#   define  fse3t_m(i,j,k)   (fse3t_0(i,j,k)*(1.+ssh_m(i,j)*mut(i,j,k)))
+
+#   define  fse3t_a(i,j,k)   (fse3t_0(i,j,k)*(1.+ssha(i,j)*mut(i,j,k)))
+#   define  fse3u_a(i,j,k)   (fse3u_0(i,j,k)*(1.+sshu_a(i,j)*muu(i,j,k)))
+#   define  fse3v_a(i,j,k)   (fse3v_0(i,j,k)*(1.+sshv_a(i,j)*muv(i,j,k)))
+
+#else
+! z- or s-coordinate (1D or 3D + no time dependency) use reference in all cases
+#   define  fsdept(i,j,k)  fsdept_0(i,j,k)
+#   define  fsdepw(i,j,k)  fsdepw_0(i,j,k)
+#   define  fsde3w(i,j,k)  fsde3w_0(i,j,k)
+#   define  fse3t(i,j,k)   fse3t_0(i,j,k)
+#   define  fse3u(i,j,k)   fse3u_0(i,j,k)
+#   define  fse3v(i,j,k)   fse3v_0(i,j,k)
+#   define  fse3f(i,j,k)   fse3f_0(i,j,k)
+#   define  fse3w(i,j,k)   fse3w_0(i,j,k)
+#   define  fse3uw(i,j,k)  fse3uw_0(i,j,k)
+#   define  fse3vw(i,j,k)  fse3vw_0(i,j,k)
+
+#   define  fse3t_b(i,j,k)   fse3t_0(i,j,k)
+#   define  fse3u_b(i,j,k)   fse3u_0(i,j,k)
+#   define  fse3v_b(i,j,k)   fse3v_0(i,j,k)
+#   define  fse3uw_b(i,j,k)  fse3uw_0(i,j,k)
+#   define  fse3vw_b(i,j,k)  fse3vw_0(i,j,k)
+
+#   define  fsdept_n(i,j,k)  fsdept_0(i,j,k)
+#   define  fsdepw_n(i,j,k)  fsdepw_0(i,j,k)
+#   define  fsde3w_n(i,j,k)  fsde3w_0(i,j,k)
+#   define  fse3t_n(i,j,k)   fse3t_0(i,j,k)
+#   define  fse3u_n(i,j,k)   fse3u_0(i,j,k)
+#   define  fse3v_n(i,j,k)   fse3v_0(i,j,k)
+#   define  fse3f_n(i,j,k)   fse3f_0(i,j,k)
+#   define  fse3w_n(i,j,k)   fse3w_0(i,j,k)
+#   define  fse3uw_n(i,j,k)  fse3uw_0(i,j,k)
+#   define  fse3vw_n(i,j,k)  fse3vw_0(i,j,k)
+
+#   define  fse3t_m(i,j,k)   fse3t_0(i,j,k)
+
+#   define  fse3t_a(i,j,k)   fse3t_0(i,j,k)
+#   define  fse3u_a(i,j,k)   fse3u_0(i,j,k)
+#   define  fse3v_a(i,j,k)   fse3v_0(i,j,k)
+#endif
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: domzgr_substitute.h90 2528 2010-12-27 17:33:53Z rblod $
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------

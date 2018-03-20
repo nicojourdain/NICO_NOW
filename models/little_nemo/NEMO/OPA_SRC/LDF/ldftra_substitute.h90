@@ -1,0 +1,36 @@
+   !!----------------------------------------------------------------------
+   !!                    *** ldftra_substitute.h90  ***
+   !!----------------------------------------------------------------------
+   !! ** purpose :   substitute fsaht. the eddy diffusivity coeff.
+   !!      with a constant or 1D or 2D or 3D array, using CPP macro.
+   !!----------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: ldftra_substitute.h90 3294 2012-01-28 16:44:18Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+#if defined key_traldf_c3d
+!   'key_traldf_c3d' :                 aht: 3D coefficient
+#       define   fsahtt(i,j,k)   rldf * ahtt(i,j,k)
+#       define   fsahtu(i,j,k)   rldf * ahtu(i,j,k)
+#       define   fsahtv(i,j,k)   rldf * ahtv(i,j,k)
+#       define   fsahtw(i,j,k)   rldf * ahtw(i,j,k)
+#elif defined key_traldf_c2d
+!   'key_traldf_c2d' :                 aht: 2D coefficient
+#       define   fsahtt(i,j,k)   rldf * ahtt(i,j)
+#       define   fsahtu(i,j,k)   rldf * ahtu(i,j)
+#       define   fsahtv(i,j,k)   rldf * ahtv(i,j)
+#       define   fsahtw(i,j,k)   rldf * ahtw(i,j)
+#elif defined key_traldf_c1d
+!   'key_traldf_c1d' :                aht: 1D coefficient
+#       define   fsahtt(i,j,k)   rldf * ahtt(k)
+#       define   fsahtu(i,j,k)   rldf * ahtu(k)
+#       define   fsahtv(i,j,k)   rldf * ahtv(k)
+#       define   fsahtw(i,j,k)   rldf * ahtw(k)
+#else
+!   Default option :             aht: Constant coefficient
+#      define   fsahtt(i,j,k)   rldf * aht0
+#      define   fsahtu(i,j,k)   rldf * aht0
+#      define   fsahtv(i,j,k)   rldf * aht0
+#      define   fsahtw(i,j,k)   rldf * aht0
+#endif

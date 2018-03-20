@@ -1,0 +1,39 @@
+#----------------------------------------------------------------------
+# prerequired
+#----------------------------------------------------------------------
+To use these idl tools, you need to download some climatogies and mask files;
+that you can find here: http://dodsp.idris.fr/reee512/NEMO_OUT/ORCA2_LIM/
+
+There is the wget command to get all those files (thanks to F. Pinsard)
+wget --recursive -l2 --no-directories --no-parent -A.nc -erobots=off http://dodsp.idris.fr/reee512/NEMO_OUT/ORCA2_LIM/
+
+You will aslo need the meshmask file (set nn_msh = 1 or nn_msh = 7 in your namelist and run the model for at least 1 time step).
+
+#----------------------------------------------------------------------
+# define your std_plot_vardef.sh or std_ts_vardef.sh file
+#----------------------------------------------------------------------
+Use the examples provided in :
+ - std_ts_vardef.sh_example1 or std_ts_vardef.sh_example2
+ - std_plot_vardef.sh_example1 or std_plot_vardef.sh_example2
+to build your own std_plot_vardef.sh or std_ts_vardef.sh file.
+
+This file is needed to define you PATH, the experiments and variables names
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------
+# short note on: How to build IDL virtual Machine:
+#
+. ./std_plot_vardef.sh # or . ./std_ts_vardef.sh 
+idl -IDL_STARTUP initenv
+IDL> .r std_main
+IDL> resolve_all
+IDL> save, /routines, filename='std_main.sav'
+IDL> exit
+#
+#----------------------------------------------------------------------

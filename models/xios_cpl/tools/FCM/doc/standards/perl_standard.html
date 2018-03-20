@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1st December 2004), see www.w3.org" />
+
+  <title>Perl coding standard for FCM</title>
+  <meta name="author" content="FCM development team" />
+  <meta name="descriptions" content="Perl coding standard for FCM" />
+  <meta name="keywords" content="Perl, coding standard, FCM" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="fcm.js">
+</script>
+</head>
+
+<body onload="javascript: FCM.load('doc/standards/', 'perl-standard');">
+  <div id="ukmo-logo">
+    <img src="logo.png" alt="UK Met Office" />
+  </div>
+
+  <h1>Perl coding standard for FCM</h1>
+
+  <address>
+    Latest content update: 22 January 2010. <span id=
+    "fcm-js-maintenance"></span>
+  </address>
+
+  <address>
+    Questions regarding this document or permissions to quote from it should be
+    directed to:
+  </address>
+
+  <address>
+    <a href="mailto:iprmanager@metoffice.gov.uk">IPR Manager</a><br />
+    Met Office<br />
+    FitzRoy Road<br />
+    Exeter, Devon<br />
+    EX1 3PB<br />
+    United Kingdom
+  </address>
+
+  <address>
+    &copy; Crown Copyright 2005-10
+  </address>
+
+  <address id="fcm-js-pdf"></address>
+  <hr />
+
+  <div id="fcm-content"></div>
+
+  <h2 id="introduction">1. Introduction</h2>
+
+  <p>Perl (Practical Extraction and Report Language) is the language we use to
+  implement the in-house components of the FCM system. This document contains
+  some basic guidelines that are followed by the Perl code in FCM.</p>
+
+  <h2 id="style">2. Style</h2>
+
+  <p>There are many Perl style guides available online. Some are listed
+  below:</p>
+
+  <ul>
+    <li><a href="http://perldoc.perl.org/perlstyle.html">perlstyle</a></li>
+
+    <li><a href=
+    "http://perldoc.perl.org/perlmodstyle.html">perlmodstyle</a></li>
+
+    <li><a href=
+    "http://www.kulnet.kuleuven.ac.be/perlcourse/perlingo.html">Perlingo</a></li>
+
+    <li><a href="http://perltidy.sourceforge.net/">Perltidy</a></li>
+
+    <li><a href=
+    "http://perl.apache.org/docs/2.0/devel/core/coding_style.html">mod_perl
+    Coding Style Guide</a></li>
+
+    <li>Damian Conway's <a href=
+    "http://books.google.co.uk/books?id=gJf9tI2mytIC&amp;dq=perl+best+practices&amp;printsec=frontcover&amp;source=bn&amp;hl=en&amp;ei=rnFZS7DPB4j80wTxi-T9BA&amp;sa=X&amp;oi=book_result&amp;ct=result&amp;resnum=4&amp;ved=0CBQQ6AEwAw#v=onepage&amp;q=&amp;f=false">
+    Perl Best Practices</a> at Google Books</li>
+  </ul>
+
+  <p>The <cite>Perl Best Practices</cite> book is the most comprehensive of
+  all. In FCM, we have begun to write new modules to follow its advice.
+  However, we recognise that it may not be possible to strictly follow every
+  detail, as Perl is a language designed to do things in different ways. The
+  most important point is that the style within a source file should be
+  consistent and easy to follow, so the next person who reads it will not have
+  to struggle with it. It is also worth nothing that many older modules in the
+  FCM source tree are still written to an old style which was derived before we
+  found out about this book.</p>
+
+  <h2 id="boilerplates">3. Boilerplates</h2>
+
+  <p>A typical Perl executable in FCM looks like:</p>
+  <pre>
+#!/usr/bin/env perl
+#-------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+#-------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+if (!caller()) {
+    main(@ARGV);
+}
+
+sub main {
+    local(@ARGV) = @_;
+    # ...
+}
+
+1;
+__END__
+
+=head1 NAME
+
+fcm-example
+
+=head1 SYNOPSIS
+
+    fcm-example [OPTIONS] [ARGS]
+
+=head1 OPTIONS
+
+...
+
+=head1 ARGUMENTS
+
+...
+
+=head1 DESCRIPTION
+
+An example boiler plate for an FCM Perl executable.
+
+=head1 DIAGNOSTICS
+
+...
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+...
+
+=head1 COPYRIGHT
+
+(C) Crown copyright Met Office. All rights reserved.
+
+=cut
+</pre>
+
+  <p>A typical Perl module in FCM looks like:</p>
+  <pre>
+#-------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+#-------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+#-------------------------------------------------------------------------------
+package FCM::Example;
+
+# For example...
+sub example {
+    my ($message) = @_;
+    sprintf('E.g. %s.', $message);
+}
+
+#-------------------------------------------------------------------------------
+1;
+__END__
+
+=head1 NAME
+
+FCM::Example
+
+=head1 SYNOPSIS
+
+    use FCM::Example;
+    # ... do something with it
+
+=head1 DESCRIPTION
+
+This class/module does ...
+
+=head1 METHODS
+
+... This section should be renamed FUNCTIONS for non-OO modules.
+
+=head1 DIAGNOSTICS
+
+...
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+...
+
+=head1 COPYRIGHT
+
+(C) Crown copyright Met Office. All rights reserved.
+
+=cut
+</pre>
+</body>
+</html>

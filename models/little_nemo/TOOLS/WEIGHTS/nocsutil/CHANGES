@@ -1,0 +1,20 @@
+Release 1.1
+===========
+Modified for compilation by fcm in NEMO 3.3 framework.
+SCRIP 1.4 package included in unmodified form.
+python script added to transform into correct shape for fcm, producing copied code in 'src' directory
+
+scripshape.F90 now has one possible command line argument: the namelist file
+               from which it reads the names of the input and output files 
+               as well as the value for the cyclicity attribute
+
+Because gfortran doesnt understand ICHAR and GETCHAR system routines default behaviour of all programs
+is to ask for namelist filename during execution rather than reading it from the command line.
+Define symbol ARGC at compilation to return to original command line behaviour.
+
+Release 1.0
+===========
+Routines written by sga and acc at NOCS to use SCRIP library to produce weights
+
+Compilation by makefile and explicit compiler and options.
+

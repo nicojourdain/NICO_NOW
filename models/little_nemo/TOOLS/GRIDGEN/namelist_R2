@@ -1,0 +1,19 @@
+&input_output
+    ln_iom_activated = true 
+/
+
+&coarse_grid_files    
+    cn_parent_coordinate_file = 'coordinates_ORCA_R2.nc'
+    cn_position_pivot = 'T-grid'
+/    
+
+&nesting    
+    nn_imin = 49
+    nn_imax = 52
+    nn_jmin = 147
+    nn_jmax = 147
+    nn_rhox  = 3
+    nn_rhoy = 3
+/
+
+

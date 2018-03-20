@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1st December 2004), see www.w3.org" />
+
+  <title>Annex: Quick reference</title>
+  <meta name="author" content="FCM development team" />
+  <meta name="descriptions" content="User Guide Annex" />
+  <meta name="keywords" content="FCM, user guide, annex" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="fcm.js">
+</script>
+</head>
+
+<body onload=
+"javascript: FCM.load('doc/user_guide/', null, [['.', 'FCM User Guide']]);">
+  <div id="document-info">
+    <address id="fcm-js-trail"></address>
+
+    <address id="fcm-js-maintenance"></address>
+  </div>
+
+  <h1>Annex: Quick reference</h1>
+
+  <p>Note: some sub-commands can be invoked with alternate names. For example,
+  <code>fcm help</code> is the same as <code>fcm ?</code>. In this annex, some
+  favourite alternate names are listed, separated by a pipe, i.e. the above
+  example will be given as <samp>fcm help|?</samp>.</p>
+
+  <h2 id="help">Getting help</h2>
+
+  <dl>
+    <dt><code>fcm help|?</code></dt>
+
+    <dd>get list of subcommands</dd>
+
+    <dt><code>fcm help|? SUBCOMMAND</code></dt>
+
+    <dd>get help on SUBCOMMAND</dd>
+  </dl>
+
+  <h2 id="maintaining-wc">Maintaining the working copy</h2>
+
+  <dl>
+    <dt><code>fcm checkout|co [OPTIONS] URL [DEST]</code></dt>
+
+    <dd>Checkout URL (and create a working copy at DEST)</dd>
+
+    <dt><code>fcm checkout|co -r N URL [DEST]</code></dt>
+
+    <dd>Checkout revision N of URL (and create a working copy at DEST)</dd>
+
+    <dt><code>fcm info</code></dt>
+
+    <dd>Print working copy information</dd>
+
+    <dt><code>fcm status|st [OPTIONS]</code></dt>
+
+    <dd>Print status of working copy</dd>
+
+    <dt><code>fcm status|st -u</code></dt>
+
+    <dd>Show update information</dd>
+
+    <dt><code>fcm status|st -v</code></dt>
+
+    <dd>Show verbose information</dd>
+
+    <dt><code>fcm update|up</code></dt>
+
+    <dd>Update working copy with repository changes</dd>
+
+    <dt><code>fcm switch|sw URL</code></dt>
+
+    <dd>Switch your working copy to point to a branch specified by URL</dd>
+
+    <dt><code>fcm commit|ci</code></dt>
+
+    <dd>Commit local changes back into the repository</dd>
+  </dl>
+
+  <h2 id="preparing-changes">Preparing changes</h2>
+
+  <dl>
+    <dt><code>fcm diff|di [OPTIONS]</code></dt>
+
+    <dd>Display working copy changes in unified diff format</dd>
+
+    <dt><code>fcm diff|di -b</code></dt>
+
+    <dd>Show differences relative to the base of the branch</dd>
+
+    <dt><code>fcm diff|di -g</code></dt>
+
+    <dd>Display working copy changes with a graphical diff tool</dd>
+
+    <dt><code>fcm diff|di -r N</code></dt>
+
+    <dd>Display working copy changes against revision N</dd>
+
+    <dt><code>fcm diff|di -t</code></dt>
+
+    <dd>Display differences in Trac, (with -b only)</dd>
+
+    <dt><code>fcm revert [OPTIONS] PATH</code></dt>
+
+    <dd>Restore the file PATH to the pristine copy</dd>
+
+    <dt><code>fcm revert -R PATH</code></dt>
+
+    <dd>Descend PATH recursively, restoring any modified files to the pristine
+    copy</dd>
+
+    <dt><code>fcm mkdir [PATH]</code></dt>
+
+    <dd>Add a directory PATH under revision control</dd>
+
+    <dt><code>fcm add [OPTIONS] [PATH]</code></dt>
+
+    <dd>Add PATH under revision control</dd>
+
+    <dt><code>fcm add -c [PATH]</code></dt>
+
+    <dd>Check for items not under revision control and add them</dd>
+
+    <dt><code>fcm delete|del|rm [OPTIONS] [PATH]</code></dt>
+
+    <dd>Remove PATH from revision control</dd>
+
+    <dt><code>fcm delete|del|rm -c [PATH]</code></dt>
+
+    <dd>Check for missing items and remove them</dd>
+
+    <dt><code>fcm copy|cp SRC DST</code></dt>
+
+    <dd>Duplicate SRC to DST, remembering history</dd>
+
+    <dt><code>fcm move|mv SRC DST</code></dt>
+
+    <dd>Move or rename SRC to DST, remembering history</dd>
+  </dl>
+
+  <h2 id="browse">Browsing</h2>
+
+  <dl>
+    <dt><code>fcm log [OPTIONS] [TARGET]</code></dt>
+
+    <dd>Show the log message of a TARGET that can either be working copy or
+    URL</dd>
+
+    <dt><code>fcm log -r N[:M] [TARGET]</code></dt>
+
+    <dd>Show the log message of a range of reivsions</dd>
+
+    <dt><code>fcm list|ls [OPTIONS] [TARGET]</code></dt>
+
+    <dd>List directory entries in TARGET</dd>
+
+    <dt><code>fcm list|ls -r N [TARGET]</code></dt>
+
+    <dd>List directory entries of revision N</dd>
+
+    <dt><code>fcm list|ls -v [TARGET]</code></dt>
+
+    <dd>List directory entries in verbose mode</dd>
+
+    <dt><code>fcm list|ls -R [TARGET]</code></dt>
+
+    <dd>List directory entries recursively down the directories</dd>
+
+    <dt><code>fcm trac [TARGET]</code></dt>
+
+    <dd>Open a WWW browser to browse TARGET with Trac</dd>
+  </dl>
+
+  <h2 id="branch">Branching</h2>
+
+  <dl>
+    <dt><code>fcm branch|br [OPTIONS] [URL]</code></dt>
+
+    <dd>Show branch information of URL or local working copy</dd>
+
+    <dt><code>fcm branch|br -d [URL]</code></dt>
+
+    <dd>Show branch information and delete the branch</dd>
+
+    <dt><code>fcm branch|br -c -n NAME [URL]</code></dt>
+
+    <dd>Create a branch</dd>
+
+    <dt><code>fcm merge [SOURCE]</code></dt>
+
+    <dd>Merge changes from SOURCE to your working copy</dd>
+
+    <dt><code>fcm conflicts|cf</code></dt>
+
+    <dd>Use xxdiff to resolve conflicts in your working copy</dd>
+  </dl>
+</body>
+</html>

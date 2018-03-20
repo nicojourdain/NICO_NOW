@@ -1,0 +1,80 @@
+#!/bin/bash 
+#!
+#BSUB -q poe_short
+#BSUB -n NPROCS
+#BSUB -a poe
+#BSUB -J MPI_config
+#BSUB -o poe.stdout.%J
+#BSUB -e poe.stderr.%J
+
+ 
+
+###############################################################
+# Test specific settings. Do not hand edit these lines; the fcm_job.sh script will set these
+# (via sed operating on this template job file). 
+#
+  OCEANCORES=NPROCS
+  export SETTE_DIR=DEF_SETTE_DIR
+
+###############################################################
+#
+# set up mpp computing environment
+#
+# Local settings for machine IBM Power6 (VARGAS at IDRIS France)
+#
+
+# export MPIRUN="mpirun -n $OCEANCORES"
+
+export MPIRUN="mpirun.lsf"
+
+#
+# load sette functions (only post_test_tidyup needed)
+#
+  . ${SETTE_DIR}/all_functions.sh
+
+
+# Don't remove neither change the following line 
+# BODY
+
+#
+# These variables are needed by post_test_tidyup function in all_functions.sh
+#
+  export EXE_DIR=DEF_EXE_DIR
+  export INPUT_DIR=DEF_INPUT_DIR
+  export CONFIG_DIR=DEF_CONFIG_DIR
+  export NEMO_VALIDATION_DIR=DEF_NEMO_VALIDATION
+  export NEW_CONF=DEF_NEW_CONF
+  export CMP_NAM=DEF_CMP_NAM
+  export TEST_NAME=DEF_TEST_NAME
+#
+# end of set up
+
+
+###############################################################
+#
+# change to the working directory 
+#
+cd ${EXE_DIR}
+
+#
+  echo Running on host `hostname`
+  echo Time is `date`
+  echo Directory is `pwd`
+# 
+#  Run the parallel MPI executable 
+#
+#  echo "Running time ${MPIRUN} " $OCEANCORES " ./opa"
+#
+
+  if [ MPI_FLAG == "yes" ]; then
+     time ${MPIRUN} ./opa
+  else
+     time ./opa
+  fi
+#
+  post_test_tidyup
+
+# END_BODY
+# Don't remove neither change the previous line 
+
+  exit

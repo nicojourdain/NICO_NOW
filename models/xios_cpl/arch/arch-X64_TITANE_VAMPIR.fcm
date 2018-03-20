@@ -1,0 +1,23 @@
+################################################################################
+###################        Projet xios - xmlioserver       #####################
+################################################################################
+
+%CCOMPILER      vtcc  -vt:cc mpicc -vt:inst manual -DVTRACE
+%FCOMPILER      vtf90 -vt:f90 mpif90 -vt:inst manual -DVTRACE
+%LINKER         vtf90 -vt:f90 mpif90 -vt:inst manual -nofor-main -DVTRACE
+%BASE_CFLAGS    -diag-disable 1125 -diag-disable 279
+%PROD_CFLAGS    -O3 -D BOOST_DISABLE_ASSERTS
+%DEV_CFLAGS     -g -traceback
+%DEBUG_CFLAGS   -DBZ_DEBUG -g -traceback -fno-inline
+
+%BASE_FFLAGS    -D__NONE__ 
+%PROD_FFLAGS    -O3
+%DEV_FFLAGS     -g -O2 -traceback
+%DEBUG_FFLAGS   -g -traceback
+
+%BASE_INC       -D__NONE__
+%BASE_LD        -lstdc++
+
+%CPP            cpp
+%FPP            cpp -P
+%MAKE           gmake

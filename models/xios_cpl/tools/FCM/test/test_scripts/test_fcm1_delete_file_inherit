@@ -1,0 +1,4 @@
+cfg_name=fcm1_delete_file_inherit
+test_name=test_$cfg_name
+build_1=fail
+. ./perform_test

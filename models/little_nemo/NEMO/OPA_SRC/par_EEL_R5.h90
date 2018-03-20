@@ -1,0 +1,101 @@
+   !!---------------------------------------------------------------------
+   !!                     ***  par_EEL_R5.h90  ***   
+   !!   Ocean Domain : 5 km resolution Channel (EEL_R5 configuration)
+   !!---------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: par_EEL_R5.h90 2715 2011-03-30 15:58:35Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+   CHARACTER (len=16)      &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      ::    &  
+      cp_cfg = "eel"            !: name of the configuration
+   INTEGER     &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      :: &
+      jp_cfg = 5      ,      &  !: resolution of the configuration (km)
+
+      ! data size              !!! * size of all the input files
+      jpidta  =  66   ,      &  !: first horizontal dimension > or = to jpi
+      jpjdta  =  66   ,      &  !: second                     > or = to jpj
+      jpkdta  =  31   ,      &  !: number of levels           > or = to jpk
+
+      ! total domain size      !!! * full domain *
+      jpiglo  = jpidta,      &  !: first  dimension of global domain --> i
+      jpjglo  = jpjdta,      &  !: second dimension of global domain --> j
+      ! zoom starting position
+      jpizoom =   1   ,      &  !: left bottom (i,j) indices of the zoom
+      jpjzoom =   1   ,      &  !: in data indices
+
+      ! Domain characteristics
+      jperio  =   1             !: lateral cond. type (between 0 and 6)
+
+   !!  Values set to pp_not_used indicates that this parameter is not used in THIS config.
+   !!  Values set to pp_to_be_computed  indicates that variables will be computed in domzgr
+   REAL(wp), PARAMETER ::   &  !:
+      pp_not_used       = 999999._wp ,  &  !:
+      pp_to_be_computed =      0._wp       !:
+
+   !! Coefficients associated with the horizontal coordinate system (jphgr_msh /= 0 )
+
+   INTEGER,PARAMETER   ::    & !:
+      jphgr_msh = 2            !: type of horizontal mesh
+      !                        ! = 0 curvilinear coordinate on the sphere
+      !                        !     read in coordinate.nc file
+      !                        ! = 1 geographical mesh on the sphere
+      !                        !     with regular grid-spacing
+      !                        ! = 2 f-plane with regular grid-spacing
+      !                        ! = 3 beta-plane with regular grid-spacing
+      !                        ! = 4 Mercator grid with T/U point at the equator  with
+      !                        !     isotropic resolution (e1_deg)
+
+      !   ppglam0 , ppgphi0: coordinates of the lower leftmost T point of the grid.
+      !   The mercator grid starts only approximately at gphi0 because
+      !   of the constraint that the equator be a T point.
+   REAL(wp) &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      ::     &  !:
+      ppglam0  =    0.0_wp,   &  !: longitude of first raw and column T-point (jphgr_msh = 1)
+      ppgphi0  = 43.436430714_wp,   &  !: latitude  of first raw and column T-point (jphgr_msh = 1)
+      !                          ! latitude for the Coriolis or Beta parameter (jphgr_msh = 2 or 3)
+      ppe1_deg = pp_not_used,   &  !: zonal      grid-spacing (degrees)
+      ppe2_deg = pp_not_used,   &  !: meridional grid-spacing (degrees)
+      !
+      ppe1_m   = 8000.0_wp,   &  !: zonal      grid-spacing (meters)
+      ppe2_m   = 8000.0_wp       !: meridional grid-spacing (meters)
+   !!
+   !!  Coefficients associated with the vertical coordinate system
+   !!
+   REAL(wp), PARAMETER  ::       &   !:
+      &     ppsur = -4762.96143546300_wp    ,  &  !: Computed in domzgr, set ppdzmin, pphmax below
+      &     ppa0  =   255.58049070440_wp    ,  &  !:
+      &     ppa1  =   245.58132232490_wp    ,  &  !:
+      !
+      &     ppkth =    21.43336197938_wp    ,  &  !: (non dimensional): gives the approximate
+      !                                           !: layer number above which  stretching will
+      !                                           !: be maximum. Usually of order jpk/2.
+      &     ppacr =     3.00000000000_wp          !: (non dimensional): stretching factor
+      !                                           !: for the grid. The highest zacr, the smallest
+      !                                           !: the stretching.
+
+   !!
+   !!  If both ppa0 ppa1 and ppsur are specified to 0, then
+   !!  they are computed from ppdzmin, pphmax , ppkth, ppacr in dom_zgr
+   !!
+   REAL(wp), PARAMETER ::        &  !:
+      &     ppdzmin = pp_not_used           ,  &  !: (meters) vertical thickness of the top layer
+      &     pphmax  = pp_not_used                 !: (meters) Maximum depth of the ocean gdepw(jpk)
+   LOGICAL,  PARAMETER ::        &
+      &     ldbletanh = .FALSE.                   !: Use/do not use double tanf function for vertical coordinates
+   REAL(wp), PARAMETER ::        &
+      &     ppa2    = pp_not_used           ,  &  !: Double tanh function parameters
+      &     ppkth2  = pp_not_used           ,  &  !:
+      &     ppacr2  = pp_not_used                 !:
+   !!---------------------------------------------------------------------

@@ -1,0 +1,87 @@
+   !!---------------------------------------------------------------------
+   !!                     ***  par_TROP075.h90  ***  
+   !!   Ocean Domain : 0.75 degrees resolution Tropical Channel
+   !!                  (0RCA_R075 configuration)
+   !!---------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id$
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+   !!  Values set to pp_not_used indicates that this parameter is not used in THIS config.
+   !!  Values set to pp_to_be_computed  indicates that variables will be computed in domzgr
+   REAL,PARAMETER      ::  pp_not_used = 999999_wp , &
+      &                    pp_to_be_computed = 0._wp
+
+   !!---------------------------------------------------------------------
+   !!   Vertical Domain
+   !!---------------------------------------------------------------------
+# include "par_depth.h90"
+
+   !!---------------------------------------------------------------------
+   !!   Horizontal Domain
+   !!---------------------------------------------------------------------
+   CHARACTER (len=16)      &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      ::    &  
+      cp_cfg = "MC"         !: name of the configuration
+   INTEGER     &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      :: &
+      jp_cfg = 750  ,        &  !: resolution of the configuration (degrees)
+      !
+      jpidta    = 154,  &
+      jpjdta    = 92   
+
+   INTEGER     &
+#if !defined key_agrif
+      , PARAMETER  &
+#endif
+      :: &
+      ! total domain matrix size
+      jpiglo  = jpidta,      &  !: first  dimension of global domain --> i
+      jpjglo  = jpjdta,      &  !: second dimension of global domain --> j
+      ! starting position of the zoom
+      jpizoom =   1   ,      &  !: left bottom (i,j) indices of the zoom
+      jpjzoom =   1   ,      &  !: in data indices
+      ! Domain characteristics
+      jperio  =  0       !: lateral cond. type (between 0 and 6)
+      !                  !  = 0 closed                 ;   = 1 cyclic East-West
+      !                  !  = 2 equatorial symmetric   ;   = 3 North fold T-point pivot
+      !                  !  = 4 cyclic East-West AND North fold T-point pivot
+      !                  !  = 5 North fold F-point pivot
+      !                  !  = 6 cyclic East-West AND North fold F-point pivot
+
+   !!
+   !! Coefficients associated with the horizontal coordinate system (jphgr_msh /= 0 )
+   !!
+   INTEGER, PARAMETER ::     & !
+      jphgr_msh = 0            !: type of horizontal mesh
+      !                        !  = 0 curvilinear coordinate on the sphere
+      !                        !      read in coordinate.nc file
+      !                        !  = 1 geographical mesh on the sphere
+      !                        !      with regular grid-spacing
+      !                        !  = 2 f-plane with regular grid-spacing
+      !                        !  = 3 beta-plane with regular grid-spacing
+      !                        !  = 4 Mercator grid with T/U point at the equator  with
+      !                        !      isotropic resolution (e1_deg)
+
+      !   ppglam0 , ppgphi0: coordinates of the lower leftmost T point of the grid.
+      !   The mercator grid starts only approximately at gphi0 because
+      !   of the constraint that the equator be a T point.
+   REAL(wp), PARAMETER ::       &  !
+      ppglam0  = pp_not_used,   &  !: longitude of first raw and column T-point (jphgr_msh = 1)
+      ppgphi0  = pp_not_used,   &  !: latitude  of first raw and column T-point (jphgr_msh = 1)
+      !                            !  latitude for the Coriolis or Beta parameter (jphgr_msh = 2 or 3)
+      ppe1_deg = pp_not_used,   &  !: zonal      grid-spacing (degrees)
+      ppe2_deg = pp_not_used,   &  !: meridional grid-spacing (degrees)
+      !
+      ppe1_m   = pp_not_used,   &  !: zonal      grid-spacing (meters )
+      ppe2_m   = pp_not_used       !: meridional grid-spacing (meters )
+
+   !!---------------------------------------------------------------------

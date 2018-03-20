@@ -1,0 +1,92 @@
+#!/bin/bash 
+#!
+#PBS -N NEMO
+#PBS -l select=NODES:ncpus=8:mpiprocs=4
+#PBS -l place=scatter:excl
+#PBS -l walltime=00:59:00
+#PBS -q nemo
+#PBS -W group_list=nemo
+#PBS -j oe
+#
+  OCEANCORES=NPROCS
+  export SETTE_DIR=DEF_SETTE_DIR
+#
+# load sette functions (only post_test_tidyup needed)
+#
+  . ${SETTE_DIR}/all_functions.sh
+###############################################################
+#
+# set up mpp computing environment
+#
+#
+# Local settings. These settings are for a particular machine (the ALTIX ICE system at NOCS)
+# at a particular stage of that machine's evolution. This template file is provided for
+# illustration purposes only and will not work on any other machine. There should, however,
+# be sufficient similarity with other MPP platforms and batch systems for this example to provide
+# a useful guide for experienced users
+#
+  module load mpt/2.03
+  export MPT_HOME=/opt/sgi/mpt/mpt-2.03
+  export NC4_HOME=/sata/working/jeff/packages/netcdf4/netcdf-4.1.1/altix/intel10.1
+  export HD5_HOME=/sata/working/jeff/packages/hdf5/hdf5-1.8.4-patch1/altix/intel10.1
+  export IFT_HOME=/sw/Intel/fce/10.1.021
+  export SVN_HOME=/fibre/acc/UTILS/svn/v1.5/svn
+#
+  echo Running on host `hostname`
+  echo Time is `date`
+  echo PBS job ID is $PBS_JOBID
+  echo This jobs runs on the following machines:
+  echo `cat $PBS_NODEFILE | uniq`
+# 
+# Create a machine file for MPI
+  cat $PBS_NODEFILE | uniq > host.file.$PBS_JOBID
+#
+  echo export LD_LIBRARY_PATH=${MPT_HOME}/lib:${IFT_HOME}/lib:${NC4_HOME}/lib:${HD5_HOME}/lib:${SVN_HOME}/lib
+  export LD_LIBRARY_PATH=${MPT_HOME}/lib:${IFT_HOME}/lib:${NC4_HOME}/lib:${HD5_HOME}/lib:${SVN_HOME}/lib
+# 
+  echo export PATH=${MPT_HOME}/bin:${SVN_HOME}/bin:$PATH
+  export PATH=${MPT_HOME}/bin:${SVN_HOME}/bin:$PATH
+#
+  export PSM_SHAREDPORTS=1
+  echo export MPI_PPN=4
+  echo export MPI_PPN_CLIST="2-3-6-7-0-1-4-5"
+  echo export OMP_NUM_THREADS=1 
+#
+# Don't remove neither change the following line
+# BODY
+#
+# Test specific settings. Do not hand edit these lines; the fcm_job.sh script will set these
+# (via sed operating on this template job file). Note that the number of compute nodes required
+# (half-populated on the NOCS ALTIX system) is also set by the fcm_job.sh on the PBS select
+# header line above.
+#
+# These variables are needed by post_test_tidyup function in all_functions.sh
+#
+  export INPUT_DIR=DEF_INPUT_DIR
+  export CONFIG_DIR=DEF_CONFIG_DIR
+  export NEMO_VALIDATION_DIR=DEF_NEMO_VALIDATION
+  export NEW_CONF=DEF_NEW_CONF
+  export CMP_NAM=DEF_CMP_NAM
+  export TEST_NAME=DEF_TEST_NAME
+  export EXE_DIR=DEF_EXE_DIR
+#
+# end of set up
+###############################################################
+#
+# change to the working directory 
+#
+# cd $PBS_O_WORKDIR
+  cd $EXE_DIR
+  echo Directory is `pwd`
+#
+#
+#  Run the parallel MPI executable 
+#
+  echo "Running time ${MPT_HOME}/bin/mpiexec_mpt -np " $OCEANCORES " ./opa"
+#
+  time ${MPT_HOME}/bin/mpiexec_mpt -np $OCEANCORES ./opa
+#
+  post_test_tidyup
+# END_BODY
+# Don't remove neither change the previous line
+  exit

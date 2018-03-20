@@ -1,0 +1,21 @@
+   SUBROUTINE ctl_stop( cerr )
+      !!---------------------------------------------------------------------
+      !!
+      !!                     ** ROUTINE ctl_stop **
+      !!
+      !!  ** Purpose : Stop execution
+      !!
+      !!  ** Method  : 
+      !!
+      !!  ** Action  :
+      !!
+      !!   History :   (2008-12) K. Mogensen. NEMOVAR version
+      !!----------------------------------------------------------------------
+      CHARACTER(len=*) :: cerr
+
+      WRITE(*,*)'Error:'
+      WRITE(*,*)TRIM(cerr)
+      CALL abort
+
+   END SUBROUTINE ctl_stop
+

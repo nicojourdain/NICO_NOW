@@ -1,0 +1,16 @@
+DEP::nemo__agrif_connect_topo.f90       agrif_connect_topo::agrif_types::USE
+DEP::nemo__agrif_create_bathy.f90       create_bathy::agrif_connect_topo::USE::agrif_partial_steps::USE::agrif_readwrite::USE::bilinear_interp::USE
+DEP::nemo__agrif_create_coordinates.f90 create_coordinate::agrif_interpolation::USE::agrif_readwrite::USE
+DEP::nemo__agrif_create_data.f90        create_data::agrif_interpolation::USE::agrif_readwrite::USE::bilinear_interp::USE::io_netcdf::USE
+DEP::nemo__agrif_create_restart.f90     create_rstrt::agrif_extrapolation::USE::agrif_interpolation::USE::agrif_partial_steps::USE::agrif_readwrite::USE::bicubic_interp::USE::bilinear_interp::USE::io_netcdf::USE
+DEP::nemo__agrif_create_restart_trc.f90 create_rstrt_trc::agrif_extrapolation::USE::agrif_interpolation::USE::agrif_partial_steps::USE::agrif_readwrite::USE::bicubic_interp::USE::bilinear_interp::USE::io_netcdf::USE
+DEP::nemo__agrif_extrapolation.f90      agrif_extrapolation::agrif_gridsearch::USE::agrif_readwrite::USE::agrif_types::USE::io_netcdf::USE
+DEP::nemo__agrif_gridsearch.f90         agrif_gridsearch::agrif_modutil::USE
+DEP::nemo__agrif_interpolation.f90      agrif_interpolation::agrif_extrapolation::USE::agrif_readwrite::USE::agrif_types::USE::bicubic_interp::USE::bilinear_interp::USE::io_netcdf::USE
+DEP::nemo__agrif_modutil.f90            agrif_modutil
+DEP::nemo__agrif_partial_steps.f90      agrif_partial_steps::agrif_types::USE
+DEP::nemo__agrif_readwrite.f90          agrif_readwrite::agrif_types::USE::io_netcdf::USE
+DEP::nemo__agrif_types.f90              agrif_types
+DEP::nemo__bicubic_interp.f90           bicubic_interp::agrif_modutil::USE
+DEP::nemo__bilinear_interp.f90          bilinear_interp::agrif_modutil::USE
+DEP::nemo__io_netcdf.f90                io_netcdf::agrif_types::USE

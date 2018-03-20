@@ -1,0 +1,17 @@
+   !!----------------------------------------------------------------------
+   !!                    ***  top_substitute.h90   ***
+   !!----------------------------------------------------------------------
+   !! ** purpose : Statement function file: to be include in all passive tracer modules
+   !!----------------------------------------------------------------------
+   !! History :   1.0  !  2004-03 (C. Ethe) Original code
+   !!             2.0  !  2007-12 (C. Ethe, G. Madec) new architecture
+   !!----------------------------------------------------------------------
+#  include "domzgr_substitute.h90"
+#  include "ldfeiv_substitute.h90"
+#  include "ldftra_substitute.h90"
+#  include "vectopt_loop_substitute.h90"
+   !!----------------------------------------------------------------------
+   !! NEMO/TOP 3.3 , NEMO Consortium (2010)
+   !! $Id: top_substitute.h90 2528 2010-12-27 17:33:53Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------

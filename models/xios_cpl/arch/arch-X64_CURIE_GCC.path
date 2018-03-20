@@ -1,0 +1,15 @@
+NETCDF_INCDIR="-I $NETCDF_INC_DIR"
+NETCDF_LIBDIR="-L $NETCDF_LIB_DIR"
+NETCDF_LIB="-lnetcdff -lnetcdf"
+
+MPI_INCDIR=""
+MPI_LIBDIR=""
+MPI_LIB=""
+
+HDF5_INCDIR=""
+HDF5_LIBDIR=""
+HDF5_LIB=""
+
+OASIS_INCDIR="-I$PWD/../../prism/X64/build/lib/psmile.MPI1"
+OASIS_LIBDIR="-L$PWD/../../prism/X64/lib"
+OASIS_LIB="-lpsmile.MPI1 -lmpp_io"

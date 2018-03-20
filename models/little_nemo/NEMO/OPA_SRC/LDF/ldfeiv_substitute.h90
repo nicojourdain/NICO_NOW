@@ -1,0 +1,39 @@
+#if defined key_traldf_eiv   ||   defined key_esopa
+   !!----------------------------------------------------------------------
+   !!                   ***  ldfeiv_substitute.h90  ***
+   !!----------------------------------------------------------------------
+   !! ** purpose :   substitute fsaei. the eddy induced velocity coeff.
+   !!      with a constant or 1D or 2D or 3D array, using CPP macro.
+   !!----------------------------------------------------------------------
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: ldfeiv_substitute.h90 2528 2010-12-27 17:33:53Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+#  if defined key_traldf_c3d
+!   'traldf_c3d' :                           eiv: 3D coefficient
+#    define   fsaeiu(i,j,k)   aeiu(i,j,k)
+#    define   fsaeiv(i,j,k)   aeiv(i,j,k)
+#    define   fsaeiw(i,j,k)   aeiw(i,j,k)
+#  elif defined key_traldf_c2d
+!   'traldf_c2d' :                           eiv: 2D coefficient
+#    define   fsaeiu(i,j,k)   aeiu(i,j)
+#    define   fsaeiv(i,j,k)   aeiv(i,j)
+#    define   fsaeiw(i,j,k)   aeiw(i,j)
+#  elif defined key_traldf_c1d
+!   'traldf_c1d' :                           eiv: 1D coefficient
+#    define   fsaeiu(i,j,k)   aeiu(k)
+#    define   fsaeiv(i,j,k)   aeiv(k)
+#    define   fsaeiw(i,j,k)   aeiw(k)
+#  else
+!   Default option :                          eiv: Constant coefficient
+#    define   fsaeiu(i,j,k)   aeiv0
+#    define   fsaeiv(i,j,k)   aeiv0
+#    define   fsaeiw(i,j,k)   aeiv0
+#  endif
+#else
+!   Default option :                         eiv: dummy variables
+#    define   fsaeiu(i,j,k)   aeiv0
+#    define   fsaeiv(i,j,k)   aeiv0
+#    define   fsaeiw(i,j,k)   aeiv0
+#endif

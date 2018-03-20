@@ -1,0 +1,6 @@
+%COMPIL_CFLAGS %PROD_CFLAGS
+%COMPIL_FFLAGS %PROD_FFLAGS
+%CPP_KEY        USING_NETCDF_PAR USE_OA3MCT
+%CBASE_INC     -I /short/e14/ncj561/util/include -I /short/e14/ncj561/util/include 
+%FBASE_INC     -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1  
+%ARCH_LD       -L/short/e14/ncj561/now/models/oa3mct/RAIJIN/lib -lpsmile.MPI1 -lmct -lmpeu -lscrip  -L /short/e14/ncj561/util/lib -L /short/e14/ncj561/util/lib  -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lhdf5 -lz -lcurl 

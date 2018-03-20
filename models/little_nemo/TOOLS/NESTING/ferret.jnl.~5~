@@ -1,0 +1,20 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.842  
+ ! Linux 2.6.32-279.19.1.el6.x86_64 64-bit - 02/01/13
+ ! 28-Mar-14 15:46     
+
+use "/short/e14/ncj561/now/input_new/mesh_mask_trop075.nc"
+use toto.nc
+sha/lev=(1,5,1) BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/over/lev=(0,0.5,0.1) TMASK[k=1,I=1:482,J=1:139]
+sha/over/lev=(0,0.5,0.1) TMASK[k=1,I=1:482,J=1:139,d=1]
+sha/lev=(1,5,1) BATHYMETRY[i=100:200,j=40:100,d=2]
+sha/over/lev=(0,0.5,0.1) TMASK[k=1,d=1]
+sha/lev=(0,1,5,1) BATHYMETRY[i=100:200,j=40:100,d=2]
+sha/lev=(0,5,1) BATHYMETRY[i=100:200,j=40:100,d=2]
+sha/over/lev=(0,0.5,0.1) TMASK[k=1,d=1]
+sha/lev=(0,5,1) BATHYMETRY[i=100:200,j=40:100,d=2]
+sha/over/lev=(0,0.5,0.1)/palette=black TMASK[k=1,d=1]
+sha/lev=(0,2,0.1) BATHYMETRY[i=100:200,j=40:100,d=2]
+sha/over/lev=(0,0.5,0.1)/palette=black TMASK[k=1,d=1]
+quit

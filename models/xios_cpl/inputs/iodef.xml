@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<simulation> 
+
+ <context id="test" calendar_type="Gregorian" start_date="2012-03-01 15:00:00" time_origin="2012-02-29 15:00:00">
+    
+
+   <field_definition level="1" enabled=".FALSE.">
+     <field id="field_A"  operation="average" freq_op="3600s" domain_ref="domain_A"  axis_ref="axis_A" />
+   </field_definition>
+    
+    
+   <file_definition type="multiple_file" par_access="collective" output_freq="6h" output_level="10" enabled=".TRUE.">
+     <file id="output" name="output"> 
+        <field field_ref="field_B" />
+     </file>
+   </file_definition>
+    
+    
+   <axis_definition>
+     <axis id="axis_A" zoom_size="2" zoom_end="3" />
+   </axis_definition>
+    
+   <domain_definition>
+     <domain id="domain_A" />
+   </domain_definition>    
+  
+   <grid_definition />    
+  
+  </context>
+  
+  <context id="toto" >
+  </context>
+  
+  <context id="titi">
+  </context>
+  
+  <context id="tata">
+  </context>
+
+  <context id="xios">
+      <variable_definition>
+        <variable_group id="buffer">
+            buffer_size = 80000000
+            buffer_server_factor_size = 2 
+         </variable_group>
+
+        <variable_group id="parameters" >
+          <variable id="using_server" type="boolean">false</variable>
+          <variable id="info_level" type="int">50</variable>
+        </variable_group>
+      </variable_definition>
+  </context>
+
+</simulation>
+

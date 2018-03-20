@@ -1,0 +1,96 @@
+#
+# This is config.card file for NEMO ORCA2_LIM_PISCES configuration
+#
+#========================================================================
+#D-- Compatibility -
+[Compatibility]
+libIGCM=1.0
+#D-- UserChoices -
+[UserChoices]
+#============================
+#-- (<8 chars MAX for JobName)
+JobName=PISCES
+LongName="SCRIPT_V1"
+TagName=ORCA2_OFF_PISCES
+#============================
+#-- leap, noleap, 360d
+CalendarType=noleap
+#-- Begin and end of Job
+#-- "YYYY-MM-DD"
+DateBegin=2001-01-01
+DateEnd=2005-12-31
+#============================
+#-- 1Y, 1M, 5D, 1D
+PeriodLength=1Y
+#============================
+#-- PBS Class (required on brodie mono/multi)
+JobClass=mono
+#JobClass=multi
+#============================
+#-- Total Number of Processors
+JobNumProcTot=1
+#JobNumProcTot=8
+#============================
+#-- Run Options : 
+#JobRunOptions=''
+JobRunOptions='"-np "${BATCH_NUM_PROC_TOT}"'
+#============================
+#============================
+# config.card configuration options :
+# config.card configuration options :
+###R_BC=/u/rech/eee/reee451/IGCM/BC
+R_BC=/dmnfs/cont003/p48ethe/IGCM/BC
+#========================================================================
+#D-- ListOfComponents -
+[ListOfComponents]
+#D- For each component, Name of component, Tag of component
+MBG= (pisces, PISCES)
+#========================================================================
+#D-- Executable -
+[Executable]
+Name=nemo
+#D- For each component, Real name of executable
+MBG= (nemo.exe, nemo)
+#========================================================================
+#D-- Restarts -
+[Restarts]
+#D- If you want a GENERAL RULE FOR RESTARTS, put this flag to 'y'
+OverRule=n
+#D- Last day of the experience used as restart
+RestartDate=2000-12-31
+#D- Define restart simulation name
+RestartJobName=OROFP
+#D- Path Server Group Login
+RestartPath=${ARCHIVE}/IGCM_OUT/ORCA2_OFF_PISCES
+
+#========================================================================
+#D-- Post -
+[Post]
+#D- Do we rebuild parallel output, this flag determines
+#D- frequency of rebuild submission
+#D- BETA FEATURE
+RebuildFrequency=NONE
+#D- If you want to produce time series, this flag determines
+#D- frequency of post-processing submission
+RebuildFromArchive=false
+#D- If you want to produce time series, this flag determines
+#D- frequency of post-processing submission
+TimeSeriesFrequency=NONE
+#D- If you want to produce seasonal average, this flag determines
+#D- the period of this average
+SeasonalFrequency=NONE
+#========================================================================
+#D-- MBG -
+[MBG]
+##-- frequency 
+WriteFrequency="1Y 1M 5D"
+##--  restart
+Restart= n
+##-- Last day of the experience used as restart
+RestartDate=2000-12-31
+# Define restart simulation name
+RestartJobName=OROFP1
+RestartPath=${ARCHIVE}/IGCM_OUT/ORCA2_OFF_PISCES
+# Old component name for restart (if empty, use new name)
+OldName=
+#========================================================================

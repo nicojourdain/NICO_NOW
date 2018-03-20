@@ -1,0 +1,28 @@
+[Compatibility]
+libIGCM=1.0
+
+[UserChoices]
+
+[InitialStateFiles]
+List=	()
+
+[BoundaryFiles]
+List=	()
+ListNonDel= ()
+
+[ParametersFiles]
+List=	(${SUBMIT_DIR}/PARAM/namelist_ice_lim2, namelist_ice)
+
+[RestartFiles]
+List=	(${config_UserChoices_JobName}_${NEMO_END}_restart_ice.nc, restart_icemod.nc, restart_ice_in.nc)
+
+[OutputText]
+List=   (ice_evolu)
+
+[OutputFiles]
+List=   (${PREFIX_WFI1}_icemod.nc, ${R_OUT_ICE_WFI1}/${PREFIX}_${WFI1}_icemod.nc, Post_1M_icemod)
+
+[Post_1M_icemod]
+Patches = ()
+GatherWithInternal = (nav_lon, nav_lat, time_counter)
+TimeSeriesVars = (iicethic, ileadfra, isnowthi, iicevelu, iicevelv)

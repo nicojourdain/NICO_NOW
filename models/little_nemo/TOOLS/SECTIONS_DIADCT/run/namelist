@@ -1,0 +1,8 @@
+&namdct
+!----------------------------------------!
+!nsecdebug =-1 (debug all section        !
+!          = 0 (no section to debug)     !
+!          = n (debug section # n        !
+!----------------------------------------!
+nsecdebug= 1
+/

@@ -1,0 +1,24 @@
+################################################################################
+###################        Projet xios - xmlioserver       #####################
+################################################################################
+
+%CCOMPILER      mpCC_r
+%FCOMPILER      mpxlf2003_r
+%LINKER         mpCC_r 
+
+%BASE_CFLAGS    -qmkshrobj  -qrtti 
+%PROD_CFLAGS    -O3 -DBOOST_DISABLE_ASSERTS
+%DEV_CFLAGS     -g 
+%DEBUG_CFLAGS   -g -O0 -qfullpath 
+
+%BASE_FFLAGS    -qmkshrobj 
+%PROD_FFLAGS    -O3
+%DEV_FFLAGS     -g 
+%DEBUG_FFLAGS   -g -O0 -qfullpath 
+
+%BASE_INC       -D__NONE__
+%BASE_LD        -lxlf90
+
+%CPP            cpp
+%FPP            cpp -P
+%MAKE           gmake

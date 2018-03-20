@@ -1,0 +1,4 @@
+cfg_name=fcm1_branches_clash
+test_name=test_$cfg_name
+extract_1=fail
+. ./perform_test

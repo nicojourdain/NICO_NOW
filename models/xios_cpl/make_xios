@@ -1,0 +1,189 @@
+#!/bin/bash
+
+install_dir=$PWD
+compil_full="false"
+use_oasis="false"
+use_memtrack="false"
+job="1"
+netcdf_lib="netcdf4_par"
+compil_mode="prod"
+
+# Traitement de la ligne de commande
+while (($# > 0))
+   do
+      case $1 in
+         "-h"|"--help"|"-help")
+            echo "make_xios - installs XIOS on your architecture"
+	    echo "make_xios [options]"
+	    echo "options :"
+	    echo "       [--prod] : compilation in production mode (default)"
+	    echo "       [--dev] : compilation in development mode"
+	    echo "       [--debug] : compilation in debug mode"
+	    echo "       --arch arch : to choose target architecture"
+	    echo "       [--avail] : to know available target architectures "
+	    echo "       [--full] : to generate dependencies and recompile from scratch"
+	    echo "       [--use_oasis] : to use Oasis coupler"
+	    echo "       [--doc] : to generate Doxygen documentation (not available yet)"
+	    echo "       [--job ntasks] : to use parallel compilation with ntasks"
+	    echo "       [--netcdf_lib 'netcdf4_par'/'netcdf4_seq'/'netcdf4_internal' : default netcdf4_par] : choice of netcdf library"
+	    echo "       [--memtrack] : tracking memory leak - developper only"
+	    echo "Example : ./make_xios --prod --arch PW6_VARGAS"
+	    echo "Example : ./make_xios --avail"
+            exit;;
+         "--prod")  compil_mode="prod"  ; shift ;;
+         "--dev")   compil_mode="dev"   ; shift ;;
+         "--debug") compil_mode="debug" ; shift ;;
+         "--arch")  arch=$2     ; shift ; shift ;;
+         "--avail") ls arch/*.fcm | cut -d"-" -f2 | cut -d"." -f1 ; exit ;; 
+         "--full")  compil_full="true"  ; shift ;;
+         "--use_oasis")  use_oasis="true"  ; shift  ;;
+         "--doc")   doc="true"          ; shift ;;
+         "--job")   job=$2              ; shift ; shift ;;
+         "--netcdf_lib")   netcdf_lib=$2 ; shift ; shift ;;
+         "--memtrack")   use_memtrack="true" ; shift ;;
+         *)         code="$1"           ; shift ;;
+      esac
+   done
+
+# Installation des sources
+nb_files_gz=`ls $install_dir/tools/archive | grep tar.gz | wc -l`
+if [ ${nb_files_gz} -ne 0 ]		   
+then
+    echo -e "- uncompress archives ..."		
+    for tarname in `ls $install_dir/tools/archive/*.tar.gz` ; do
+	gunzip -f "$tarname"
+	tar -xf ${tarname%.gz}
+    done
+fi
+
+# Vérification de la présence d'un identifiant d'architecture.
+
+###############################################################
+# lecture des chemins propres a l'architecture de la machine #
+#           et configuration de l'environnement              #
+###############################################################
+
+rm -f .void_file
+echo > .void_file
+rm -rf .void_dir
+mkdir .void_dir
+
+if [[ !(-z $arch) ]]
+   then
+      rm -f  $install_dir/arch.path
+      rm -f  $install_dir/arch.fcm
+      rm -f  $install_dir/arch.env
+      ln -s  $install_dir/arch/arch-${arch}.path $install_dir/arch.path
+      ln -s  $install_dir/arch/arch-${arch}.fcm  $install_dir/arch.fcm
+
+      if test -f $install_dir/arch/arch-${arch}.env
+      then
+        ln -s $install_dir/arch/arch-${arch}.env arch.env
+      else
+        ln -s $install_dir/.void_file arch.env
+      fi
+
+      source $install_dir/arch.env
+      source $install_dir/arch.path
+  else
+      echo "Please choose a target achitecture --> list all available architecture using make_xios --avail!"
+      exit 1
+fi
+
+# Vérification de la présence d'un mode de compilation.
+
+if [[ "$compil_mode" == "prod" ]]
+   then
+      COMPIL_CFLAGS="%PROD_CFLAGS"
+      COMPIL_FFLAGS="%PROD_FFLAGS"
+elif [[ "$compil_mode" == "dev" ]]
+   then 
+      COMPIL_CFLAGS="%DEV_CFLAGS"
+      COMPIL_FFLAGS="%DEV_FFLAGS"
+elif [[ "$compil_mode" == "debug" ]]
+   then
+      COMPIL_CFLAGS="%DEBUG_CFLAGS"
+      COMPIL_FFLAGS="%DEBUG_FFLAGS"
+fi
+
+rm -r $PWD/extern/netcdf4
+
+if [[ "$netcdf_lib" == "netcdf4_par" ]]
+   then
+     ln -s $PWD/.void_dir $PWD/extern/netcdf4
+     XMLIO_CPPKEY="$XMLIO_CPPKEY USING_NETCDF_PAR"
+elif [[ "$netcdf_lib" == "netcdf4_seq" ]]
+  then 
+    ln -s $PWD/.void_dir $PWD/extern/netcdf4
+elif [[ "$netcdf_lib" == "netcdf4_internal" ]]
+  then 
+    ln -s $PWD/extern/src_netcdf4 $PWD/extern/netcdf4
+    XMLIO_CPPKEY="$XMLIO_CPPKEY USING_NETCDF_PAR USING_NETCDF_INTERNAL"
+    export NETCDF_INCDIR="-I${PWD}/extern/netcdf4"
+    export NETCDF_LIBDIR=""
+    export NETCDF_LIB=""
+else
+   echo "Bad choice for --netcdf_lib argument : choose between 'netcdf4_par','netcdf4_seq' or 'netcdf4_internal'"
+   exit
+fi
+
+if [[ "$use_oasis" == "true" ]]
+   then
+   NETCDF_LIB="-lnetcdff -lnetcdf"
+   XMLIO_FINCDIR="$OASIS_INCDIR $XMLIO_FINCDIR"
+   XMLIO_LIB="$OASIS_LIBDIR $OASIS_LIB $XMLIO_LIB"
+   XMLIO_CPPKEY="$XMLIO_CPPKEY USE_OA3MCT"
+fi 
+
+if [[ "$use_memtrack" == "true" ]]
+   then
+   XMLIO_LIB="$ADDR2LINE_LIBDIR $ADDR2LINE_LIB $XMLIO_LIB"
+   XMLIO_CPPKEY="$XMLIO_CPPKEY XIOS_MEMTRACK"
+fi 
+
+XMLIO_CINCDIR="$NETCDF_INCDIR $HDF5_INCDIR $MPI_INCDIR"
+XMLIO_FINCDIR="$XMLIO_FINCDIR $MPI_INCDIR"
+
+XMLIO_LIB="$XMLIO_LIB $NETCDF_LIBDIR $HDF5_LIBDIR $MPI_LIBDIR $NETCDF_LIB $HDF5_LIB $MPI_LIB"
+
+rm -f config.fcm
+echo "%COMPIL_CFLAGS $COMPIL_CFLAGS" >> config.fcm
+echo "%COMPIL_FFLAGS $COMPIL_FFLAGS" >> config.fcm
+echo "%CPP_KEY       $XMLIO_CPPKEY"  >> config.fcm
+
+echo "%CBASE_INC     $XMLIO_CINCDIR" >> config.fcm     
+echo "%FBASE_INC     $XMLIO_FINCDIR" >> config.fcm
+echo "%ARCH_LD       $XMLIO_LIB" >> config.fcm 
+
+echo "=> Using "$compil_mode" mode for compiling under architecture \""$arch"\" !"
+
+# Création de la documentation doxygen.
+if [[ !(-z $doc) ]]
+   then
+      echo -e "- Create Doxygen documentation (disabled)..."
+      #doxygen -s
+fi
+
+make_dir=$PWD
+
+export PATH=$PWD/tools/FCM/bin:$PATH
+
+#$make_dir/tools/preprocess_cpp $make_dir/src/xmlio/iface/interface.cpp      $make_dir/src/xmlio/iface/interface.cpp.in
+#$make_dir/tools/preprocess_f03 $make_dir/src/xmlio/fortran/ixmlioserver.f90 $make_dir/src/xmlio/fortran/ixmlioserver.f03.in
+
+if [[ "$compil_full" == "true" ]]
+   then
+   fcm build --clean --ignore-lock 
+   fcm build -f --ignore-lock -j $job
+else
+  fcm build --ignore-lock -j $job
+fi
+
+
+if [[ $? == 0 ]]
+  then
+  set nothing
+#    cd $WORKDIR/XMLIO_NEMO_COUPLE/modeles/NEMO/WORK
+#    cd $WORKDIR/XMLIO_NEMO/modeles/NEMO/WORK
+#    make
+fi

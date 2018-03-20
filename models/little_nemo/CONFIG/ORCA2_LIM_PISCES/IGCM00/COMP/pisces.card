@@ -1,0 +1,40 @@
+[Compatibility]
+libIGCM=1.0
+
+[UserChoices]
+
+[InitialStateFiles]
+List= ()
+
+[BoundaryFiles]
+List=	()
+ListNonDel= (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_DIC_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_Alkalini_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_O2_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_NO3_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_PO4_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_Si_nomask.nc,  .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_DOC_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/data_1m_Fer_nomask.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/kRGB61.txt, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/dust.orca.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/bathy.orca.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/river.orca.nc, .), \
+            (${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/ndeposition.orca.nc, .)
+
+[ParametersFiles]
+List=	(${SUBMIT_DIR}/PARAM/namelist_top, .), \
+        (${SUBMIT_DIR}/PARAM/namelist_pisces, .), \
+
+[RestartFiles]
+List=	(${config_UserChoices_JobName}_${NEMO_END}_restart_trc.nc,  restart_trc.nc, restart_trc.nc)
+
+[OutputText]
+List=   ()
+
+[OutputFiles]
+List=   (${PREFIX_WFT1}_ptrc_T.nc, ${R_OUT_MBG_WFT1}/${PREFIX}_${WFT1}_ptrc_T.nc, NONE), \
+        (${PREFIX_WFT1}_diad_T.nc, ${R_OUT_MBG_WFT1}/${PREFIX}_${WFT1}_diad_T.nc, NONE), \
+        (${PREFIX_WFT2}_ptrc_T.nc, ${R_OUT_MBG_WFT2}/${PREFIX}_${WFT2}_ptrc_T.nc, Post_1M_ptrc_T), \
+        (${PREFIX_WFT3}_diad_T.nc, ${R_OUT_MBG_WFT3}/${PREFIX}_${WFT3}_diad_T.nc, Post_5D_ptrc_T)
+

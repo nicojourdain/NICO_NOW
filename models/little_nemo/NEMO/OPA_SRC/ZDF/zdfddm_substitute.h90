@@ -1,0 +1,18 @@
+   !!----------------------------------------------------------------------
+   !!                    *** zdfddm_substitute.h90  ***
+   !!----------------------------------------------------------------------
+   !! ** purpose :   substitute fsaht. the eddy diffusivity coeff.
+   !!      with a constant or 1D or 2D or 3D array, using CPP macro.
+   !!----------------------------------------------------------------------
+#if defined key_zdfddm
+!   'key_zdfddm' :                      avs: 3D array defined in zdfddm module
+#   define   fsavs(i,j,k)   avs(i,j,k)
+#else
+!   Defautl option :                     avs = avt
+#   define   fsavs(i,j,k)   avt(i,j,k)
+#endif
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 4.0 , NEMO Consortium (2011)
+   !! $Id: zdfddm_substitute.h90 2715 2011-03-30 15:58:35Z rblod $ 
+   !! Software governed by the CeCILL licence     (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------

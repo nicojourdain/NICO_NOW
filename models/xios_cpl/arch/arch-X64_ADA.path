@@ -1,0 +1,15 @@
+NETCDF_INCDIR="-I/smplocal/pub/NetCDF/4.1.3/mpi/include"
+NETCDF_LIBDIR="-L/smplocal/pub/NetCDF/4.1.3/mpi/lib"
+NETCDF_LIB="-lnetcdf"
+
+MPI_INCDIR=""
+MPI_LIBDIR=""
+MPI_LIB=""
+
+HDF5_INCDIR="-I/smplocal/pub/HDF5/1.8.9/par/include"
+HDF5_LIBDIR="-L/smplocal/pub/HDF5/1.8.9/par/lib"
+HDF5_LIB="-lhdf5_hl -lhdf5 -lhdf5 -lz"
+
+OASIS_INCDIR="-I$PWD/../../prism/X64/build/lib/psmile.MPI1"
+OASIS_LIBDIR="-L$PWD/../../prism/X64/lib"
+OASIS_LIB="-lpsmile.MPI1 -lmpp_io"

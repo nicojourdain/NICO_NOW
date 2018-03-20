@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1st December 2004), see www.w3.org" />
+
+  <title>FCM User Guide: System Overview</title>
+  <meta name="author" content="FCM development team" />
+  <meta name="descriptions" content="User Guide - System Overview" />
+  <meta name="keywords" content="FCM, user guide" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="fcm.js">
+</script>
+</head>
+
+<body onload=
+"javascript: FCM.load('doc/user_guide/', null, [['.', 'FCM User Guide']]);">
+  <div id="document-info">
+    <address id="fcm-js-trail"></address>
+
+    <address id="fcm-js-maintenance"></address>
+  </div>
+
+  <h1>System Overview</h1>
+
+  <p>The FCM system is designed to simplify the task of managing and building
+  source code. It consists of three main components.</p>
+
+  <dl>
+    <dt>Code Management (CM) System</dt>
+
+    <dd>
+      <p>This system provides facilities for making changes to source code in a
+      controlled and straightforward manner.</p>
+
+      <p>Version control is provided by the open source tool <a href=
+      "http://subversion.tigris.org/">Subversion</a>. The source code and its
+      history are stored in a central database which is called the repository.
+      Support for parallel working is provided through the use of branches.</p>
+
+      <p>The open source web-based tool <a href=
+      "http://trac.edgewall.org/">Trac</a> allows changes to be examined and
+      documented. It provides an integrated issue tracker, wiki and repository
+      browser.</p>
+    </dd>
+
+    <dt>Build System</dt>
+
+    <dd>
+      <p>This system allows source code to be compiled with a minimal amount of
+      configuration. Compilation time can be minimised through the use of
+      pre-compiled code and by using the parallel make facilities provided by
+      the open source tool <a href="http://www.gnu.org/software/make/"><em>GNU
+      Make</em></a>.</p>
+
+      <p>It provides a number of powerful features aimed primarily at building
+      Fortran 9x code.</p>
+    </dd>
+
+    <dt>Extract System</dt>
+
+    <dd>
+      <p>This system provides the interface between the CM and build systems.
+      Code is extracted and presented in a suitable form for the build system.
+      Code can be mirrored to a different build platform if necessary.</p>
+    </dd>
+  </dl>
+
+  <p>The diagram below illustrates how these components fit together.</p>
+
+  <p class="image"><img src="fcm_overview.png" alt="FCM system overview" /></p>
+
+  <p>The following sections discuss these components in more detail.</p>
+
+  <h2>Code Management System</h2>
+
+  <p>The CM system is built using a number of open source tools, in particular
+  Subversion and Trac.</p>
+
+  <p>Subversion is a modern version control tool with a large and rapidly
+  expanding user base. For a summary of its main features please refer to the
+  <a href="http://svnbook.red-bean.com/en/1.4/svn.intro.whatis.html">What is
+  Subversion?</a> section in the <a href=
+  "http://svnbook.red-bean.com/en/1.4/">Version Control with Subversion</a>
+  book.</p>
+
+  <p>Subversion is a generalised tool which can be used in lots of different
+  ways. This makes some day-to-day tasks more complex than they need be. FCM
+  defines a simplified process and appropriate naming conventions. It then adds
+  a layer on top of Subversion to provide a natural interface which is
+  specifically tailored to this process. Where appropriate it simply makes use
+  of the command line tools provided by Subversion. However, in other cases it
+  provides significant additional functionality, for example:</p>
+
+  <ul>
+    <li>By making some assumptions about the repository layout (i.e. by
+    imposing a standard working practise) FCM simplifies the task of creating
+    branches and enforces a standard branch naming convention.</li>
+
+    <li>Having defined working practises and standard log messages allows FCM
+    to greatly simplify the process of merging changes between branches.</li>
+
+    <li>FCM makes use of <a href="http://furius.ca/xxdiff/">xxdiff</a> (a
+    graphical merge tool) to simplify the process of resolving any conflicts
+    which result from a merge.</li>
+
+    <li>Code changes can be examined in graphical form using xxdiff FCM also
+    allows you to easily examine the changes made on a branch.</li>
+
+    <li>FCM allows you to check where any particular branch has been used and
+    which version is being used.</li>
+  </ul>
+
+  <p>FCM also provides a simple GUI which allows easy access to most of the
+  common commands which you will need.</p>
+
+  <p>Trac is the other main component of the CM system. It is a powerful web
+  based tool which helps you to manage your software project. It includes the
+  following features:</p>
+
+  <ul>
+    <li>A flexible issue tracker which can be used to keep track of bugs,
+    feature requests, etc. Each issue (known as a <q title=
+    "http://trac.edgewall.org/wiki/TracTickets">ticket</q> within Trac) can be
+    given a priority and assigned to a particular person. Changes made to your
+    Subversion repository can easily be traced to the relevant ticket. Where
+    appropriate, tickets can be used to record information about who has
+    reviewed each change.</li>
+
+    <li>A <q title="http://trac.edgewall.org/wiki/TracRoadmap">roadmap</q>
+    feature which helps you to plan and manage project releases. Each ticket
+    can be associated with a particular milestone. Trac can then easily show
+    you what features or fixes went into a particular release or what work
+    remains before a particular milestone is reached.</li>
+
+    <li>A <q title="http://trac.edgewall.org/wiki/TracWiki">wiki</q> which can
+    be used for project documentation.</li>
+
+    <li>A browser for viewing your Subversion repository which allows you to
+    browse the project tree / files and examine revision logs and
+    changesets.</li>
+
+    <li>A timeline view which summarises all the activity on a project (changes
+    to the tickets, wiki pages or the Subversion repository).</li>
+  </ul>
+
+  <h2>Build System</h2>
+
+  <p>The build system provides the following features:</p>
+
+  <ul>
+    <li>Automatic generation of Makefile's at build time based on a simple
+    configuration file.</li>
+
+    <li>Full dependency analysis at build time.</li>
+
+    <li>Automatic generation of Fortran 9X interface files at build time.</li>
+
+    <li>Support for non-standard source code. You can override automatic
+    dependency and compile rules in order to deal with code which does not
+    conform to the necessary coding standards.</li>
+
+    <li>Flexible control over compiler flags. Changes to compiler flags trigger
+    the appropriate re-compilation.</li>
+
+    <li>Support for Pre-processor directives. Changes to Pre-processor flags
+    trigger the appropriate re-compilation.</li>
+
+    <li>Support for pre-compiled object code to speed compilation time.</li>
+
+    <li>GNU <code>make</code> is used to perform the build. Build times on
+    multi-processor systems can be reduced by running parallel processes.</li>
+  </ul>
+
+  <h2>Extract System</h2>
+
+  <p>The extract system provides the following features:</p>
+
+  <ul>
+    <li>Extract code to a directory tree suitable for feeding into the build
+    system. Code can be combined from multiple repositories and branches. Local
+    user code can also be included.</li>
+
+    <li>Either a complete set of source code may be extracted or just a set of
+    changes relative to pre-compiled code.</li>
+
+    <li>A simple configuration file defines what code is required (and what
+    compile options are required). Typically, standard versions of these
+    configuration files are maintained within the repository. Users can then
+    define changes relative to these standard versions.</li>
+
+    <li>If necessary, code can be transferred to a different platform ready for
+    building.</li>
+  </ul>
+</body>
+</html>

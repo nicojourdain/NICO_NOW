@@ -1,0 +1,8 @@
+TESTS="
+test_fcm1_var
+test_fcm1_var_parallel
+test_fcm1_ops_parallel
+test_fcm1_sps_parallel
+test_fcm1_um
+test_fcm1_um_inherit
+"

@@ -1,0 +1,288 @@
+#!/bin/ksh
+#-----------------------------------------------------------------
+function OCE_Initialize
+{
+    IGCM_debug_PushStack "OCE_Initialize"
+
+    JOB_NAME=${config_UserChoices_JobName}
+
+    OPA_NDT_DAY=${opa_UserChoices_OPA_NDT_DAY:=15}
+
+
+    ##--Variables used by OPA --
+
+    # cn_exp experience name for vairmer format
+    # nn_it000 number of the first time step
+    # nn_itend number of the last time step
+    # nn_leapy leap year calendar (0/1) (30 for 360d)
+    # nn_write frequency of OUTPUT file
+    # ln_rstart boolean term for restart (true or false)
+    # nn_stock frequency of restart file
+    # nn_rstctl control of the time step (0, 1 or 2)
+    # nn_date0 initial calendar date aammjj
+    # nn_msh  =1 create a mesh file (coordinates, scale factors, masks)
+    # rn_rdt time step in seconds (coming from namelist)
+    # nf_ptr_wri frequency of zonal means and transport output
+
+
+# Local function to find namelists parameters
+supergrep () {
+    grep "^ *$1 *=" $2 | sed -e "s% *\!.*%%"
+}
+
+
+    PAT_CEXPER=$( supergrep cn_exp    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NIT000=$( supergrep nn_it000    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NITEND=$( supergrep nn_itend    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NLEAPY=$( supergrep nn_leapy    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_RESTAR=$( supergrep ln_rstart ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NSTOCK=$( supergrep nn_stock    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NRSTAR=$( supergrep nn_rstctl    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NDATE0=$( supergrep nn_date0    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NMSH=$(   supergrep nn_msh      ${SUBMIT_DIR}/PARAM/namelist ) 
+    
+
+    OPA_RDT=$( supergrep rn_rdt  ${SUBMIT_DIR}/PARAM/namelist | sed 's/ *rn_rdt *=//' | sed 's/\. *,//' )
+
+    # Period Length In Days between DateBegin and first day of calendar 0001 01 01
+    # /!\ Needed by OPA namelist to compute file names /!\
+    (( DaysSinceJC = $( IGCM_date_DaysSinceJC ${DateBegin} ) + 1 ))
+
+    # Definition from opa9.card of List_jobsbc and List_runsbc used to do to interannual and climatological runs 
+	IGCM_card_DefineArrayFromOption ${SUBMIT_DIR}/COMP/opa9.card Interannual List_jobsbc
+        set -A ListFormulationJobsbc -- \${opa9_Interannual_Listjobsc${opa9_Interannual_List_jobsbc}[*]}
+
+    ##--Variables used for XMLIO_SERVER configuration file
+	    # using_server: .TRUE.(.FALSE.) to use(bypass) the io_server
+	    PAT_SERVER=$( supergrep using_server ${SUBMIT_DIR}/PARAM/xmlio_server.def )
+	
+    IGCM_debug_PopStack "OCE_Initialize"
+}
+
+#-----------------------------------------------------------------
+function OCE_Update
+{
+    IGCM_debug_PushStack "OCE_Update"
+
+    # Interannual run
+    # In this case job need to calculate previous and following year and give, and if every run needs to add "_y" before every year 
+    if [ X${opa9_UserChoices_Interannual_Run} = Xy ] ; then
+
+	typeset file 
+
+ 	(( PeriodCumulPeriod =  ${CumulPeriod} - 1 )) 
+ 	(( PeriodInitYear =${InitYear} + ${PeriodCumulPeriod} * ${PeriodLengthInYears} ))
+ 	(( PeriodFinalYear =${InitYear} + ${PeriodLengthInYears}*${CumulPeriod} - 1 ))
+
+        NbFileInter=${#opa9_Interannual_List_jobsbc[*]}
+        (( NbFileInter_tot=${#opa9_Interannual_List_jobsbc[*]} * ${PeriodLengthInYears} ))
+	(( i = 0 ))
+
+	while [ ${year} -le ${PeriodFinalYear} ] ; do #copy in ONCE of ALL necessary files for all PeriodLength
+	    
+	    while [ $i -lt ${NbFileInter} ] ; do
+		
+		eval file=${opa9_Interannual_List_jobsbc[$i]}
+		if [ X${year} = X${PeriodInitYear} ] ; then  
+                        	if [ ${month} -eq 01 ] ; then
+		    			# if year-1 does not exist we create a file _noym1.nc copy of year
+		    			eval jobsbc_file_ym1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_$(( year - 1 )).nc
+		    			if  [ ! -f ${jobsbc_file_ym1} ] ; then
+		    				eval jobsbc_file_ym1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_${year}.nc
+		    				eval runsbc_file_ym1=${file}_noym1.nc
+		    			else
+		    			    eval jobsbc_file_ym1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_$(( year - 1 )).nc
+		    			    eval runsbc_file_ym1=${file}_y$(( year - 1 )).nc
+		    			fi
+
+                            IGCM_sys_Get ${jobsbc_file_ym1} ${runsbc_file_ym1}
+                        	fi
+		fi
+		
+       		# download year 
+		eval jobsbc_file_y=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_${year}.nc
+		eval runsbc_file_y=${file}_y${year}.nc
+		
+		if [ ! -f ${runsbc_file_y} ] ; then
+		    IGCM_sys_Get ${jobsbc_file_y} ${runsbc_file_y}
+		fi
+		
+		# download (year+1) if it is last year of run
+		if [ X${year} = X${PeriodFinalYear} ] ; then 	
+	
+		    eval jobsbc_file_yp1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_$(( year + 1 )).nc
+		    eval runsbc_file_yp1=${file}_y$(( year + 1 )).nc
+		    
+		    if  [ ! -f ${runsbc_file_yp1} ] ; then
+			
+		        # if year+1 does not exist we create a file _noyp1.nc copy of year
+		    	eval jobsbc_file_yp1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_$(( year + 1 )).nc
+			if  [ ! -f ${jobsbc_file_yp1} ] ; then
+			    eval jobsbc_file_yp1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_${year}.nc
+		    	    eval runsbc_file_yp1=${file}_noyp1.nc
+			else
+			    eval jobsbc_file_yp1=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}_$(( year + 1 )).nc
+			    eval runsbc_file_yp1=${file}_y$(( year + 1 )).nc
+			fi
+			IGCM_sys_Get ${jobsbc_file_yp1} ${runsbc_file_yp1}
+		    fi
+		    
+		fi
+		(( i = i + 1 ))
+	
+	    done
+	
+	    (( year = year + 1 ))
+	 
+	    (( i = 0 ))
+	done
+
+    # End interannual
+    elif [ X${opa9_UserChoices_Interannual_Run} = Xn ] ; then
+    # Climatological run
+       typeset file 
+
+       eval NbFileInter=${#opa9_Interannual_List_jobsbc[*]}
+
+        (( i = 0 ))
+        while [ $i -lt ${NbFileInter} ] ; do
+            eval file=${opa9_Interannual_List_jobsbc[$i]}
+            eval jobsbc_file=${R_BC}/OCE/${config_UserChoices_TagName}/${opa9_UserChoices_OPA_version}/${file}.nc
+            eval runsbc_file=${file}.nc
+
+            IGCM_sys_Get ${jobsbc_file} ${runsbc_file}
+            (( i = i + 1 ))
+	done
+    fi
+    # End climatological
+
+    NbFreq=$( echo ${config_OCE_WriteFrequency} | wc -w )
+
+    ##--Write Frequency Purpose ....
+    typeset -Z1 i=1
+    while [ $i -le ${NbFreq} ]; do
+        frequency=$( echo ${config_OCE_WriteFrequency} | awk -v var="$i" "-F " '{print $var}' )
+    	factor=$( echo ${frequency} | sed -e "s/[yYmMdD]//" )
+    	case ${frequency} in
+    	    *Y|*y)
+    	        eval PREFIX_WF${i}=${config_UserChoices_JobName}_${factor}y_${DatesPeriod} ;
+    	        eval R_OUT_OCE_WF${i}=${R_OUT_OCE_O_Y} ;
+    	        eval WF${i}=${factor}Y ;;
+    	    *M|*m)
+    	        eval PREFIX_WF${i}=${config_UserChoices_JobName}_${factor}m_${DatesPeriod} ;
+    	        eval R_OUT_OCE_WF${i}=${R_OUT_OCE_O_M} ;
+    	        eval WF${i}=${factor}M ;;
+    	    *D|*d)
+    	        eval PREFIX_WF${i}=${config_UserChoices_JobName}_${factor}d_${DatesPeriod} ;
+    	        eval R_OUT_OCE_WF${i}=${R_OUT_OCE_O_D} ;
+    	        eval WF${i}=${factor}D ;;
+    	    *)
+    	esac
+        let i=$i+1
+
+    done
+    # Period Length In Days between DateBegin and first day of calendar 0001 01 01
+    # Needed by OPA namelist to compute correct file names 
+    (( PeriodDaysSinceJC =  $( IGCM_date_DaysSinceJC ${PeriodDateBegin} ) + 1  ))
+
+    ## Count of number of time steps from begin of OPA job
+    (( OPA_NIT000 = ( PeriodDaysSinceJC - DaysSinceJC ) * OPA_NDT_DAY + 1 ))
+    (( OPA_NDT   = PeriodLengthInDays * OPA_NDT_DAY ))
+    (( OPA_NITEND = OPA_NIT000 + OPA_NDT - 1))
+
+    ## Forcing to write one restart file at the end of period
+    OPA_NSTOCK="${OPA_NITEND}"
+
+    ## Verification of number of time steps per day
+    (( NB_SEC_DAY_MODEL = OPA_NDT_DAY * OPA_RDT ))
+    (( NB_SEC_DAY = 60 * 60 * 24 ))
+
+    if [ ${NB_SEC_DAY_MODEL} -ne ${NB_SEC_DAY} ]
+	then
+        echo " VERIFY OPA_NDT_DAY in opa9.card "
+        exit
+    fi
+
+    ##-- Restart configuration
+    if ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_OCE_Restart}" = "n" ] ) ; then
+
+        #echo "NO OPA RESTART"
+	OPA_LRSTAR=.FALSE.
+	OPA_NRSTDT=0
+        #Put OPA_NMSH=0 when OPA runnig in parallel mode 
+	OPA_NMSH=1
+	( [ X${BATCH_NUM_PROC_TOT} != X ] && [ "${BATCH_NUM_PROC_TOT}" -gt 1 ] ) && OPA_NMSH=0
+
+    elif ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_OCE_Restart}" = "y" ] ) ; then
+
+        #echo "OPA RESTART"
+	OPA_LRSTAR=.TRUE.
+	OPA_NRSTDT=1
+	OPA_NMSH=0
+
+    else
+
+        #echo "OPA RESTART"
+	OPA_LRSTAR=.TRUE.
+	OPA_NRSTDT=2
+	OPA_NMSH=0
+
+    fi
+   
+     ## nleapy configuration
+	case ${config_UserChoices_CalendarType} in
+        	leap)
+            	OPA_NLEAPY=1;;
+        	noleap)
+            	OPA_NLEAPY=0;;
+        	360d)
+            	OPA_NLEAPY=30;;
+    	esac
+
+
+        typeset -r PRECIS=8
+	NEMO_END=$( echo $( awk "BEGIN { printf \"%0${PRECIS}d\",${OPA_NITEND} }" ) ) 
+
+    sed -e "s%${PAT_CEXPER}%       cn_exp=\"${config_UserChoices_JobName}\"%"  \
+	-e "s%${PAT_NIT000}%       nn_it000=${OPA_NIT000}%"                    \
+	-e "s%${PAT_NITEND}%       nn_itend=${OPA_NITEND}%"                    \
+	-e "s%${PAT_RESTAR}%       ln_rstart=${OPA_LRSTAR}%"                   \
+	-e "s%${PAT_NSTOCK}%       nn_stock=${OPA_NSTOCK}%"                    \
+	-e "s%${PAT_NRSTAR}%       nn_rstctl=${OPA_NRSTDT}%"                   \
+	-e "s%${PAT_NDATE0}%       nn_date0=${PeriodDateBegin}%"               \
+	-e "s%${PAT_NMSH}%         nn_msh=${OPA_NMSH}%"                        \
+	-e "s%${PAT_NLEAPY}%       nn_leapy=${OPA_NLEAPY}%"	               \
+	namelist > namelist.tmp
+
+    IGCM_sys_Mv namelist.tmp namelist
+
+
+    # update xmlio_server.def
+
+    if [ X${opa9_UserChoices_io_server} = Xy ] ; then
+        sed -e "s/${PAT_SERVER}/  using_server = .TRUE./" \
+        xmlio_server.def > xmlio_server.def.tmp
+        IGCM_sys_Mv xmlio_server.def.tmp xmlio_server.def
+    fi
+	
+    IGCM_debug_PopStack "OCE_Update"
+}
+
+#-----------------------------------
+function OCE_Finalize
+{
+    IGCM_debug_PushStack "OCE_Finalize"
+
+    if [ -f date.file ] ; then
+        # Prefix use in opa.card AND in lim2.card :
+	DATE_OPA=$( cat date.file | \
+	    sed "s/\ ${config_UserChoices_JobName}_[0-9]*[a-z]_\([0-9]*_[0-9]*\)_\ */\1/g" )
+        ###DATE_OPA=$( $DATE_OPABF | cut -c1-30 )
+	MainPrefix=${config_UserChoices_JobName}_1d_${DATE_OPA}
+	SecondPrefix=${config_UserChoices_JobName}_5d_${DATE_OPA}
+    fi
+
+    echo FINALIZE OCE !!!
+
+    IGCM_debug_PopStack "OCE_Finalize"
+}

@@ -1,0 +1,8 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.842  
+ ! Linux 2.6.32-279.19.1.el6.x86_64 64-bit - 02/01/13
+ !  3-Jul-14 17:50     
+
+use 1_coordinates_trop075.nc
+list nav_lon[i=1:10,j=1]
+quit

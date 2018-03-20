@@ -1,0 +1,152 @@
+echo "$(date): Running $test_name ..."
+THIS_RUN_DIR=$RUN_DIR/$test_name
+rm -rf $THIS_RUN_DIR
+mkdir $THIS_RUN_DIR
+cd $THIS_RUN_DIR
+if [[ $mirror == remote ]]; then
+  export THIS_RUN_DIR_HPC=$RUN_DIR_HPC/$test_name
+fi
+
+NPROC=${NPROC:-1}
+let count=1
+for this_cfg in $cfg_name
+do
+  extract=$(eval "echo \$extract_$count")
+  build=$(eval "echo \$build_$count")
+  run=$(eval "echo \$run_$count")
+  if [[ $DEBUG == true ]]; then
+    echo "Running extract ($count) ..."
+  fi
+  fcm extract -v 2 $REPOS_URL/trunk/cfg/$this_cfg.cfg >../$test_name.extract.stdout.$count 2>../$test_name.extract.stderr.$count
+  RC=$?
+  if [[ $extract == fail ]]; then
+    if [[ $RC == 0 ]]; then
+      echo "FAILED: $test_name ($count) extract did not fail"
+      exit 1
+    fi
+  elif [[ $extract == fail_known ]]; then
+    if [[ $RC == 0 ]]; then
+      echo "FAILED: $test_name ($count) extract did not fail as expected (known problem fixed?)"
+      exit 1
+    else
+      if [[ $DEBUG == true ]]; then
+        echo "Known problem: $test_name ($count) extract failed"
+      fi
+      break
+    fi
+  elif [[ $extract == succeed_known ]]; then
+    if [[ $RC == 0 ]]; then
+      if [[ $DEBUG == true ]]; then
+        echo "Known problem: $test_name ($count) extract did not fail"
+      fi
+      break
+    else
+      echo "FAILED: $test_name ($count) extract did not succeed as expected (known problem fixed?)"
+      exit 1
+    fi
+  else
+    if [[ $RC != 0 ]]; then
+      echo "FAILED: $test_name ($count) extract failed"
+      exit 1
+    else
+      if [[ $mirror == local ]]; then
+        cd ${THIS_RUN_DIR}_mirror
+      elif [[ $mirror == remote ]]; then
+        echo "$test_name" >> $BATCH_DIRS
+        break
+      fi
+      if [[ $DEBUG == true ]]; then
+        echo "Running build ($count) ..."
+      fi
+      export command_file=$RUN_DIR/$test_name.build.commands.$count
+      fcm build -v 2 -j $NPROC >../$test_name.build.stdout.$count 2>../$test_name.build.stderr.$count
+      RC=$?
+      if [[ $build == fail ]]; then
+        if [[ $RC == 0 ]]; then
+          echo "FAILED: $test_name ($count) build did not fail"
+          exit 1
+        fi
+      elif [[ $build == fail_known ]]; then
+        if [[ $RC == 0 ]]; then
+          echo "FAILED: $test_name ($count) build did not fail as expected (known problem fixed?)"
+          exit 1
+        else
+          if [[ $DEBUG == true ]]; then
+            echo "Known problem: $test_name ($count) build failed"
+          fi
+          break
+        fi
+      elif [[ $build == succeed_known ]]; then
+        if [[ $RC == 0 ]]; then
+          if [[ $DEBUG == true ]]; then
+            echo "Known problem: $test_name ($count) build did not fail"
+          fi
+          break
+        else
+          echo "FAILED: $test_name ($count) build did not succeed as expected (known problem fixed?)"
+          exit 1
+        fi
+      else
+        if [[ $RC != 0 ]]; then
+          echo "FAILED: $test_name ($count) build failed"
+          exit 1
+        else
+          if [[ $run != no ]]; then
+            exe_name=hello.sh
+            env_file=fcm_env.sh
+            if [[ ! -a $env_file ]]; then
+              echo "FAILED: $test_name ($count) env file does not exist"
+              exit 1
+            else
+              . $env_file
+              if [[ $DEBUG == true ]]; then
+                echo "Running executable ($count) ..."
+              fi
+              $exe_name >../$test_name.exe.stdout.$count 2>../$test_name.exe.stderr.$count
+              RC=$?
+              if [[ $run == fail ]]; then
+                if [[ $RC == 0 ]]; then
+                  echo "FAILED: $test_name ($count) run did not fail"
+                  exit 1
+                fi
+              elif [[ $run == fail_known ]]; then
+                if [[ $RC == 0 ]]; then
+                  echo "FAILED: $test_name ($count) run did not fail as expected (known problem fixed?)"
+                  exit 1
+                else
+                  if [[ $DEBUG == true ]]; then
+                    echo "Known problem: $test_name ($count) run failed"
+                  fi
+                  break
+                fi
+              elif [[ $run == succeed_known ]]; then
+                if [[ $RC == 0 ]]; then
+                  if [[ $DEBUG == true ]]; then
+                    echo "Known problem: $test_name ($count) run did not fail"
+                  fi
+                  break
+                else
+                  echo "FAILED: $test_name ($count) run did not succeed as expected (known problem fixed?)"
+                  exit 1
+                fi
+              else
+                if [[ $RC != 0 ]]; then
+                  echo "FAILED: $test_name ($count) run failed"
+                  exit 1
+                fi
+              fi
+            fi
+          fi
+        fi
+      fi
+    fi
+  fi
+  let count=count+1
+done
+
+if [[ $TYPE == control ]]; then
+  touch $THIS_RUN_DIR/.tests.complete
+else
+  cd $BASE_DIR
+  ./compare_results $test_name
+fi

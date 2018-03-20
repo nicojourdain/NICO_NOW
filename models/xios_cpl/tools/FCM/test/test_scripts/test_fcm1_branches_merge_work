@@ -1,0 +1,8 @@
+cfg_name=fcm1_branches_merge_work
+test_name=test_$cfg_name
+
+cd $BASE_DIR/work
+svn sw -q $REPOS_URL/branches/dev/Share/modify_files_merge2
+cd $OLDPWD
+
+. ./perform_test

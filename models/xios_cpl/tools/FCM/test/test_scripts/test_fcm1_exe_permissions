@@ -1,0 +1,14 @@
+cfg_name=fcm1_exe_permissions
+test_name=test_$cfg_name
+run_1=fail
+
+cd $BASE_DIR/work
+svn sw -q $REPOS_URL/branches/dev/Share/exe_rename
+chmod 644 script/hello.sh
+cd $OLDPWD
+
+. ./perform_test
+
+cd $BASE_DIR/work
+chmod 755 script/hello.sh
+cd $OLDPWD

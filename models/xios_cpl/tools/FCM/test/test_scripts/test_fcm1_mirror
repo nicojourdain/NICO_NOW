@@ -1,0 +1,7 @@
+cfg_name=fcm1_mirror
+test_name=test_$cfg_name
+mirror=local
+
+export THIS_RUN_DIR=$run_dir/$test_name
+
+. ./perform_test

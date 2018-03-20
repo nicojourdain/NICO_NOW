@@ -1,0 +1,17 @@
+NETCDF_ROOT=/short/e14/ncj561/util
+NETCDF_INCDIR="-I $NETCDF_ROOT/include"
+NETCDF_LIBDIR="-L $NETCDF_ROOT/lib"
+NETCDF_LIB="-lnetcdff -lnetcdf"
+
+MPI_INCDIR=""
+MPI_LIBDIR=""
+MPI_LIB=""
+
+HDF5_ROOT=/short/e14/ncj561/util
+HDF5_INCDIR="-I $HDF5_ROOT/include"
+HDF5_LIBDIR="-L $HDF5_ROOT/lib"
+HDF5_LIB="-lhdf5_hl -lhdf5 -lhdf5 -lz -lcurl"
+
+OASIS_INCDIR="-I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1"
+OASIS_LIBDIR="-L/short/e14/ncj561/now/models/oa3mct/RAIJIN/lib"
+OASIS_LIB="-lpsmile.MPI1 -lmct -lmpeu -lscrip"

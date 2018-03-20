@@ -1,0 +1,75 @@
+!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!  MPP_OPTIMIZ_ZOOM namelist
+! ---------------------------
+!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!
+!'''''''''''''''''''''''''''''''''''''''''
+!       namspace  spatial indexes
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+! NAMELIST /namspace/ jpiglo,jpjglo,jpidta,jpjdta,nizoom,njzoom
+! jpiglo = overall size of the zoomed region (i-direction)
+! jpjglo = overall size of the zoomed region (j-direction)
+! jpidta = overall size of the domain (i-direction)
+! jpjdta = overall size of the domain (j-direction)
+! nizoom = i -index of point (1,1) of the zoomed region/ jpidta
+! njzoom = j -index of point (1,1) of the zoomed region/ jpjdta
+!
+&NAMSPACE
+    jpk=31
+    jpiglo =  182
+    jpjglo =  149
+    jpidta =  182
+    jpjdta =  149
+    nizoom = 1
+    njzoom = 1
+/
+!'''''''''''''''''''''''''''''''''''''
+!      namproc
+!''''''''''''''''''''''''''''''''''''
+!   jprocx = maximum number of proc
+!   jpmem = 0 : dont care about the use of memory
+!           1 : try to optimize the use of memory
+!
+&NAMPROC
+     jprocx= 80
+     jpmem = 0
+/
+!''''''''''''''''''''''''''''''''''''''
+!      namparam
+!''''''''''''''''''''''''''''''''''''''
+!  ppmcal = memoire en octet d'un processeur
+!  ppmin = ??
+!  ppmax = ??
+!
+&NAMPARAM
+   ppmcal = 225000000.
+   ppmin = 0.4
+   ppmax = 0.9
+/
+!
+!'''''''''''''''''''''''''''''''''''''''
+!      namfile  of filename
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+! NAMELIST /namfile/ cbathy
+! cbathy = name of the  bathymetric file(nc)
+! ln_zps = false if bathy file is level
+!          true  if bathy file is meter
+!
+&NAMFILE
+     cbathy='bathymetry_depth_ORCA_R2_V3.nc'
+     ln_zps=.true.
+/
+!
+!''''''''''''''''''''''''''''''''''''''
+!      namkeep  jpni jpnj  kept
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+! NAMELIST /namkeep/ jpni,jpnj,covdta
+!   jpni = number of procs. in the i-direction
+!   jpnj = number of procs. in the j-direction
+!   covdta = Root for the overdata file name .
+!           Complete name will be {covdta}.{jpni}x{jpnj}_{jpnij}
+&NAMKEEP
+    jpni = 7
+    jpnj =11 
+    covdta = 'ORCA2-zahir'
+/

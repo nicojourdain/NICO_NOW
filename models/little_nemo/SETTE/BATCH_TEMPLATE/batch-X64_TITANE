@@ -1,0 +1,72 @@
+#!/bin/bash 
+#!
+#MSUB -T 3600                # Limite de temps elapsed du job ici 3600s
+#MSUB -r SETTE_JOB           # Nom du job                
+#MSUB -n NPROCS              # Reservation de NPROCS(number of processus)
+##########################################################################
+#
+# Test specific settings. Do not hand edit these lines; the fcm_job.sh script will set these
+# (via sed operating on this template job file). 
+#
+  OCEANCORES=NPROCS
+  export SETTE_DIR=DEF_SETTE_DIR
+#
+# set up mpp computing environment
+#
+# Local settings for machine BULL (TITANE at CCRT France)
+#
+export MPIRUN="mpirun -np $OCEANCORES"
+
+#
+# load sette functions (only post_test_tidyup needed)
+#
+  . ${SETTE_DIR}/all_functions.sh
+#
+
+# modules to load
+module load netcdf
+
+# Don't remove neither change the following line
+# BODY
+
+#
+# These variables are needed by post_test_tidyup function in all_functions.sh
+#
+  export EXE_DIR=DEF_EXE_DIR
+  export INPUT_DIR=DEF_INPUT_DIR
+  export CONFIG_DIR=DEF_CONFIG_DIR
+  export NEMO_VALIDATION_DIR=DEF_NEMO_VALIDATION
+  export NEW_CONF=DEF_NEW_CONF
+  export CMP_NAM=DEF_CMP_NAM
+  export TEST_NAME=DEF_TEST_NAME
+#
+# end of set up
+###############################################################
+#
+# change to the working directory 
+#
+cd ${EXE_DIR}
+
+  echo Running on host `hostname`
+  echo Time is `date`
+  echo Directory is `pwd`
+# 
+#  Run the parallel MPI executable 
+#
+  if [ MPI_FLAG == "yes" ]; then
+  echo "Running time ${MPIRUN} ./opa"
+     time ${MPIRUN} ./opa
+  else
+  echo "Running time ./opa"
+     time ./opa
+  fi
+
+#
+  post_test_tidyup
+
+# END_BODY
+# Don't remove neither change the previous line
+
+
+  exit
+

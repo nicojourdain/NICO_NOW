@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1st December 2004), see www.w3.org" />
+
+  <title>Annex: Declarations in FCM central/user configuration file</title>
+  <meta name="author" content="FCM development team" />
+  <meta name="descriptions" content="User Guide Annex" />
+  <meta name="keywords" content="FCM, user guide, annex" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="fcm.js">
+</script>
+</head>
+
+<body onload=
+"javascript: FCM.load('doc/user_guide/', null, [['.', 'FCM User Guide']]);">
+  <div id="document-info">
+    <address id="fcm-js-trail"></address>
+
+    <address id="fcm-js-maintenance"></address>
+  </div>
+
+  <h1>Annex: Declarations in FCM central/user configuration file</h1>
+
+  <p>Please note that setting labels in both the central and the user
+  configuration files are case insensitive.</p>
+
+  <p>N.B. almost all settings in the Fcm::Config module can be modified using
+  the central/user configuration file. However, most users should only ever
+  need to use the following.</p>
+
+  <dl>
+    <dt>
+      SET::URL::&lt;pck&gt;<br />
+      <del>SET::REPOS::&lt;pck&gt;</del>
+    </dt>
+
+    <dd>
+      <p>This declares a URL keyword for the package &lt;pck&gt;. The value of
+      the declaration must be a valid Subversion &lt;URL&gt;. Once declared,
+      the URL keyword &lt;pck&gt; will be associated with the specified URL. In
+      subsequent invocations of the <code>fcm</code> command, the following
+      expansion may take place:</p>
+
+      <ul>
+        <li><samp>fcm:&lt;pck&gt;</samp>: replaced by
+        <samp>&lt;URL&gt;</samp>.</li>
+
+        <li><samp>fcm:&lt;pck&gt;_tr</samp> or <samp>fcm:&lt;pck&gt;-tr</samp>:
+        replaced by <samp>&lt;URL&gt;/trunk</samp></li>
+
+        <li><samp>fcm:&lt;pck&gt;_br</samp> or <samp>fcm:&lt;pck&gt;-br</samp>:
+        replaced by <samp>&lt;URL&gt;/branches</samp></li>
+
+        <li><samp>fcm:&lt;pck&gt;_tg</samp> or <samp>fcm:&lt;pck&gt;-tg</samp>:
+        replaced by <samp>&lt;URL&gt;/tags</samp></li>
+      </ul>
+
+      <p>Example:</p>
+      <pre>
+# Associate "var" with "svn://server/VAR_svn/var"
+set::url::var  svn://server/VAR_svn/var
+
+# "fcm:var" is now the same as "svn://server/VAR_svn/var"
+</pre>
+    </dd>
+
+    <dt>SET::REVISION::&lt;pck&gt;::&lt;keyword&gt;</dt>
+
+    <dd>
+      <p>This declares &lt;keyword&gt; to be the revision number for the
+      package &lt;pck&gt;. The &lt;keyword&gt; string can contain any
+      characters except spaces. It must not contain only digits (as digits are
+      treated as revision numbers). It must not be the Subversion revision
+      keywords HEAD, BASE, COMMITTED and PREV. It cannot begin and end with a
+      pair of curly brackets (as this will be parsed as a revision date). The
+      package &lt;pck&gt; must be associated with a URL using the
+      SET::URL::&lt;pck&gt; declaration described above before this declaration
+      can make sense. Once defined, &lt;keyword&gt; can be used anywhere in
+      place the defined revision number.</p>
+
+      <p>Example:</p>
+      <pre>
+set::revision::var::v22.0  8410
+
+# E.g. "fcm list -r v22.0 fcm:var" is now the same as
+#      "fcm list -r 8410 fcm:var".
+</pre>
+    </dd>
+
+    <dt>SET::URL_BROWSER_MAPPING_DEFAULT::&lt;key&gt;</dt>
+
+    <dd>
+      <p>These declarations are used to change the global default for mapping a
+      version control system URL to its corresponding web browser URL.
+      &lt;key&gt; can be LOCATION_COMPONENT_PATTERN, BROWSER_URL_TEMPLATE or
+      BROWSER_REV_TEMPLATE.</p>
+
+      <p>Example:</p>
+      <pre>
+set::url_browser_mapping_default::location_component_pattern ^//([^/]+)/(.*)$
+set::url_browser_mapping_default::browser_url_template http://{1}/intertrac/source:{2}{3}
+set::url_browser_mapping_default::browser_rev_template @{1}
+</pre>
+    </dd>
+
+    <dt>SET::URL_BROWSER_MAPPING::&lt;pck&gt;::&lt;key&gt;</dt>
+
+    <dd>
+      <p>Similar to SET::URL_BROWSER_MAPPING_DEFAULT::&lt;key&gt;, but settings
+      only apply to the specified &lt;pck&gt;.</p>
+
+      <p>Example:</p>
+      <pre>
+set::url_browser_mapping::var::location_component_pattern ^//([^/]+)/(.*)$
+set::url_browser_mapping::var::browser_url_template http://{1}/intertrac/source:{2}{3}
+set::url_browser_mapping::var::browser_rev_template @{1}
+</pre>
+    </dd>
+
+    <dt>SET::MISC::WEB_BROWSER</dt>
+
+    <dd>
+      <p>This declares a default web browser that can be used by some FCM
+      commands to browse files and documents online. The default is
+      <samp>firefox</samp>.</p>
+
+      <p>Example:</p>
+      <pre>
+# Use Netscape instead of Firefox
+set::misc::web_browser  netscape
+</pre>
+    </dd>
+
+    <dt>INC</dt>
+
+    <dd>
+      <p>This declares the name of a file containing user configuration. The
+      lines in the declared file will be included inline.</p>
+
+      <p>Example:</p>
+      <pre>
+inc  ~fred/etc/fcm.cfg
+# ... and then your changes ...
+</pre>
+    </dd>
+  </dl>
+</body>
+</html>

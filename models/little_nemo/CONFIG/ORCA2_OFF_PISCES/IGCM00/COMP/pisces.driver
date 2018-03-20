@@ -1,0 +1,192 @@
+#!/bin/ksh
+
+#-----------------------------------
+function MBG_Initialize
+{ 
+    IGCM_debug_PushStack "MBG_Initialize"
+
+    JOB_NAME=${config_UserChoices_JobName}
+    OPA_NDT_DAY=${pisces_UserChoices_OPA_NDT_DAY:=4}
+
+# Local function to find namelists parameters
+supergrep () {
+    grep "^ *$1 *=" $2 | sed -e "s% *\!.*%%"
+}
+
+    ##--Variables used by OPA --
+
+    # cexper experience name for vairmer format
+    # nit000 number of the first time step
+    # nitend number of the last time step
+    # nleapy leap year calendar (0/1) (30 for 360d)
+    # nwrite frequency of OUTPUT file
+    # ln_rstart boolean term for restart (true or false)
+    # nstock frequency of restart file
+    # ndate0 initial calendar date aammjj
+    # rdt time step in seconds (coming from namelist)
+
+
+    PAT_CEXPER=$( supergrep cn_exp      ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NIT000=$( supergrep nn_it000    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NITEND=$( supergrep nn_itend    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NLEAPY=$( supergrep nn_leapy    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NSTOCK=$( supergrep nn_stock    ${SUBMIT_DIR}/PARAM/namelist )
+    PAT_NDATE0=$( supergrep nn_date0    ${SUBMIT_DIR}/PARAM/namelist )
+
+
+    OPA_RDT=$( supergrep rn_rdt  ${SUBMIT_DIR}/PARAM/namelist | sed 's/ *rn_rdt *=//' | sed 's/\. *,//' )
+
+    # Period Length In Days between DateBegin and first day of calendar 0001 01 01
+    # /!\ Needed by OPA namelist to compute file names /!\
+    (( DaysSinceJC = $( IGCM_date_DaysSinceJC ${DateBegin} ) + 1 ))
+
+    ##--Variables used by MBG --
+
+    # lrsttr    boolean term for tracer model restart (true or false)
+    # nrsttr    control of the time step (0, 1 or 2)
+    
+    ##--Variables used by PISCES --
+ 
+    PAT_TOP_LRSTTR=$( supergrep ln_rsttr                 ${SUBMIT_DIR}/PARAM/namelist_top )
+    PAT_TOP_NRSTTR=$( supergrep nn_rsttr                 ${SUBMIT_DIR}/PARAM/namelist_top )
+    PAT_PIS_LRIVER=$( supergrep ln_river                 ${SUBMIT_DIR}/PARAM/namelist_pisces )
+
+    ##--Variables used for XMLIO_SERVER configuration file
+
+    # using_server: .TRUE.(.FALSE.) to use(bypass) the io_server
+
+    PAT_SERVER=$( supergrep using_server ${SUBMIT_DIR}/PARAM/xmlio_server.def )
+
+
+    IGCM_debug_PopStack "MBG_Initialize"
+}
+
+#-----------------------------------
+function MBG_Update
+{
+    IGCM_debug_PushStack "MBG_Update"
+
+    # Period Length In Days between DateBegin and first day of calendar 0001 01 01
+    # Needed by OPA namelist to compute correct file names 
+    (( PeriodDaysSinceJC =  $( IGCM_date_DaysSinceJC ${PeriodDateBegin} ) + 1  ))
+
+    ## Count of number of time steps from begin of OPA job
+    (( OPA_NIT000 = ( PeriodDaysSinceJC - DaysSinceJC ) * OPA_NDT_DAY + 1 ))
+    (( OPA_NDT   = PeriodLengthInDays * OPA_NDT_DAY ))
+    (( OPA_NITEND = OPA_NIT000 + OPA_NDT - 1))
+
+    ## Forcing to write one restart file at the end of period
+    OPA_NSTOCK="${OPA_NITEND}"
+
+    ## Verification of number of time steps per day
+    (( NB_SEC_DAY_MODEL = OPA_NDT_DAY * OPA_RDT ))
+    (( NB_SEC_DAY = 60 * 60 * 24 ))
+
+    if [ ${NB_SEC_DAY_MODEL} -ne ${NB_SEC_DAY} ]
+        then
+        echo " VERIFY OPA_NDT_DAY in pisces.card "
+        exit
+    fi
+
+     ## nleapy configuration
+        case ${config_UserChoices_CalendarType} in
+                leap)
+                OPA_NLEAPY=1;;
+                noleap)
+                OPA_NLEAPY=0;;
+                360d)
+                OPA_NLEAPY=30;;
+        esac
+
+
+        typeset -r PRECIS=8
+        NEMO_END=$( echo $( awk "BEGIN { printf \"%0${PRECIS}d\",${OPA_NITEND} }" ) )
+
+    sed -e "s%${PAT_CEXPER}%       cn_exp=\"${config_UserChoices_JobName}\"%" \
+        -e "s%${PAT_NIT000}%       nn_it000=${OPA_NIT000}%"                    \
+        -e "s%${PAT_NITEND}%       nn_itend=${OPA_NITEND}%"                    \
+        -e "s%${PAT_NSTOCK}%       nn_stock=${OPA_NSTOCK}%"                    \
+        -e "s%${PAT_NDATE0}%       nn_date0=${PeriodDateBegin}%"                \
+        -e "s%${PAT_NLEAPY}%       nn_leapy=${OPA_NLEAPY}%"                     \
+        namelist > namelist.tmp
+
+    IGCM_sys_Mv namelist.tmp namelist
+
+    ##--Write Frequency Purpose
+    Nbfreq=$( echo ${config_MBG_WriteFrequency} | wc -w )
+    typeset -Z1 i=1
+    while [ $i -le ${Nbfreq} ]; do
+       topfrequency=$( echo ${config_MBG_WriteFrequency} | awk -v var="$i" "-F " '{print $var}' )
+       topfactor=$( echo ${topfrequency} | sed -e "s/[yYmMdD]//" )
+       case ${topfrequency} in
+         *Y|*y)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}y_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_Y} ;
+            eval WFT${i}=${topfactor}Y ;;
+         *M|*m)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}m_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_M} ;
+            eval WFT${i}=${topfactor}M ;;
+         *D|*d)
+            eval PREFIX_WFT${i}=${config_UserChoices_JobName}_${topfactor}d_${DatesPeriod} ;
+            eval R_OUT_MBG_WFT${i}=${R_OUT_MBG_O_D} ;
+            eval WFT${i}=${topfactor}D ;;
+         *)
+      esac
+       let i=$i+1
+    done
+
+    ##-- Restart configuration
+    if ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_MBG_Restart}" = "n" ] ) ; then
+
+        #echo "NO RESTART FOR TOP"
+        TOP_LRSTTR=.FALSE.
+        TOP_NRSTTR=0
+
+        PISCES_LRIVER=.FALSE.
+
+    elif ( [ "${CumulPeriod}" -eq 1 ] && [ "${config_MBG_Restart}" = "y" ] ) ; then
+
+        #echo "RESTART TOP"
+        TOP_LRSTTR=.TRUE.
+        TOP_NRSTTR=0
+
+        PISCES_LRIVER=.TRUE.
+
+    else
+
+        #echo "RESTART TOP"
+        TOP_LRSTTR=.TRUE.
+        TOP_NRSTTR=2
+
+        PISCES_LRIVER=.TRUE.
+
+    fi
+
+# on force les sorties PISCES comme les sorties OPA
+
+    sed -e "s%${PAT_TOP_LRSTTR}%          ln_rsttr=${TOP_LRSTTR}%"                   \
+        -e "s%${PAT_TOP_NRSTTR}%          nn_rsttr=${TOP_NRSTTR}%"                   \
+        namelist_top > namelist_top.tmp
+
+    IGCM_sys_Mv namelist_top.tmp namelist_top
+
+    sed -e "s%${PAT_PIS_LRIVER}%          ln_river=${PISCES_LRIVER}%"                \
+        namelist_pisces > namelist_pisces.tmp
+
+    IGCM_sys_Mv namelist_pisces.tmp namelist_pisces
+
+
+    IGCM_debug_PopStack "MBG_Update"
+}
+
+#-----------------------------------
+function MBG_Finalize
+{
+    IGCM_debug_PushStack "MBG_Finalize"
+
+    echo FINALIZE MBG !!!
+
+    IGCM_debug_PopStack "MBG_Finalize"
+}
+

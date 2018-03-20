@@ -1,0 +1,5 @@
+cfg_name=fcm1_um
+test_name=test_$cfg_name
+NPROC=6
+run_1=no
+. ./perform_test

@@ -1,0 +1,4 @@
+cfg_name=fcm1_postproc_hpc
+test_name=test_$cfg_name
+mirror=remote
+. ./perform_test

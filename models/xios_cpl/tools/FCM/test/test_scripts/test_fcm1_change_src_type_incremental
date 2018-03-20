@@ -1,0 +1,7 @@
+cfg_name="fcm1_change_src_type fcm1_change_src_type"
+test_name=test_fcm1_change_src_type_incremental
+. ./perform_test
+
+# This test was designed to demonstrate the problem raised in ticket:345.
+# The problem (now fixed) was that some files got rebuilt unnecessarily
+# in the incremental build.

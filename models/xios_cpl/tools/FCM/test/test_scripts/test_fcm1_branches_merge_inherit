@@ -1,0 +1,3 @@
+cfg_name=fcm1_branches_merge_inherit
+test_name=test_$cfg_name
+. ./perform_test

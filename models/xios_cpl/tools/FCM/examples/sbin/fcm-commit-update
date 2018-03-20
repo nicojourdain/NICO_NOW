@@ -1,0 +1,204 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------------------
+# (C) Crown copyright Met Office. All rights reserved.
+# For further details please refer to the file COPYRIGHT.txt
+# which you should have received as part of this distribution.
+# ------------------------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use File::Basename qw{basename};
+use File::Spec;
+use Pod::Usage qw{pod2usage};
+
+use FCM::Admin::Config;
+use FCM::Admin::Runner;
+use FCM::Admin::System qw{
+    distribute_wc
+    filter_projects
+    get_projects_from_svn_live
+    install_svn_hook
+};
+use FCM::Admin::Util qw{
+    run_html2pdf
+    run_mkpath
+    run_rmtree
+    run_svn_info
+    run_svn_update
+    write_file
+};
+
+# ------------------------------------------------------------------------------
+my $CONFIG = FCM::Admin::Config->instance();
+my %PATTERN_OF = (
+    q{}             => qr{.*}xms,
+    DOC_COLLAB      => qr{doc/collaboration/}xms,
+    DOC_STD_FORTRAN => qr{doc/standards/fortran_standard\.html}xms,
+    DOC_STD_PERL    => qr{doc/standards/perl_standard\.html}xms,
+    DOC_UG          => qr{doc/user_guide/}xms,
+    SRC             => qr{(?:bin|etc|lib|man)/}xms,
+    SRC_HOOK        => qr{svn-hooks/}xms,
+);
+
+if (!caller()) {
+    main(@ARGV);
+}
+
+# ------------------------------------------------------------------------------
+# The main logic.
+sub main {
+    if (@_ != 2) {
+        my $message = sprintf(qq{Expect 2 arguments, %d given}, scalar(@_));
+        pod2usage({q{-exitval} => 1, q{-message} => $message});
+    }
+    my ($repos_name, $log_dir_path) = @_;
+    create_lock($repos_name, $log_dir_path) || return;
+    my $RUNNER = FCM::Admin::Runner->instance();
+    UPDATE:
+    while (1) {
+        my @updates_in_fcm   = run_svn_update($CONFIG->get_fcm_wc());
+        my @updates_in_admin = run_svn_update($CONFIG->get_fcm_admin_wc());
+        if (!@updates_in_fcm && !@updates_in_admin) {
+            last UPDATE;
+        }
+        for my $task ((
+            {
+                name => '(re-)installing hook scripts',
+                main => sub {
+                    for my $project (get_projects_from_svn_live()) {
+                        install_svn_hook($project);
+                    }
+                    return 1;
+                },
+                want => get_pattern_grepper('SRC_HOOK', 1), # in "Admin"
+            },
+            {
+                name => 'updating FCM release number file',
+                main => sub {
+                    my $root = $CONFIG->get_fcm_wc();
+                    write_file(
+                        File::Spec->catfile($root, qw{etc fcm_rev}),
+                        run_svn_info($root)->last_changed_rev(),
+                    );
+                },
+                want => get_pattern_grepper(q{}),
+            },
+            {
+                name => 'generating PDF for the user guide',
+                main => get_fcm_html2pdf('user_guide', 'user-guide'),
+                want => get_pattern_grepper('DOC_UG'),
+            },
+            {
+                name => 'generating PDF for the collaboration guide',
+                main => get_fcm_html2pdf('collaboration', 'collaboration'),
+                want => get_pattern_grepper('DOC_COLLAB'),
+            },
+            {
+                name => 'generating PDF for the FCM Fortran Standard document',
+                main => get_fcm_html2pdf(
+                    'standards', 'fortran-standard', 'fortran_standard',
+                ),
+                want => get_pattern_grepper('DOC_STD_FORTRAN'),
+            },
+            {
+                name => 'generating PDF for the FCM Perl Standard document',
+                main => get_fcm_html2pdf(
+                    'standards', 'perl-standard', 'perl_standard',
+                ),
+                want => get_pattern_grepper('DOC_STD_PERL'),
+            },
+            {
+                name => 'distributing FCM to standard locations',
+                main => \&distribute_wc,
+                want => get_pattern_grepper('SRC'),
+            },
+        )) {
+            if ($task->{want}->(\@updates_in_fcm, \@updates_in_admin)) {
+                $RUNNER->run($task->{name}, $task->{main});
+            }
+        }
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Returns a wrapper of run_html2pdf, base on the relative $path in the doc/
+# sub-directory of the central FCM working copy pointing to the container
+# directory of the input and output.
+sub get_fcm_html2pdf {
+    my ($path, $name_of_output, $name_of_input) = @_;
+    my $container = File::Spec->catfile($CONFIG->get_fcm_wc(), 'doc', $path);
+    my $input = File::Spec->catfile(
+        $container, ($name_of_input ? $name_of_input : 'index') . '.html',
+    );
+    my $output = File::Spec->catfile($container, "fcm-$name_of_output.pdf");
+    return sub {run_html2pdf($input, $output)};
+}
+
+# ------------------------------------------------------------------------------
+# Returns a function that "grep" for a known pattern ($pattern_key). The
+# returned function expects a list reference in the $index'th (default = 0)
+# element of its argument list.
+sub get_pattern_grepper {
+    my ($pattern_key, $index) = @_;
+    if (!defined($index)) {
+        $index = 0;
+    }
+    return sub {grep({$_ =~ $PATTERN_OF{$pattern_key}} @{$_[$index]})};
+}
+
+# ------------------------------------------------------------------------------
+# Creates a lock. Returns true on success. Removes lock when program finishes.
+sub create_lock {
+    my ($repos_name, $log_dir_path) = @_;
+    my $lock = File::Spec->catfile($log_dir_path, $repos_name . '.lock');
+    if (-e $lock) {
+        $lock = undef;
+        return;
+    }
+    return run_mkpath($lock);
+    END {
+        if ($lock) {
+            run_rmtree($lock);
+        }
+    }
+}
+
+__END__
+
+=head1 NAME
+
+fcm-commit-update
+
+=head1 SYNOPSIS
+
+    fcm-commit-update REPOS-NAME LOG-DIR-PATH
+
+=head1 DESCRIPTION
+
+This program performs the post-commit update for the FCM system. It runs
+continuously until no more update is available. It prevent another copy from
+running by creating a lock. If another copy detects a lock, it exits without
+doing anything.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item REPOS-NAME
+
+The name of the repository invoking this program.
+
+=item LOG-DIR-PATH
+
+The path to the log directory.
+
+=back
+
+=head1 COPYRIGHT
+
+E<169> Crown copyright Met Office. All rights reserved.
+
+=cut

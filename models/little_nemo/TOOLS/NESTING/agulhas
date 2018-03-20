@@ -1,0 +1,99 @@
+&input_output
+    iom_activated = true 
+/
+
+&coarse_grid_files    
+    parent_coordinate_file = 'coordinates.nc'
+    parent_meshmask_file   = 'meshmask.nc'  
+/    
+    
+&bathymetry    
+    new_topo = true
+    elevation_database = 'bathymetry_meter_ORCA_R05.nc'
+    elevation_name = 'topo'
+    smoothing = true
+    smoothing_factor = 0.6
+    nb_connection_pts = 3    
+    removeclosedseas = true
+    type_bathy_interp = 0 
+/   
+
+&nesting    
+    imin = 125
+    imax = 170
+    jmin = 36
+    jmax = 63
+    rho  = 4									
+    rhot = 2
+    bathy_update = true
+    updated_parent_file = 'bathy_updated.nc'				
+/
+
+&vertical_grid    
+    ppkth = 21.4333619793800
+    ppacr = 3
+    ppdzmin = 0
+    pphmax  = 0
+    psur = -4762.96143546300
+    pa0  = 255.58049070440
+    pa1  = 245.58132232490
+    ldbletanh = .FALSE.
+    pa2  =   100.7609285000000
+    ppkth2=   48.02989372000000
+    ppacr2=    13.00000000000
+    N  = 31
+/    
+    
+&partial_cells    	
+    partial_steps = true
+    parent_bathy_meter = 'bathy_meter.nc'
+    parent_batmet_name = 'Bathymetry'
+    e3zps_min = 25.
+    e3zps_rat = 0.2
+/
+
+&nemo_coarse_grid    
+    jpizoom = 1			
+    jpjzoom = 1			
+/
+&forcing_files		   
+    U_FILES = 'taux_1m.nc'
+!'dyna_grid_U.nc'                              ! needed for Offline
+    V_FILES =  'tauy_1m.nc'
+!'dyna_grid_V.nc'                              ! needed for Offline
+    FLX_FILES = 
+    'data_1m_salinity_nomask.nc',
+    'data_1m_potential_temperature_nomask.nc',
+    'flx.nc',
+    'geothermal_heating.nc'
+!    'river.orca.nc ',                         ! needed for Pisces
+!    'ndeposition.orca.nc',                    ! needed for Pisces 
+!    'dust.orca.nc',                           ! needed for Pisces 
+!    'bathy.orca.nc'                           ! needed for Pisces
+!'dyna_grid_T.nc',                             ! needed for Offline
+!'dyna_grid_W.nc'                              ! needed for Offline 
+/
+
+&interp
+    VAR_INTERP =
+    'votemper/bicubic',
+    'vosaline/bicubic'
+!    'dust/bilinear',
+!    'riverdic/bilinear',
+!    'riverpoc/bilinear',
+!    'riverdoc/bilinear',
+!    'nedep/bilinear',
+!    'bathy/bilinear'
+/
+
+&restart
+    restart_file = 'restart.nc'   
+    shlat = 0
+    dimg = false
+    dimg_output_file = 'test_dimg'
+    adatrj = 360.25 
+    interp_type = 'bilinear'
+/ 
+&restart_trc
+    restart_trc_file = 'restart_trc.nc'   
+/ 

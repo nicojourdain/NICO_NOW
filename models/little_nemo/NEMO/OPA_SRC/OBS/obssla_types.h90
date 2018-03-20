@@ -1,0 +1,9 @@
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: obssla_types.h90 2287 2010-10-18 07:53:52Z smasson $
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+   INTEGER, PARAMETER :: imaxmissions=8
+   CHARACTER(len=3) :: cmissions(0:imaxmissions) = &
+      & (/ 'XXX', 'E1 ', 'E2 ', 'TP ', 'TPM', 'G2 ', 'J1 ', 'EN ', 'J2 ' /)

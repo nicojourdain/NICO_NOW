@@ -1,0 +1,4 @@
+cfg_name=fcm1_delete_inc_file
+test_name=test_$cfg_name
+build_1=fail
+. ./perform_test

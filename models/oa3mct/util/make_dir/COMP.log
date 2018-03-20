@@ -1,0 +1,197 @@
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether mpicc -I/apps/openmpi/1.6.3/include accepts -g... yes
+checking for mpicc -I/apps/openmpi/1.6.3/include option to accept ISO C89... none needed
+checking how to run the C preprocessor... mpicc -I/apps/openmpi/1.6.3/include -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking whether byte ordering is bigendian... no
+checking whether we are using the GNU Fortran compiler... no
+checking whether /apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include accepts -g... yes
+checking for Fortran flag to compile .F90 files... none
+checking for mpif90... /apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include
+checking for MPI_Init... yes
+checking for mpif.h... yes
+Checking Compiler Version
+checking how to get the version output from /apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include... -V
+checking for Fortran flag to compile preprocessed .F files... none
+checking how to define symbols for preprocessed Fortran... -D
+checking how to get verbose linking output from /apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include... -v
+checking for Fortran libraries of /apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include...  -L/apps/openmpi/1.6.3/lib -L/apps/intel-ct/12.1.9.293/cc/lib/intel64 -L/apps/intel-ct/12.1.9.293/fc/lib/intel64 -L/apps/openmpi/1.6.3/lib/profilers -L/apps/nco/4.3.6/lib -L/apps/intel-ct/composer_xe_2011_sp1.9.293/compiler/lib/intel64 -L/plush/dugong/usr/bin/../lib/gcc/x86_64-redhat-linux/4.4.7 -L/plush/dugong/usr/bin/../lib/gcc -L/usr/lib/gcc/x86_64-redhat-linux/4.4.7 -L/plush/dugong/usr/bin/../lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/plush/dugong/usr/bin/../lib/gcc/x86_64-redhat-linux/4.4.7/../../.. -L/lib64 -L/lib -L/usr/lib64 -L/usr/lib -lmpi_f90 -lmpi_f77 -lmpi -ldl -limf -lm -lrt -lnsl -lutil -lifport -lifcoremt -lsvml -lipgo -lirc -lpthread -lirc_s
+checking for dummy main to link with Fortran libraries... none
+checking for Fortran name-mangling scheme... lower case, underscore, no extra underscore
+Hostname=raijin3
+Machine=x86_64
+OS=Linux
+
+Output Variables: {CC=mpicc -I/apps/openmpi/1.6.3/include} {CFLAGS=-g -O2} {FC=/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include} {FCFLAGS=-g} {PROGFCFLAGS=}{CPPDEFS= -DSYSLINUX -DCPR} {OPT=} {DEBUG=} {REAL8=} {BIT64=} {ENDIAN=} {MPIFC=/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include} {MPILIBS=} {MPIHEADER=} {INCLUDEFLAG=-I} {INCLUDEPATH=} {AR=ar cq} {BABELROOT=} {COMPILER_ROOT=} {PYTHON=} {PYTHONOPTS=} {FORT_SIZE=} {prefix=NONE} {SRCDIR=} {FC_DEFINE=-D}
+
+configure: creating ./config.status
+config.status: creating Makefile.conf
+config.status: creating config.h
+Please check the Makefile.conf
+Have a nice day!
+gmake[2]: Entering directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir'
+gmake[3]: Entering directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu'
+mpicc -I/apps/openmpi/1.6.3/include -c -DSYSLINUX -DCPR  -g -O2   -I. -I../ get_zeits.c
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_mpif.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_realkinds.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_stdio.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_mpif90.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_dropdead.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_chars.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_flow.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_ioutil.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_mpout.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_die.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_IndexBin_char.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_IndexBin_integer.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_IndexBin_logical.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_mall.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_String.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_List.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_MergeSorts.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_Filename.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_FcComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_Permuter.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_rankMerge.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_SortingTools.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_StrTemplate.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_FileResolv.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_inpak90.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_TraceBack.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -I. -I../ -DSYSLINUX -DCPR -g   m_zeit.F90
+rm -f libmpeu.a
+ar cq libmpeu.a get_zeits.o m_IndexBin_char.o m_IndexBin_integer.o m_IndexBin_logical.o m_List.o m_MergeSorts.o m_Filename.o m_FcComms.o m_Permuter.o m_SortingTools.o m_String.o m_StrTemplate.o m_chars.o m_die.o m_dropdead.o m_FileResolv.o m_flow.o m_inpak90.o m_ioutil.o m_mall.o m_mpif.o m_mpif90.o m_mpout.o m_rankMerge.o m_realkinds.o m_stdio.o m_TraceBack.o m_zeit.o
+gmake[3]: Leaving directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu'
+gmake[3]: Entering directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mct'
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_MCTWorld.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_AttrVect.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GlobalMap.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GlobalSegMap.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GlobalSegMapComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Accumulator.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_AttrVectComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SparseMatrix.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Navigator.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_AttrVectReduce.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_AccumulatorComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GeneralGrid.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GeneralGridComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SpatialIntegralV.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SpatialIntegral.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_GlobalToLocal.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_ConvertMaps.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_ExchangeMaps.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Router.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Rearranger.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SparseMatrixDecomp.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SparseMatrixComms.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SparseMatrixToMaps.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_SparseMatrixPlus.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_MatAttrVectMul.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Merge.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu m_Transfer.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -c  -DSYSLINUX -DCPR -g  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mpeu mct_mod.F90
+rm -f libmct.a
+ar cq libmct.a m_MCTWorld.o m_AttrVect.o m_GlobalMap.o m_GlobalSegMap.o m_GlobalSegMapComms.o m_Accumulator.o m_SparseMatrix.o m_Navigator.o m_AttrVectComms.o m_AttrVectReduce.o m_AccumulatorComms.o m_GeneralGrid.o m_GeneralGridComms.o m_SpatialIntegral.o m_SpatialIntegralV.o m_MatAttrVectMul.o m_Merge.o m_GlobalToLocal.o m_ExchangeMaps.o m_ConvertMaps.o m_SparseMatrixDecomp.o m_SparseMatrixToMaps.o m_SparseMatrixComms.o m_SparseMatrixPlus.o m_Router.o m_Rearranger.o m_Transfer.o mct_mod.o
+gmake[3]: Leaving directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir/mct'
+gmake[2]: Leaving directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mctdir'
+gmake[2]: Entering directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip'
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/kinds_mod.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/mod_oasis_flush.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/constants.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/iounits.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/grids.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_vars.F
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_bicubic_reduced.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/netcdf.F
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/timers.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_conserv.F
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_distwgt.F
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_bicubic.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_bilinear.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_bilinear_reduced.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_gauswgt.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_write.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/scrip.F
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/distance.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/fracnnei.f
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -c   /short/e14/ncj561/now/models/oa3mct/lib/scrip/src/gradient_bicubic.f
+ar -ruv /short/e14/ncj561/now/models/oa3mct/RAIJIN/lib/libscrip.a  mod_oasis_flush.o  remap_bicubic_reduced.o  netcdf.o  remap_conserv.o  remap_distwgt.o  remap_vars.o  scrip.o  constants.o  distance.o  fracnnei.o  gradient_bicubic.o  grids.o  iounits.o  kinds_mod.o  remap_bicubic.o  remap_bilinear.o  remap_bilinear_reduced.o  remap_gauswgt.o  remap_write.o  timers.o
+a - mod_oasis_flush.o
+a - remap_bicubic_reduced.o
+a - netcdf.o
+a - remap_conserv.o
+a - remap_distwgt.o
+a - remap_vars.o
+a - scrip.o
+a - constants.o
+a - distance.o
+a - fracnnei.o
+a - gradient_bicubic.o
+a - grids.o
+a - iounits.o
+a - kinds_mod.o
+a - remap_bicubic.o
+a - remap_bilinear.o
+a - remap_bilinear_reduced.o
+a - remap_gauswgt.o
+a - remap_write.o
+a - timers.o
+gmake[2]: Leaving directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip'
+gmake[2]: Entering directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1'
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_kinds.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_data.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_sys.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_parameters.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_mpi.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_timer.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_part.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_var.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_string.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_namcouple.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_ioshr.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_io.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_coupler.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_advance.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_getput_interface.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_grid.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis_method.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_oasis.F90
+/apps/openmpi/1.6.3/bin/mpif90 -I/apps/openmpi/1.6.3/include -O3 -xAVX -fp-model precise -I. -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1 -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip  -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct  -Duse_libMPI -Duse_netCDF -Duse_comm_MPI1 -DTMG_PERF -I/short/e14/ncj561/util/include -I/short/e14/ncj561/now/models/oa3mct/lib/psmile/include -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/mct -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/scrip -I/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/pio  -c   /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/mod_prism.F90
+ar -ruv /short/e14/ncj561/now/models/oa3mct/RAIJIN/lib/libpsmile.MPI1.a  mod_oasis.o  mod_oasis_advance.o  mod_oasis_coupler.o  mod_oasis_data.o  mod_oasis_getput_interface.o  mod_oasis_grid.o  mod_oasis_io.o  mod_oasis_ioshr.o  mod_oasis_kinds.o  mod_oasis_method.o  mod_oasis_mpi.o  mod_oasis_namcouple.o  mod_oasis_parameters.o  mod_oasis_part.o  mod_oasis_string.o  mod_oasis_sys.o  mod_oasis_timer.o  mod_oasis_var.o  mod_prism.o  
+a - mod_oasis.o
+a - mod_oasis_advance.o
+a - mod_oasis_coupler.o
+a - mod_oasis_data.o
+a - mod_oasis_getput_interface.o
+a - mod_oasis_grid.o
+a - mod_oasis_io.o
+a - mod_oasis_ioshr.o
+a - mod_oasis_kinds.o
+a - mod_oasis_method.o
+a - mod_oasis_mpi.o
+a - mod_oasis_namcouple.o
+a - mod_oasis_parameters.o
+a - mod_oasis_part.o
+a - mod_oasis_string.o
+a - mod_oasis_sys.o
+a - mod_oasis_timer.o
+a - mod_oasis_var.o
+a - mod_prism.o
+gmake[2]: Leaving directory `/short/e14/ncj561/now/models/oa3mct/RAIJIN/build/lib/psmile.MPI1'

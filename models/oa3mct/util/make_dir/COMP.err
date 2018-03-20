@@ -1,0 +1,124 @@
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+m_SpatialIntegralV.F90(716): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+		 write(stderr,'(3a,i8,a,e10.6)') myname_, &
+-----------------------------------------^
+m_SpatialIntegralV.F90(959): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+		 write(stderr,'(3a,i8,a,e10.6)') myname_, &
+-----------------------------------------^
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_conserv.F(534): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+     &         1X,I8,1X,I8,1X,F12.8,1X,F12.8,1X,F12.8,1X,F12.8, E12.8)
+-----------------------------------------------------------------^
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_conserv.F(532): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+     &         1X,I8,1X,I8,1X,F12.8,1X,F12.8,1X,F12.8,1X,F12.8, E12.8)
+-----------------------------------------------------------------^
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_conserv.F(530): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+     &         1X,I8,1X,I8,1X,F12.8,1X,F12.8,1X,F12.8,1X,F12.8, E12.8)
+-----------------------------------------------------------------^
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_distwgt.F(474): remark #8290: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+3'.
+ 1011 FORMAT (1X, 'nadd2 =', 1X, I6, 2X, 'distance2 =', 1X, F18.16)
+-------------------------------------------------------------^
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_distwgt.F(473): remark #8290: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+3'.
+ 1010 FORMAT (1X, 'nadd1 =', 1X, I6, 2X, 'distance0 =', 1X, F18.16)
+-------------------------------------------------------------^
+/short/e14/ncj561/now/models/oa3mct/lib/scrip/src/remap_distwgt.F(472): remark #8290: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+3'.
+ 1009 FORMAT (1X, 'nadd0 =', 1X, I6, 2X, 'distance0 =', 1X, F18.16)
+-------------------------------------------------------------^
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ar: creating /short/e14/ncj561/now/models/oa3mct/RAIJIN/lib/libscrip.a
+ls: cannot access /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/*.f90: No such file or directory
+ls: cannot access /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/*.F: No such file or directory
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ifort: command line remark #10010: option '-pthread' is deprecated and will be removed in a future release. See '-help deprecated'
+ls: cannot access /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/*.f90: No such file or directory
+ls: cannot access /short/e14/ncj561/now/models/oa3mct/lib/psmile/src/*.F: No such file or directory
+ar: creating /short/e14/ncj561/now/models/oa3mct/RAIJIN/lib/libpsmile.MPI1.a

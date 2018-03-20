@@ -1,0 +1,27 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.842  
+ ! Linux 2.6.32-279.19.1.el6.x86_64 64-bit - 02/01/13
+ ! 28-Mar-14 15:33     
+
+use 1_bathy_meter_trop075.nc
+sha BATHYMETRY
+sha/lev=(0,1,10) BATHYMETRY
+sha/lev=(0,10,1) BATHYMETRY
+use "/short/e14/ncj561/now/input_new/bathy_meter_trop075.nc"
+sha/lev=(0,10,1) BATHYMETRY
+sha/lev=(1,5,1) BATHYMETRY
+use "/short/e14/ncj561/now/input_new/mesh_mask_trop075.nc"
+sha/over/lev=(0,0.5,0.1)/palette=black TMASK[k=1]
+sho dat
+sha/lev=(1,5,1) BATHYMETRY[i=1:482,j=1:139]
+sha/lev=(1,5,1) BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/over/lev=(0,0.5,0.1)/palette=black TMASK[k=1,I=1:482,J=1:139]
+sha/lev=(1,5,1)/noaxis BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/lev=(1,5,1)/nogrid BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/lev=(1,5,1) BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/over/lev=(0,0.5,0.1)/palette= TMASK[k=1,I=1:482,J=1:139]
+sha/over/lev=(0,0.5,0.1) TMASK[k=1,I=1:482,J=1:139]
+sha/lev=(0,0.5,0.1)/palette=black TMASK[k=1,I=1:482,J=1:139]
+sha/lev=(1,5,1)/over BATHYMETRY[i=1:482,j=1:139,d=2]
+sha/lev=(1,5,1) BATHYMETRY[i=1:482,j=1:139,d=2]
+quit

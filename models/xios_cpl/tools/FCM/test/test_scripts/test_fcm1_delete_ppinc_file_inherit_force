@@ -1,0 +1,7 @@
+cfg_name=fcm1_delete_ppinc_file_inherit_force
+test_name=test_$cfg_name
+build_1=succeed_known
+. ./perform_test
+
+# The build succeeds when it should, in fact, fail.
+# See ticket:335

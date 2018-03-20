@@ -1,0 +1,357 @@
+ -68.    -54.5   -60.    -64.7  00 okstrpond noice ACC_Drake_Passage
+  27.    -73.     27.    -30.   00 nostrpond noice ACC_LeCap
+ 116.    -70.    116.    -33.8  00 nostrpond noice ACC_WAUS
+ 147.3   -70.    147.3   -41.   00 okstrpond noice ACC_TAS
+ 167.4   -73.    167.4   -45.5  00 nostrpond noice ACC_NZ
+ -82.     73.4   -82.     74.9  00 nostrpond   ice ARC_Lancaster_sound
+ -81.     75.1   -81.     76.6  00 nostrpond   ice ARC_Jones_Strait
+ -76.     78.4   -72.     78.3  00 nostrpond   ice ARC_Robeson_Channel
+ -64.6    60.3   -65.     61.5  00 nostrpond   ice ARC_Hudson_Strait
+  20.9    71.5    16.     77.   03 nostrpond   ice ARC_Bear_Island
+zsal
+ 0.00
+34.9
+50.0
+  33.5    68.     33.5    74.   03 nostrpond   ice ARC_Kola_Section
+zsal
+ 0.00
+34.9
+50.0
+  25.     80.     48.2    80.2  00 nostrpond   ice ARC_Spitzberg_FJLand
+  57.     80.3    65.9    76.4  03 nostrpond   ice ARC_FJLand_NovZemlija
+zsigi
+ 0.
+27.8
+30.0
+  57.     70.7    59.     70.2  00 nostrpond   ice ARC_Kara_Gate
+  25.     70.     22.6    77.8  05 nostrpond   ice ARC_Barents_Sea
+zsigi
+ 0.0
+25.0
+27.8
+29.0
+30.0
+ -21.5    79.5    15.     79.   05 nostrpond   ice ARC_Fram_Strait
+zsigi
+0.0
+25.0
+27.8
+29.0
+30.0
+ -81.     27.1   -73.     27.   04 nostrpond noice ATL_West_Atlantic_27N
+zlay
+    0.
+ 1000.
+ 6000.
+20000.
+ -35.     15.1   -35.     -8.   00 nostrpond noice ATL_Tropical_Atlantic_35W
+ -63.      9.    -55.     20.   03 nostrpond noice ATL_South_West_Atlantic
+ztem
+-2.0
+ 4.5
+40.0
+ -35.     54.    -30.5    52.   03 nostrpond noice ATL_Gibbs
+zlay
+    0.
+ 3000.
+20000.
+ -40.     -4.    -40.     10.   03 nostrpond noice ATL_North_Brazil_Current_40W
+zsigi
+ 0.0
+27.45
+30.0
+ -55.     -1.    -50.     10.   05 nostrpond noice ATL_North_Brazil_Current_10N
+zsigi
+ 0.0
+24.5
+27.125
+27.45
+30.0 
+ -53.    -30.1   -40.    -30.   00 nostrpond noice ATL_Brazil_Current_30S
+ -63     -40.1   -53.    -40.   00 nostrpond noice ATL_Falklands_Current_40S
+ -23.    -15.    -23.     15.   05 nostrpond noice ATL_Atlantic_Equatorial
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+   5.    -15.1    13.    -15.   00 nostrpond noice ATL_Benguela_Current_15S
+  10.    -40.     22.    -31.   00 nostrpond noice ATL_Agulhas_zone_30S
+  19.    -30.1   -54.0   -30.0  00 nostrpond noice ATL_Trans_Atlantic_30S
+  -7.     62.2    -4.5    58.   05 nostrpond noice ATL_England_Faroe
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+ -15.     65.     -7.     62.2  05 nostrpond noice ATL_Iceland_Faroe
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+ -37.     66.1   -22.5    66.   05 nostrpond   ice ATL_Denmark_Strait
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+ -44.     63.    -35.     61.   05 nostrpond   ice ATL_East_Greenland
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+ -45.     60.9   -45.     57.   05 nostrpond   ice ATL_South_Greenland
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+ -50.1    55.1   -61.     55.   05 nostrpond   ice ATL_Labrador_55N 
+zsigi
+ 0.0
+25.
+27.8
+29.
+30.0
+   8.     58.5    -2.5    57.   00 nostrpond noice ATL_England_Norway 
+  -5.7    35.5    -5.7    36.5  00 nostrpond noice ATL_Gibraltar 
+  -8.5    32.     -8.5    38.2  00 nostrpond noice ATL_Gulf_Cadiz
+ -44.     60.     -27.    56.   00 nostrpond noice ATL_Ovide1
+ -27.     56.     -16.    40.   00 nostrpond noice ATL_Ovide2
+ -16.     40.1     -8.1   40.   00 nostrpond noice ATL_Portugal
+  -4.     48.2     -8.1   43.1  05 nostrpond noice ATL_Biscay
+zsal
+ 0.0
+35.6
+36.0
+36.0
+50.0
+ -14.     26.1    -22.    26.   00 nostrpond noice ATL_South_Canaries
+ -24.     32.     -24.    37.9  03 nostrpond noice ATL_Acores_24W
+zlay
+   0.
+  800.
+20000.
+ -66.4    18.1    -63.    10.   05 nostrpond noice ATL_Antilles
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -60.1    18.1    -66.5   18.2  05 nostrpond noice ATL_Porto_Rico
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -66.5    18.1    -68.9   18.5  05 nostrpond noice ATL_Hispagnola_Porto_Rico
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -75.     20.2    -72.6   19.7  05 nostrpond noice ATL_Windward_Passage
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -77.5    18.2    -84.    14.   05 nostrpond noice ATL_Jamaica_Ridge
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -77.5    18.     -76.5   20.3  05 nostrpond noice ATL_Cuba_Jamaica
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -87.3    21.     -84.    22.2  05 nostrpond noice ATL_Yucatan_Strait_KANEC
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -80.5    22.5    -80.5   25.5  05 nostrpond noice ATL_Cuba_Florida
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -78.5    26.7    -80.5   27.   05 okstrpond noice ATL_Florida_Bahamas
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -70.     30.1    -82.    30.   05 nostrpond noice ATL_West_Atlantic_30N
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -70.     45.     -70.    30.1  05 nostrpond noice ATL_Gulf_Stream
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -55.     30.     -55.    47.9  05 nostrpond noice ATL_Gulf_Stream_2
+ztem
+-2.0
+ 4.5
+ 7.0
+12.0
+40.0
+ -55.     48.1     -3.9   48.   00 okstrpond noice ATL_Atlantic_48N
+ -85.     24.1    -10.8   24.   00 okstrpond noice ATL_Atlantic_24N
+ -75.6    24.     -10.8   24.   00 okstrpond noice ATL_Atlantic_24N1
+ -85.     26.1    -10.8   26.   04 okstrpond noice ATL_Atlantic_26N
+zlay
+    0.
+ 1000.
+ 6000.
+20000.
+ 100.    -23.9   115.    -23.9  00 nostrpond noice IND_W1
+ 100.    -33.8   117.    -33.8  00 nostrpond noice IND_W2
+ 100.    -33.8   100.      2.   00 nostrpond noice IND_W3
+ 122.    -45.    122.    -30.   00 nostrpond noice IND_S1
+ 139.5   -45.    139.5   -32.   00 nostrpond noice IND_S2
+ 122.    -45.    139.5   -45.   00 nostrpond noice IND_S3
+ 150.    -28.5   165.    -28.5  00 nostrpond noice IND_E1
+ 148.    -34.    165.    -34.   00 nostrpond noice IND_E2
+ 146.    -41.7   165.    -41.7  00 nostrpond noice IND_E3
+ 165.    -41.7   165.    -28.5  00 nostrpond noice IND_E4
+ 165.    -10.    165.    -28.5  00 nostrpond noice IND_E5
+ 149.    -10.    165.    -10.   00 nostrpond noice IND_E6
+ 165.    -41.7   173.    -41.7  00 nostrpond noice IND_E7
+ 115.     24.    122.     17.   00 nostrpond noice IND_N1
+ 125.      8.    134.     -2.   00 nostrpond noice IND_N2
+ 114.1    -8.45  118.9    -8.45 00 nostrpond noice IND_N3
+ 121.8    -8.7   124.1    -9.7  00 nostrpond noice IND_N4
+ 124.1    -9.7   127.    -15.   00 nostrpond noice IND_N5
+ 115.    -25.    104.     -4.   00 nostrpond noice IND_N6
+ 116.      2.3   134.     -2.   00 nostrpond noice IND_N8
+  33.   -22.2     45.    -22.2  00 nostrpond noice IND_AG1
+  25.   -33.65    44.    -33.65 00 nostrpond noice IND_AG2
+  44.   -22.2     44.    -33.65 00 nostrpond noice IND_AG3
+ 114.    -8.5    120.    -21.   05 nostrpond noice IND_Australia_Bali
+zlay
+    0.
+  200.
+  500.
+ 2000.
+20000.
+  45.     6.1     53.      6.   00 nostrpond noice IND_Somali_Current
+  39.   -16.      45.    -18.   00 nostrpond noice IND_Mozambique_Current
+  27.   -32.1     40.    -32.   06 nostrpond noice IND_Agulhas_Current_32S
+zsigi
+ 0.
+26.5
+26.75
+27.
+27.4
+50.0 
+  43.25   12.65   43.75   12.9  00 nostrpond noice IND_Bab_El_Manded
+  41.      0.1    50.      0.   00 nostrpond noice IND_Indian_Equatorial
+  81.    -20.     81.      8.   00 nostrpond noice IND_Indian_80E
+ 115.    -30.1   109.    -30.   00 nostrpond noice IND_West_Australia
+  52.    -24.     47.    -22.   00 nostrpond noice IND_Madagascar
+  25.    -30.1   120.    -30.   00 nostrpond noice IND_Indian_30S
+-171.5    66.2  -166.0    65.7  00 okstrpond   ice ARC_Bering_Strait
+-120.     47.1   142.5    47.   00 nostrpond noice PAC_Subarctic_Gyre_47N
+-130.     43.   -122.     47.   00 nostrpond noice PAC_OffCalif1
+-122.     40.   -130.     36.   00 nostrpond noice PAC_OffCalif2
+-118.     35.   -126.     31.   00 nostrpond noice PAC_OffCalif3
+ 121.     24.   -110.6    24.   03 okstrpond noice PAC_North_Pacific_24N
+zsigi
+20.
+27.
+30.
+-137.      7.   -137.     25.   00 nostrpond noice PAC_North_Pacific_137W_NEC
+-137.     25.   -137.     37.   00 nostrpond noice PAC_North_Pacific_137W_Kuroshio
+ 132.8    33.    137.     26.   00 nostrpond noice PAC_Kuroshio
+ 175.    -20.    175.     10.   00 nostrpond noice PAC_Pacific_Equatorial_175E
+-125.    -10.   -125.     10.   00 nostrpond noice PAC_Pacific_Equatorial_125W
+ -70.    -17.1   -76.    -17.   00 nostrpond noice PAC_Peru_Current
+ 152.    -30.1   175.    -30.   00 nostrpond noice PAC_East_Australia
+ 142.5    -8.    142.5   -13.   00 nostrpond noice PAC_Torres_Strait
+ 147.     10.    147.     50.   06 nostrpond noice PAC_Pacific_147E_10N_50N
+zsigi
+20.
+26.6
+26.7
+26.8
+27.2
+30.0
+ 165.      0.    165.     50.   06 nostrpond noice PAC_Pacific_165E
+zsigi
+20.
+26.6
+26.7
+26.8
+27.2
+30.0
+ 179.9     0.    179.9    50.   06 nostrpond noice PAC_Pacific_180E
+zsigi
+20.
+26.6
+26.7
+26.8
+27.2
+30.0
+-140.      0.   -140.     30.   06 nostrpond noice PAC_Pacific_140W
+zsigi
+20.
+26.6
+26.7
+26.8
+27.2
+30.0
+-150.     40.   -150.     60.5  00 nostrpond noice PAC_Alaskan_Gyre
+ 161.     55.   -162.     55.5  00 nostrpond noice PAC_Bering_Sea
+ 137.      0.    137.     36.   00 nostrpond noice PAC_JMA_137E_0N_35N
+ 150.    -30.    -70.    -30.   00 nostrpond noice PAC_Pacific_30S
+   0.     38.75    0.     35.36 00 nostrpond noice MED_0E
+   0.     38.75    1.37   39.   00 nostrpond noice MED_Ibiza_Channel
+   9.     36.8     9.     39.37 00 nostrpond noice MED_Sardinia_Channel
+   9.3    42.5    11.68   42.5  00 nostrpond noice MED_Corsica_Channel
+  10.5    36.6    12.9    37.85 00 nostrpond noice MED_Sicily_Strait
+  18.3    40.1    20.07   40.   00 nostrpond noice MED_Otranto_Strait
+  25.     31.5    25.     35.05 00 nostrpond noice MED_Cretan_Passage
+  28.     30.8    28.     37.32 00 nostrpond noice MED_Rhodes_Gyre
+  25.5    35.1    28.6    37.07 00 nostrpond noice MED_Kassos_Strait
+  33.4    35.     33.4    36.36 00 nostrpond noice MED_Cilician_Channel
+  22.9    36.8    23.85   35.42 00 nostrpond noice MED_Kytheron_Strait
+  10.08   60.     10.08,  56.   00 nostrpond noice BAL_WesternBaltic
+  10.     57.     13.     57.   00 nostrpond noice BAL_Kattegat
+  14.     57.     14.     53.   00 nostrpond noice BAL_Skagerrak
+ -53.5    47.     -43.    47.   00 nostrpond noice ATL_FlemishCap
+ -40.    -11.     20.    -11.1  03 okstrpond noice ATL_11S
+zsigi
+0.0
+28.12
+60.0
+  25.    -32.    120.    -32.   00 okstrpond noice IND_Indian_32S
+ 150.    -32.    -70.    -32.   00 okstrpond noice PAC_Pacific_32S

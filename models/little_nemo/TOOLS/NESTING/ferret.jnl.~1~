@@ -1,0 +1,6 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.842  
+ ! Linux 2.6.32-279.19.1.el6.x86_64 64-bit - 02/01/13
+ ! 26-Mar-14 13:06     
+
+use 1_wrf_trop075_BMJv2_SMOOTH2pass_NH_T2_1989.nc

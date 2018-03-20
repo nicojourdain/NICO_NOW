@@ -1,0 +1,4 @@
+cfg_name=fcm1_no_dep
+test_name=test_$cfg_name
+run_1=fail
+. ./perform_test

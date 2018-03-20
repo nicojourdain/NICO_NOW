@@ -1,0 +1,12 @@
+
+      SCRIP code, version 1.4, from Los Alamos National Laboratory (http://climate.lanl.gov/Software/SCRIP)
+
+      Changes made at NOCS for inclusion of weights generation code in NEMO 3.3 and later:
+
+          - File extensions changed from '.f' to '.f90'
+          - File netcdf.f renamed as netcdf_mod.f90 to avoid clash with netcdf library module filename
+          - File netcdf.f modified to add error message to netcdf_error_handler
+          - Small bug in remap_conserv when using gfortran compiler: replace ". and." with " .and."
+          - continuation lines reformatted with '&' moved from the start of the continuation line to 
+            the end of the line before
+    

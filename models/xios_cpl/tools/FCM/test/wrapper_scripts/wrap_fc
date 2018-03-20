@@ -1,0 +1,2 @@
+echo "wrap_fc $@" | sed "s#$RUN_DIR##g" >>$command_file
+ifort  "$@"

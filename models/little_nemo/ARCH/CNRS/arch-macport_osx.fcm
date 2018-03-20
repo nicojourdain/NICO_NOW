@@ -1,0 +1,36 @@
+# generic gfortran compiler options for OSX installed with macport
+#
+# port packages needed:
+#    sudo port install netcdf +gcc45 +openmpi
+#    sudo port install p5-uri
+# add to your PATH /opt/local/lib/openmpi/bin
+#
+# NCDF_INC    netcdf include file
+# NCDF_LIB    netcdf library
+# FC          Fortran compiler command
+# FCFLAGS     Fortran compiler flags
+# FFLAGS      Fortran 77 compiler flags
+# LD          linker
+# LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+# FPPFLAGS    pre-processing flags
+# AR          assembler
+# ARFLAGS     assembler flags
+# MK          make
+# USER_INC    additional include files for the compiler,  e.g. -I<include dir>
+# USER_LIB    additional libraries to pass to the linker, e.g. -l<library>
+
+
+%NCDF_INC            -I/opt/local/include
+%NCDF_LIB            -L/opt/local/lib -lnetcdf -lnetcdff
+%FC	             mpif90 
+%FCFLAGS             -fdefault-real-8 -O3 -funroll-all-loops -fcray-pointer 
+%FFLAGS              %FCFLAGS
+%LD                  %FC
+%LDFLAGS
+%FPPFLAGS            -P -C -traditional
+%AR                  libtool
+%ARFLAGS             -c -s -o
+%MK                  make
+%USER_INC            %NCDF_INC
+%USER_LIB            %NCDF_LIB
+

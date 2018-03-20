@@ -1,0 +1,124 @@
+   !!----------------------------------------------------------------------
+   !!                     ***  ldfdyn_c1d.h90  ***
+   !!----------------------------------------------------------------------
+
+   !!----------------------------------------------------------------------
+   !! NEMO/OPA 3.3 , NEMO Consortium (2010)
+   !! $Id: ldfdyn_c1d.h90 2715 2011-03-30 15:58:35Z rblod $ 
+   !! Software governed by the CeCILL licence (NEMOGCM/NEMO_CeCILL.txt)
+   !!----------------------------------------------------------------------
+
+   SUBROUTINE ldf_dyn_c1d( ld_print )
+      !!----------------------------------------------------------------------
+      !!                  ***  ROUTINE ldf_dyn_c1d  ***
+      !!                   
+      !! ** Purpose :   initializations of the horizontal ocean physics
+      !!
+      !! ** Method  :   1D eddy viscosity coefficients ( depth )
+      !!      ahm3, ahm4 never used
+      !!      harmonic   operator : ahm1 defined at T-level
+      !!      biharmonic operator : ahm2 defined at T-level
+      !!      isopycnal or geopotential harmonic operator
+      !!                                      : ahm1 defined at T-level
+      !!                                      : ahm2 defined at w-level
+      !!
+      !!----------------------------------------------------------------------
+      LOGICAL, INTENT(in) :: ld_print   ! If true, output arrays on numout
+      !
+      INTEGER  ::   jk   ! dummy loop indice
+      REAL(wp) ::   zdam,  zwam,  zm00,  zm01,  zmhf,  zmhs
+      REAL(wp) ::   zdam2, zwam2, zm200, zm201, zmh2f, zmh2s
+      REAL(wp) ::   zahmf, zahms
+      !!----------------------------------------------------------------------
+
+      IF(lwp) WRITE(numout,*)
+      IF(lwp) WRITE(numout,*) 'inildf: 1D eddy viscosity coefficient'
+      IF(lwp) WRITE(numout,*) '~~~~~~  --'
+
+      ! Set ahm1 for laplacian     (always at t-level)
+      ! =============
+      ! (USER: modify ahm1 following your desiderata)
+
+      ! initialization of the profile
+      ! ahms, ahmf: surface and bottom values
+      zahms = ahm0
+      zahmf = ahm0/4.
+      ! zdam, zwam: depth of the inflection pt and width of inflection
+      zdam  = -300.
+      zwam  =  300.
+      ! computation coefficients
+      zm00 = TANH( (0-zdam)/zwam )
+      zm01 = TANH( (-fsdept(1,1,jpk)-zdam)/zwam )
+      zmhf = (zahms-zahmf)/(zm00-zm01)
+      zmhs = zahms-zmhf * zm00
+
+      ! Set ahm2 for bilaplacian   (always at t-level)
+      ! =============
+      ! (USER: modify ahm2 following your desiderata)
+
+      ! initialization of the profile
+      ! ahms, ahmf: surface and bottom values
+      zahm2s = ahm0_blp
+      zahm2f = ahm0_blp/4.
+      ! zdam, zwam: depth of the inflection pt and width of inflection
+      zdam2  = -300.
+      zwam2  =  300.
+      ! computation coefficients
+      zm200 = TANH( (0-zdam2)/zwam2 )
+      zm201 = TANH( (-fsdept(1,1,jpk)-zdam2)/zwam2 )
+      zmh2f = (zahm2s-zahm2f)/(zm200-zm201)
+      zmh2s = zahm2s-zmh2f * zm00
+
+
+      ! set ahm1 and ahm2 at T-level
+      DO jk = 1, jpk
+         ahm1(jk) = zmhs  + zmhf  * TANH( (-fsdept(1,1,jk)-zdam ) / zwam  )
+         ahm2(jk) = zmh2s + zmh2f * TANH( (-fsdept(1,1,jk)-zdam2) / zwam2 )
+      END DO
+
+      ! Control print
+      IF(lwp .AND. ld_print ) THEN
+         WRITE(numout,*)
+         WRITE(numout,*) '         ahm profile (laplacian): '
+         WRITE(numout,*)
+         WRITE(numout,9100)
+         DO jk = 1, jpk
+            WRITE(numout,9110) jk, ahm1(jk), fsdept(1,1,jk)
+         END DO
+         WRITE(numout,*)
+         WRITE(numout,*) '         ahm profile (bilaplacian): '
+         WRITE(numout,*)
+         WRITE(numout,9100)
+         DO jk = 1, jpk
+            WRITE(numout,9110) jk, ahm2(jk), fsdept(1,1,jk)
+         END DO
+      ENDIF
+ 9100 FORMAT('  jk      ahm       ','  depth t-level ' )
+ 9110 FORMAT(i6,2f12.4,3x,2f12.4)
+
+
+      ! Set ahm3=ahm4   (always defined at w-level)
+      ! =============
+
+      ! define ahm3 from the same vertical profile used for ahm4
+      ! (always defined at w-level)
+      ! (USER: modify ahm1 following your desiderata)
+
+      DO jk = 1, jpk
+         ahm3(jk) = zmhs + zmhf * TANH( (-fsdepw(1,1,jk)-zdam) / zwam )
+         ahm4(jk) = ahm3(jk)
+      END DO
+
+      ! Control print
+      IF(lwp .AND. ld_print ) THEN
+         WRITE(numout,*)
+         WRITE(numout,*) '         ahm3=ahm4 profile : '
+         WRITE(numout,*)
+         WRITE(numout,9120)
+         DO jk = 1, jpk
+            WRITE(numout,9110) jk, ahm3(jk), fsdepw(1,1,jk)
+         END DO
+      ENDIF
+ 9120 FORMAT('  jk      ahm       ','  depth w-level ' )
+      !
+   END SUBROUTINE ldf_dyn_c1d

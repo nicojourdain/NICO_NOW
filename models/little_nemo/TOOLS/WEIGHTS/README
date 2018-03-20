@@ -1,0 +1,316 @@
+nocsSCRIP v1.1 03/11/2010
+-------------------------
+
+Author: NOCS NEMO Team
+Contacts: Steven Alderson (sga@noc.soton.ac.uk)
+          Andrew Coward   (acc@noc.soton.ac.uk)
+
+Disclaimer
+
+This directory contains software for generating and manipulating interpolation
+weights for use with the Interpolation On the Fly (IOF) option in NEMO
+v3 onwards.  The utilities rely heavily on the Spherical Coordinate Remapping
+and Interpolation Package (SCRIP) which is freely available from Los Alamos
+(see copyright file). We make no claim to authorship of those parts of the
+SCRIP package we have used and included with this distribution.
+
+Unless otherwise indicated, all other software has been authored by an
+employee or employees of the National Oceanography Centre, Southampton, UK
+(NOCS).  NOCS operates as a collaboration between the Natural Environment
+Research Council (NERC) and the University of Southampton.  The public may
+copy and use this software without charge, provided that this Notice and any
+statement of authorship are reproduced on all copies.  Neither NERC nor the
+University makes any warranty, express or implied, or assumes any liability
+or responsibility for the use of this software.
+
+Introduction
+
+The IOF option enables forced ocean runs without the need to provide surface
+boundary data on the nemo grid. Atmospheric data are kept on their original
+grid(s) which typically have a coarser resolution than the ocean grid. IOF
+supports multiple source (atmospheric) grids and two interpolation methods
+(bilinear and bicubic).  Different combinations of source grid and method can
+be selected for each variable.  IOF is also compatible with AGRIF; allowing
+AGRIF nests to be used without the need to provide separate forcing data
+(only a separate set of weights fields).  Operational details are provided
+in the SBC chapter of the NEMO reference manual.
+
+Please note that the methods described here assume that the forcing datasets
+are unmasked. Where the original sources are masked it is the users'
+responsibility to ensure that an unmasked set is produced on the source
+grid with appropriate oceanic values in previously masked locations. This
+is particularly important for atmospheric variables which experience step
+changes at the land-sea boundary. For these, care must be taken to avoid
+contaminating oceanic values.
+
+The software is divided into several sub-directories:
+
+                         ./
+                          |
+     +-------------+--------------+--------------+
+  SCRIP1.4      nocsutil         src            bin
+
+SCRIP1.4 contains the unmodified copy (apart from compression of two sample netcdf
+files) of SCRIP version 1.4 from Los Alamos. 
+(http://climate.lanl.gov/Software/SCRIP).
+
+The bin directory contains python script freeform.py.
+This is run to reformat the code for use within the NEMO 3.3 fcm framework.
+It creates and populates a directory called 'src' with copied and modified versions
+of the SCRIP library routines (and derived programs from the nocsutil directory).  
+Changes are described in the src/CHANGES file.
+This script has already been run and only needs to be re-executed if SCRIP is updated.
+
+The src directory also contains the three programs used to generate a weights file.
+The three programs are:
+
+scripgrid.exe (scripgrid.F90) which creates two grid description files suitable for
+input to the scrip package. 
+
+scrip.exe (scrip.F90) which takes these descriptions and generates the required
+weights in the standard SCRIP format. This program is a version of the SCRIP
+program: scrip.f which has been modified to accept the name of its namelist
+file on the command line.
+
+scripshape.exe (scripshape.F90) which takes the output from scrip and rearranges
+the fields into a series of 2D fields more suited for input into NEMO using
+the iom_get routine.
+
+All three FORTRAN90 programs read domain information from their respective
+netCDF input files and dynamically allocate internal storage. They are
+thus independent of the target configuration and have been successfully
+tested with both ORCA2 and ORCA025 grids. Their suitably for use with larger
+grids has not been tested but should only be subject to limitations of
+the operating system and the memory available to the processing element.
+
+A separate tar file is available containing test data.
+This comprises an ORCA2 coordinates file and sample DFS4.1 input field that
+can be used for testing. Reference weights files generated using the two
+example namelists provided are located in its refout subdirectory.
+
+Installation is by use of the maketools script.
+E.g. change to the NEMOGCM/TOOLS directory and type:
+
+./maketools -help
+
+and, for example:
+
+./maketools -m gfortran_linux -n WEIGHTS
+
+
+Example Use
+-----------
+
+  cd data
+  ../scripgrid.exe  namelist_reshape_bilin    (creates remap_data_grid.nc 
+                                                and remap_nemo_grid.nc)
+  ../scrip.exe      namelist_reshape_bilin    (creates data_nemo_bilin.nc)
+
+  ../scripshape.exe namelist_reshape_bilin    (creates reshape_orca2_bilinear.nc)
+  
+[Note that because the gfortran compiler does not understand the iargc function 
+and getarg subroutine calls, command line namelist names can only be supplied if
+symbol ARGC is defined during compilation (eg add '#define ARGC' to the top of 
+the relevant program).  If not, the program asks for the name instead during execution.]
+
+Only the final output file is required for use with NEMO but the intermediate
+files can be checked against the examples in the test data (available separately).
+
+For bicubic mapping only scrip and scripshape need to be rerun (because the grid_inputs namelist
+entries are identical in the two namelist files, see Controls section below):
+ 
+  ../scrip.exe namelist_reshape_bicubic       (creates data_nemo_bicubic.nc)
+
+  ../scripshape.exe namelist_reshape_bicubic  (creates reshape_orca2_bicubic.nc)
+
+Controls
+--------
+
+The SCRIP derived utilities use SCRIP-style namelists to control their
+operation.  In the example above the same named file is used for both but within that
+file are two separate namelists:
+
+&grid_inputs
+    input_file = './snow_1m_TRP_1958.nc'
+    nemo_file = 'coordinates.nc'
+    datagrid_file = 'remap_data_grid.nc'
+    nemogrid_file = 'remap_nemo_grid.nc'
+    method = 'regular'
+    input_lon = 'lon'
+    input_lat = 'lat'
+    nemo_lon = 'glamt'
+    nemo_lat = 'gphit'
+    nemo_mask = 'none'
+    nemo_mask_value = 10
+    input_mask = 'none'
+    input_mask_value = 10
+/
+
+which is used by scripgrid, and:
+
+&remap_inputs
+    num_maps = 1
+    grid1_file = 'remap_data_grid.nc'
+    grid2_file = 'remap_nemo_grid.nc'
+    interp_file1 = 'data_nemo_bilin.nc'
+    interp_file2 = 'nemo_data_bilin.nc'
+    map1_name = 'data to nemo bilin Mapping'
+    map2_name = 'nemo to data bilin Mapping'
+    map_method = 'bilinear'
+    normalize_opt = 'frac'
+    output_opt = 'scrip'
+    restrict_type = 'latitude'
+    num_srch_bins = 90
+    luse_grid1_area = .false.
+    luse_grid2_area = .false.
+/
+
+which is used by scrip.
+
+scripshape also reads information from a namelist:
+
+&shape_inputs
+    interp_file = 'data_nemo_bilin.nc'
+    output_file = 'weights_bilin.nc'
+    ew_wrap     = 0
+/
+
+scripgrid.exe
+-------------
+
+scripgrid accesses the named files and coordinate data in order to produce
+the grid centre and corner locations required by scrip. In the example given,
+a file called 'coordinates.nc' must exist in the current directory. This is
+used by scripgrid as a nemo coordinates file and the correct corner
+locations appropriate to the named grid centres are obtained (i.e. since
+glamt is named, glamf and gphif will be used to provide corner coordinates).
+The nemo file need not be called 'coordinates.nc' (e.g. '1_coordinates.nc' instead),
+but must have longitude and latitude variables which start with the four 
+characters 'gphi' and 'glam' respectively.
+"input_file" file must contain at least one variable on a grid whose axes are
+described by the netcdf coordinate variables named in input_lon and input_lat.
+The program produces two grid description files, one corresponding to each
+input file, for use by the scrip program to calculate weights required to
+go from one to the other and back again.
+
+This step is independent of the mapping method (e.g. bilinear or bicubic)
+and so only one set of remap_data_grid.nc and remap_nemo_grid.nc files needs
+to be produced for each pair of source and destination grids.
+
+scrip.exe
+---------
+
+scrip takes the output files from scripgrid and creates a file of weights
+to use to interpolate between the two grids described. The example given
+only requests 1 map (from data to nemo); setting num_maps=2 will provide
+the reverse weights if required.
+ 
+ - num_maps is either 1 or 2 depending on whether the reverse 
+    transformation is required 
+
+ - grid1_file, grid2_file: two remap grid files are required 
+    as output by scripgrid
+
+ - interp_file1, interp_file2: one or two interp_file names are 
+    then supplied; these hold the weights to convert one grid to another
+
+ - map1_name, map2_name: the map_name variables are just descriptive
+
+ - map_method: can be 'bilinear' or 'bicubic'
+
+ - normalize_opt: should usually be 'frac' or else the user needs to do  
+    this scaling manually (this seems to the case for fractional ice cover)
+
+ - output_opt may be supplied and set to either 'scrip' or 'ncar-csm'
+
+ - restrict_type: should be 'latitude' or 'latlon' in which case 
+    num_srch_bins only are used in one or two directions
+
+ - use_grid_area fields override the scrip calculation of area in 
+    case the model gets slightly different answers, but the area needs 
+    to be supplied in the input files
+
+A conservative mapping scheme exists but is not yet working with NEMO grids.
+See the scrip package documentation for more details of these parameters.
+(http://climate.lanl.gov/Software/SCRIP/SCRIPusers.pdf)
+
+scripshape.exe
+--------------
+
+scripshape takes the output from scrip (e.g. data_nemo_bilin.nc ) and
+rearranges the source and destination indices and associated weights into
+sets of 2D fields each spanning the nemo grid. Each set is associated with
+each node involved in the interpolation scheme.  Thus for a bilinear mapping
+the weights file required by the IOF option includes the following fields:
+
+  double src01(lat, lon) ;   double dst01(lat, lon) ;   double wgt01(lat, lon) ;
+  double src02(lat, lon) ;   double dst02(lat, lon) ;   double wgt02(lat, lon) ;
+  double src03(lat, lon) ;   double dst03(lat, lon) ;   double wgt03(lat, lon) ;
+  double src04(lat, lon) ;   double dst04(lat, lon) ;   double wgt04(lat, lon) ;
+
+For a bicubic mapping the required fields are:
+
+  double src01(lat, lon) ;   double dst01(lat, lon) ;   double wgt01(lat, lon) ;
+  double src02(lat, lon) ;   double dst02(lat, lon) ;   double wgt02(lat, lon) ;
+  double src03(lat, lon) ;   double dst03(lat, lon) ;   double wgt03(lat, lon) ;
+  double src04(lat, lon) ;   double dst04(lat, lon) ;   double wgt04(lat, lon) ;
+  double src05(lat, lon) ;   double dst05(lat, lon) ;   double wgt05(lat, lon) ;
+  double src06(lat, lon) ;   double dst06(lat, lon) ;   double wgt06(lat, lon) ;
+  double src07(lat, lon) ;   double dst07(lat, lon) ;   double wgt07(lat, lon) ;
+  double src08(lat, lon) ;   double dst08(lat, lon) ;   double wgt08(lat, lon) ;
+  double src09(lat, lon) ;   double dst09(lat, lon) ;   double wgt09(lat, lon) ;
+  double src10(lat, lon) ;   double dst10(lat, lon) ;   double wgt10(lat, lon) ;
+  double src11(lat, lon) ;   double dst11(lat, lon) ;   double wgt11(lat, lon) ;
+  double src12(lat, lon) ;   double dst12(lat, lon) ;   double wgt12(lat, lon) ;
+  double src13(lat, lon) ;   double dst13(lat, lon) ;   double wgt13(lat, lon) ;
+  double src14(lat, lon) ;   double dst14(lat, lon) ;   double wgt14(lat, lon) ;
+  double src15(lat, lon) ;   double dst15(lat, lon) ;   double wgt15(lat, lon) ;
+  double src16(lat, lon) ;   double dst16(lat, lon) ;   double wgt16(lat, lon) ;
+
+This program also adds an attribute to the weights file for use by the fld_interp
+routine in fldread.F90.  This tells the model about the east-west cyclicity of the source grid.
+The value needs to be supplied in the scripshape namelist via the variable ew_wrap.
+It should have one of the values -1, 0, 1 or 2.  -1 means that the input grid is not
+cyclic; 0 means that it is cyclic but with no overlapping columns; and a value greater
+than zero represents the number of columns that overlap.  In fact it only has an effect 
+when using bicubic interpolation in which the model needs to know which additional columns
+have to be read in to correctly calculate gradient values.
+The weights file produced by scripshape is ready for use in NEMO. This file
+needs to by placed in the nemo working directory and needs to be named in the
+appropriate SBC namelist entry (e.g. namsbc_clio, namsbc_flux or namsbc_core).
+
+scripinterp.exe
+---------------
+
+Take data on an input grid and interpolate to the nemo grid using the weights
+calculated by the scrip program.
+Method
+Two namelists are used for configuration, eg
+
+&interp_inputs
+    input_file = "../data/wsx_av.nc"
+    interp_file = "data_nemo_bilin.nc"
+    input_name = "wsx"
+    input_start = 1,1,1,1
+    input_stride = 1,1,1,1
+    input_stop = 0,0,0,1
+    input_vars = 'time'
+/
+
+&interp_outputs
+    output_file = "taux_1m.nc"
+    output_mode = "create"
+    output_dims = 'x', 'y', 'time_counter'
+    output_scaling = "sozotaux|1.0", "time_counter|86400.0"
+    output_name = 'sozotaux'
+    output_lon = 'x'
+    output_lat = 'y'
+    output_vars = 'time_counter'
+    output_attributes = 'time_counter|units|seconds since 1995-00-00 00:00:00',
+                        'time_counter|calendar|noleap',
+                        'sozotaux|units|N/m2'
+/
+
+This program just multiplies by weights and sums over each contributing point,
+and then formats the output correctly for the model.
+

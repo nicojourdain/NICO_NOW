@@ -1,0 +1,6 @@
+TESTS="
+test_fcm1_var_hpc
+test_fcm1_postproc_hpc
+test_fcm1_um_hpc
+test_fcm1_um_inherit_hpc
+"

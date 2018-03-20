@@ -1,0 +1,6 @@
+cfg_name=fcm1_branches_merge_inherit_wrong_include
+test_name=test_$cfg_name
+. ./perform_test
+
+# The wrong include file gets used as demonstrated by the output from running the program.
+# See ticket:206

@@ -1,0 +1,79 @@
+usage of SETTE package:
+
+principal script is sette.sh (usage: ./sette.sh) 
+
+VERY IMPORTANT : for a verbose debug do:
+./sette.sh 2>&1 | tee out.sette
+this create out.sette file in ${SETTE_DIR}
+
+USER MODIFICATIONS
+ in sette.sh script :
+               COMPILER    : compiler among those available in NEMOGCM/ARCH, needed for makenemo (see below)
+                             can also be pass as an argument, e.g. ./sette.sh ifort_osx
+	       BATCH_COMMAND : command for job submission in batch mode
+	       MPI_INTERACT : "yes" if you want to run in interactive mode for MPI run
+	       		      "no" if you want to run in batch mode for MPI run
+			      NOTE : every job using only 1 proc is run in interactive mode
+
+               makenemo -m : machine (compilator); see ./makenemo -m help (in NEMOGCM/CONFIG directory)
+                        -n : config name (in examples config_name_nproci_nprocj), see ./makenemo -n help
+                        -r : reference configuration (if you don't give it you have to choise directories to install)
+                        add_key : to add list of keys (for example to test reproductibility: add_key mpp_rep)
+                        del_key : to del list of keys
+               and for more details and options of makenemo see ./makenemo -h
+
+	       set_namelist : to set namelist values 
+			(example : to set 75 time steps for one test : namelist nn_itend 75)
+			(        : to change cn_icerst_in name : namelist_ice cn_icerst_in  \"test_00101231_restart_icemod\")
+			(  	 : to activate control print : namelist ln_ctl false )
+	       prepare_exe_dir.sh creates execution directory for each test
+	       			  : NOTE for EACH JOB EXECUTION it is needed to set TEST_NAME variable
+				    TEST_NAME variable gives name to execution directory (created in prepare_exe_dir.sh)
+				    IT is mandatory to have different TEST_NAME for each job run if not existing files are re-written (for example namelist)
+
+               prepare_job.sh generates the script to be executed 
+			input: INPUT_FILE_CONFIG_NAME NB_PROCS TEST_NAME MPI_FLAG JOB_FILE_NAME
+
+               fcm_job.sh needs input: TOTAL_NUMBER_OF_PROCS_used JOB_FILE_NAME INTERACT_FLAG MPI_FLAG 
+			(for example if you compile ORCA2_LIM with key_mpp_mpi 
+			and only run short test ===> ./fcm_job input_ORCA2_LIM.cfg 4 SHORT)
+
+ in param.cfg :
+               FORCING_DIR 	   : directory in which will be found input.tar file (same name in input_CONFIG_NAME.cfg)
+               INPUT_DIR   	   : directory in which store input files (tar file)
+               TMPDIR      	   : temporary directory NEEDED ONLY FOR IBM machines (put EXP00 directory)
+	       NEMO_VALIDATION_DIR : directory in which create NEMO_VALIDATION tree, and store restart, solver.stat, tracer.stat and ocean.output files in
+      			             tree NEMO_VALIDATION_DIR/WCONFIG_NAME/WCOMPILER_NAME/TEST_NAME/REVISION_NUMBER(or DATE)
+ in fcm_job.sh :
+               IMPORTANT : control that name of tar file in FORCING directory
+               is the same of that in input_REF_CONFIG.cfg, if not change one.
+
+               change in "RUN OPA" if [ ${MPI_INTERACT} == "yes" ] mpirun command line (some examples are already written)
+	       NOTE: if MPI_INTERACT="no" it is neede a batch_file (see below to create a new one)
+
+NOTE:
+in case of error you can remove you NEW_CONF directory and all files doing :
+./makenemo -n MY_CONFIG clean_config
+
+if you want recompile nemo but before you want to clean compiled code do :
+./makenemo clean
+
+and if you have already compiled you can re-run all sette.sh and compilation part will be by-passed.
+
+NOTE 2: 
+if you want a completly verbose makenemo you can uncomment "set -x" in makenemo script
+and then launch ./sette.sh 2>&1 | tee out.sette
+
+TO ADD NEW CONFIGURATION:
+1. makenemo -n NEW_CONFIG (see makenemo -h for help) OR
+2. makenemo -n NEW_CONFIG -r REF_CONFIG (if it is based on another reference configuration)
+3. for fcm_job.sh creates a new input_NEW_CONFIG.cfg if you need tar file (if you use same tar file of GYRE, ORCA2_LIM or ORCA2_LIM_PISCES you can use it)
+
+TO ADD NEW MACHINE:
+1. add arch-compiler.fcm in NEMOGCM/ARCH directory
+2. makenemo -m new_compiler  (see makenemo -h for help)
+
+TO ADD NEW BATCH-FILE:
+1. see in SETTE/BATCH_TEMPLATE directory existing examples
+2. create you own batch file like: batch-${COMPILER}
+(note: sette.sh will copy it in job_batch_template if you run tests in MPI_INTERACT="no")

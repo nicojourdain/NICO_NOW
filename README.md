@@ -1,14 +1,39 @@
-### NEMO - OASIS - WRF (NOW)
+##### NEMO - OASIS - WRF (NOW)
 
-## preprocessing
+## preprocessing/
 
-This contains bash/fortran tools to build input files needed for NEMO and OASIS (see WPS user guide to build WRF's input).
+The preprocessing directory contains bash/fortran tools to build input files needed for NEMO and OASIS (see WPS user guide to build WRF's input). See specific README.txt file.
 
-## models
+## models/
 
-This contains old versions of NEMO, OASIS and XIOS that were modified and tested for coupling
+The model directory contains old versions of NEMO, OASIS and XIOS that were modified and tested for coupling. See specific README.txt file.
 
-## run
+To rather use up-to-date versions, visit [the NEMO and XIOS page](http://forge.ipsl.jussieu.fr/nemo/wiki/Users), [the OASIS page](https://portal.enes.org/oasis), or [the WRF page](http://www2.mmm.ucar.edu/wrf/users/download/get_source.html) and register as a user.
+
+For example, you can get XIOS-1 or XIOS-2 through these command lines :
+```shell
+svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/xios-1.0 XIOS  ## XIOS-1
+svn co -r 1011 http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/trunk XIOS     ## XIOS-2
+```
+
+And, for example, you can get NEMO through this kind of commands (you need to be registered) :
+```shell
+svn co http://forge.ipsl.jussieu.fr/nemo/svn/trunk MY_NEMO           ## for the last trunk version
+svn co -r 6402 http://forge.ipsl.jussieu.fr/nemo/svn/trunk MY_NEMO   ## for version 6402 of the trunk
+svn co http://forge.ipsl.jussieu.fr/nemo/svn/branches/2015/nemo_v3_6_STABLE MY_NEMO   ## NEMO3.6 STABLE 
+```
+
+And, for example, you can get OASIS3-MCT2 through this command:
+```shell
+svn co http://oasis3mct.cerfacs.fr/svn/branches/OASIS3-MCT_2.0_branch/oasis3-mct oa3mct
+```
+
+For WRF, any version from v3.6 should work. See WRF documentation for compiling and preprocessing (WPS). The only thing that differs for coupling with OASIS is that you need to add the key\_cpp\_oasis3 compilation key in the configure file:
+````shell
+ARCH_LOCAL = -DNONSTANDARD_SYSTEM_FUNC -DCHUNK=64 -DXEON_OPTIMIZED_WSM5 -DOPTIMIZE_CFL_TEST -DWRF_USE_CLM -Dkey_cpp_oasis3
+```
+
+## run/
 
 This contains...
 

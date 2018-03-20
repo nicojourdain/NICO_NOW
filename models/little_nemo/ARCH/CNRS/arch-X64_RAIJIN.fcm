@@ -1,0 +1,29 @@
+# Curie BULL at french TGCC, http://www-hpc.cea.fr/en/complexe/tgcc-curie.htm
+# NCDF_INC    netcdf include file
+# NCDF_LIB    netcdf library
+# FC          Fortran compiler command
+# FCFLAGS     Fortran compiler flags
+# FFLAGS      Fortran 77 compiler flags
+# LD          linker
+# LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+# FPPFLAGS    pre-processing flags
+# AR          assembler
+# ARFLAGS     assembler flags
+# MK          make
+# USER_INC    additional include files for the compiler,  e.g. -I<include dir>
+# USER_LIB    additional libraries to pass to the linker, e.g. -l<library>
+
+%NCDF_INC            -I/short/e14/ncj561/util/include
+%NCDF_LIB            -L/short/e14/ncj561/util/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lhdf5 -lz -lcurl -lstdc++
+%XIOS_ROOT           /short/e14/ncj561/now/models/xios_nico
+%FC                  mpif90 -c -cpp
+%FCFLAGS             -i4 -r8 -O3 -xAVX -fp-model precise
+%FFLAGS              %FCFLAGS
+%LD                  mpif90
+%LDFLAGS             
+%FPPFLAGS            -P -C -traditional
+%AR                  ar
+%ARFLAGS             rs
+%MK                  gmake
+%USER_INC            -I%XIOS_ROOT/inc %NCDF_INC
+%USER_LIB            -L%XIOS_ROOT/lib -lxios %NCDF_LIB 

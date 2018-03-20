@@ -1,0 +1,65 @@
+[Compatibility]
+libIGCM=1.0
+
+[UserChoices]
+OPA_NDT_DAY=4
+#==============================================================
+#-- Name of directory related to dynamical 
+#-- available directories are:  v3, cpl
+#-- NOTE: if you use your own directory you have to comment it
+OPA_dyn=v3
+#==============================================================
+
+[InitialStateFiles]
+List= ()
+
+[BoundaryFiles]
+List=	()
+ListNonDel= (${R_BC}/${config_UserChoices_TagName}/DYN/${pisces_UserChoices_OPA_dyn}/NEMOV3_mesh_mask.nc, mesh_mask.nc), \
+            (${R_BC}/${config_UserChoices_TagName}/DYN/${pisces_UserChoices_OPA_dyn}/NEMOV3_5d_21210101_21211231_grid_T.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/DYN/${pisces_UserChoices_OPA_dyn}/NEMOV3_5d_21210101_21211231_grid_U.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/DYN/${pisces_UserChoices_OPA_dyn}/NEMOV3_5d_21210101_21211231_grid_V.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/DYN/${pisces_UserChoices_OPA_dyn}/NEMOV3_5d_21210101_21211231_grid_W.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_DIC_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_Alkalini_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_O2_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_NO3_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_PO4_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_Si_nomask.nc,  .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_DOC_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/INI/data_1m_Fer_nomask.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/ANC/kRGB61.txt, .), \
+            (${R_BC}/${config_UserChoices_TagName}/ANC/dust.orca.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/ANC/bathy.orca.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/ANC/river.orca.nc, .), \
+            (${R_BC}/${config_UserChoices_TagName}/ANC/ndeposition.orca.nc, .)
+
+[ParametersFiles]
+List=	(${SUBMIT_DIR}/PARAM/namelist, .), \
+        (${SUBMIT_DIR}/PARAM/namelist_top, .), \
+        (${SUBMIT_DIR}/PARAM/namelist_pisces, .), \
+        (${SUBMIT_DIR}/PARAM/iodef.xml, .), \
+        (${SUBMIT_DIR}/PARAM/xmlio_server.def, .)
+
+[RestartFiles]
+List=	(${config_UserChoices_JobName}_${NEMO_END}_restart_trc.nc,  restart_trc.nc, restart_trc.nc)
+
+[OutputText]
+List=   (ocean.output)
+
+[OutputFiles]
+List=   (${PREFIX_WFT1}_ptrc_T.nc, ${R_OUT_MBG_WFT1}/${PREFIX}_${WFT1}_ptrc_T.nc, NONE), \
+        (${PREFIX_WFT1}_diad_T.nc, ${R_OUT_MBG_WFT1}/${PREFIX}_${WFT1}_diad_T.nc, NONE), \
+        (${PREFIX_WFT2}_ptrc_T.nc, ${R_OUT_MBG_WFT2}/${PREFIX}_${WFT2}_ptrc_T.nc, Post_1M_ptrc_T), \
+        (${PREFIX_WFT3}_diad_T.nc, ${R_OUT_MBG_WFT3}/${PREFIX}_${WFT3}_diad_T.nc, Post_5D_diad_T)
+
+[Post_1M_ptrc_T]
+Patches= ()
+GatherWithInternal = (nav_lon, nav_lat, deptht, time_counter)
+TimeSeriesVars = (DCHL, NCHL, NO3)
+
+[Post_5D_diad_T]
+Patches = ()
+GatherWithInternal = (nav_lon, nav_lat, time_counter)
+TimeSeriesVars = (Cflx)
+

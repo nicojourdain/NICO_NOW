@@ -1,0 +1,336 @@
+#!/bin/bash
+#set -x
+set -o posix
+#set -u 
+#set -e
+#+
+#
+# ===============
+# makenemo
+# ===============
+#
+# --------------------------
+# Compile NEMO
+# --------------------------
+#
+# SYNOPSIS
+# ========
+#
+# ::
+#
+#  $ makenemo
+#
+#
+# DESCRIPTION
+# ===========
+#
+#
+# This script aims :
+#
+# - to choose MYCONFIG
+# - to choose compiler options  
+# - to create the CONFIG/MYCONFIG/WORK directory
+# - to compile this configuration
+#
+#  Variables used :
+#
+#  From user input
+#
+# - NEW_CONF    : configuration to be created
+# - REF_CONF    : reference configuration to build the new one 
+# - CMP_NAM     : compiler name 
+# - NBR_PRC     : number of processes used to compile  
+# - NEM_SUBDIR  : NEMO subdirectory used (specified)
+#
+#  Locally defined :
+#
+# - TAB         : NEMO subdirectory used (read)  
+# - MAIN_DIR    : self explaining
+# - CONFIG_DIR  :   "    "    "   
+# - MODELES_DIR :   "    "    " 
+# - TOOLS_DIR   :   "    "    " 
+# - NEMO_DIR    :   "    "    "
+#
+# EXAMPLES
+# ========
+#
+# ::
+#
+#  $ ./makenemo -m ifort_osx - j3 -n ORCA2_LIM
+#
+#
+# TODO
+# ====
+#
+# option debug
+#
+#
+# EVOLUTIONS
+# ==========
+#
+# $Id: makenemo 3499 2012-10-15 01:15:23Z rblod $
+#
+#
+#
+#   * creation
+#
+#-
+
+#-
+#- Initialization of the options ---
+x_d="";
+x_h="";
+x_n="";
+x_r="";
+x_m="";
+x_t="";
+x_c="";
+x_j=1;
+x_e="none";
+x_s=NEMO;
+x_v=1;
+
+#- Local variables ---
+b_n=$(basename ${0})
+OPTIND=1
+MAIN_DIR=$(cd $(dirname "$0"); pwd)
+MAIN_DIR=${MAIN_DIR%/SETTE*}
+MAIN_DIR=${MAIN_DIR%/TOOLS*}
+MAIN_DIR=${MAIN_DIR%/CONFIG*}
+export MAIN_DIR
+#
+export CONFIG_DIR=${MAIN_DIR}/CONFIG
+export TOOLS_DIR=${MAIN_DIR}/TOOLS
+export COMPIL_DIR=${MAIN_DIR}/TOOLS/COMPILE
+export NEMO_DIR=${MAIN_DIR}/${x_s}
+export AGRIFUSE=10
+declare -a TAB
+#-
+#- FCM and functions location ---
+export PATH=${MAIN_DIR}/EXTERNAL/fcm/bin:$PATH
+
+#-
+#- Choice of the options ---
+while getopts :hd:n:r:m:j:e:s:v:t: V
+do
+    case $V in
+	(h) x_h=${OPTARG};
+        echo "Usage	 : "${b_n} \
+	    " [-h] [-n name] [-m arch] [-d "dir1 dir2"] [-r conf] [-s Path] [-e Path] [-j No] [-v No]";
+	echo " -h	        : help";
+	echo " -h institute : specific help for consortium members";
+	echo " -n name      : config name, [-n help] to list existing configurations";
+	echo " -m arch      : choose compiler, [-m help] to list existing compilers";
+	echo " -d dir       : choose NEMO sub-directories";
+	echo " -r conf      : choose reference configuration";
+        echo " -s Path      : choose alternative location for NEMO main directory";
+        echo " -e Path      : choose alternative location for MY_SRC directory";
+        echo " -j No        : number of processes used to compile (0=nocompilation)";
+        echo " -v No        : set verbosity level for compilation [0-3]";
+	echo " -t dir       : temporary directory for compilation"
+	echo "";
+	echo "Example to install a new configuration MY_CONFIG";
+	echo "with OPA_SRC and LIM_SRC_2 ";
+	echo "makenemo -n MY_CONFIG -d \"OPA_SRC LIM_SRC_2\"";
+	echo "";
+	echo "Available configurations :"; cat ${CONFIG_DIR}/cfg.txt; 
+	echo "";
+	echo "Example to remove bad configuration ";
+	echo "./makenemo -n MY_CONFIG clean_config";
+	echo "";
+	echo "Example to clean ";
+	echo "./makenemo clean";
+	echo "";
+	echo "Example to add and remove keys";
+	echo "./makenemo add_key \"key_iomput key_mpp_mpi\" del_key \"key_agrif\" ";
+	echo "";
+	echo "Example to add and remove keys for a new configuration, and do not compile";
+	echo "./makenemo -n MY_CONFIG -j0 add_key \"key_iomput key_mpp_mpi\" del_key \"key_agrif\" ";
+	echo "";
+	. ${COMPIL_DIR}/Flist_archfile.sh ${x_h}  ;
+	echo "";
+	echo "Default : previous configuration and compiler";
+	exit 0;;
+	(d)  x_d=${OPTARG};;
+	(n)  x_n=${OPTARG};;
+	(r)  x_r=${OPTARG};;
+	(m)  x_m=${OPTARG};;
+	(j)  x_j=${OPTARG};;
+	(t)  x_t=${OPTARG};;
+    (e)  x_e=${OPTARG};;
+    (s)  x_s=${OPTARG};;
+    (v)  x_v=${OPTARG};;
+	(:)  echo ${b_n}" : -"${OPTARG}" option : missing value" 1>&2;
+	exit 2;;
+	(\?) echo ${b_n}" : -"${OPTARG}" option : not supported" 1>&2;
+	exit 2;;
+    esac
+done
+shift $(($OPTIND-1));
+
+while [ ${#1} -gt 0 ]   # Get clean, clean_config options
+do
+    case "$1" in
+	clean)
+	    x_c="--$1"
+	    ;;
+	clean_config)
+	    . ${COMPIL_DIR}/Fclean_config.sh
+	    exit
+	    ;;
+	add_key)
+	    list_add_key=$2
+	    export ${list_add_key}
+	    shift
+	    ;;
+	del_key)
+	    list_del_key=$2
+	    export ${list_del_key}
+	    shift
+	    ;;
+	*)
+	    echo " \"$1\" BAD OPTION" 
+	    exit
+	    ;;
+	
+    esac
+    shift
+done
+
+
+#-
+#- Go to NEMOGCM/config directory ---
+cd ${CONFIG_DIR}
+
+#-
+#- Initialisation from input ---
+export NEW_CONF=${x_n}
+NBR_PRC=${x_j}
+CMP_NAM=${x_m}
+NEM_SUBDIR=${x_d}
+REF_CONF=${x_r}
+NEMO_TDIR=${x_t:-$NEMO_TDIR}
+export NEMO_TDIR=${NEMO_TDIR:-$CONFIG_DIR}
+export NEMO_DIR=${MAIN_DIR}/${x_s}
+
+#- Check if the tool or the compiler exist or list it
+if [ "${NEW_CONF}" == help ] ; then
+    echo "Available configurations :" 
+    cat ${CONFIG_DIR}/cfg.txt
+    exit
+fi
+[ "${CMP_NAM}" ==  help ] && . ${COMPIL_DIR}/Flist_archfile.sh all && exit
+
+#- When used for the first time, choose a compiler ---
+. ${COMPIL_DIR}/Fcheck_archfile.sh arch_nemo.fcm ${CMP_NAM} || exit
+
+#-
+#- Choose a default configuration if needed ---
+#- ORCA2_LIM or last one used ---
+. ${COMPIL_DIR}/Fcheck_config.sh cfg.txt ${NEW_CONF} || exit 
+
+
+if [ ${#NEW_CONF} -eq 0 ] ; then
+    if [ ${#NEM_SUBDIR} -eq 0 -a ${#REF_CONF} -eq 0 ]; then
+	echo "You are  installing a new configuration"
+	ind=0
+	. ${COMPIL_DIR}/Fread_dir.sh OPA_SRC	 YES 
+	. ${COMPIL_DIR}/Fread_dir.sh LIM_SRC_2   YES 
+	. ${COMPIL_DIR}/Fread_dir.sh LIM_SRC_3   NO  
+	. ${COMPIL_DIR}/Fread_dir.sh TOP_SRC	 NO  
+	. ${COMPIL_DIR}/Fread_dir.sh NST_SRC	 YES 
+	. ${COMPIL_DIR}/Fread_dir.sh OFF_SRC	 NO  
+	REF_CONF=ORCA2_LIM
+    elif [ ${#NEM_SUBDIR} -gt 0 ] && [ ${#REF_CONF} -eq 0 ]; then
+	echo "You are  installing a new configuration"
+	TAB=( ${NEM_SUBDIR} )
+	REF_CONF=ORCA2_LIM
+    elif [ ${#NEM_SUBDIR} -eq 0 ] && [ ${#REF_CONF} -gt 0 ]; then
+	echo "You are  installing a new configuration based on ${REF_CONF}"
+	. ${COMPIL_DIR}/Fcopy_dir.sh ${REF_CONF}  
+    fi
+    NEW_CONF=${x_n}
+    . ${COMPIL_DIR}/Fmake_config.sh ${NEW_CONF} ${REF_CONF}
+else
+    sed -e "/${NEW_CONF} /d"  ${CONFIG_DIR}/cfg.txt >  ${COMPIL_DIR}/cfg.tmp
+    \mv  ${COMPIL_DIR}/cfg.tmp  ${CONFIG_DIR}/cfg.txt
+fi
+
+#-
+#- Save new configuration and directories names ---
+echo ${NEW_CONF} ${TAB[*]} >> ${CONFIG_DIR}/cfg.txt
+
+#-
+#- Create the WORK ---
+#- Clean links and librairies ---
+#- Creating the good links, at first on OPA_SRC ---
+. ${COMPIL_DIR}/Fmake_WORK.sh ${x_e} ${NEW_CONF} ${TAB[*]} || exit
+
+. ${COMPIL_DIR}/Fmake_bld.sh ${CONFIG_DIR} ${NEW_CONF}  ${NEMO_TDIR} || exit
+
+#- At this stage new configuration has been added,
+#- We add or remove keys
+if [ ${#list_add_key} -ne 0 ] ; then
+    . ${COMPIL_DIR}/Fadd_keys.sh ${NEW_CONF} add_key ${list_add_key} 
+fi
+
+if [ ${#list_del_key} -ne 0 ] ; then
+    . ${COMPIL_DIR}/Fdel_keys.sh ${NEW_CONF} del_key ${list_del_key}
+fi
+
+#- At this stage the configuration has beeen chosen
+#- We choose the default light file
+export USEBLD=bldxioxag.cfg
+
+#- We look after agrif
+grep key_agrif ${COMPIL_DIR}/cpp.fcm && export AGRIFUSE=1 && export USEBLD=${USEBLD/xag/}
+. ${COMPIL_DIR}/Fprep_agrif.sh ${NEW_CONF} ${NEMO_TDIR} || exit
+
+#- and test whether we need to build the ioserver
+grep key_iomput ${COMPIL_DIR}/cpp.fcm && export USEBLD=${USEBLD/xio/}
+
+#-
+#_ END OF CONFIGURATION PHASE
+#_
+
+#-
+#- Compile ---
+
+#IO server first as a library
+#cd $MAIN_DIR/EXTERNAL/XIOS
+#   fcm build -j 1 --ignore-lock || exit
+#cd -
+ 
+
+
+if [ "${NBR_PRC}" -gt 0 ]; then
+    cd ${NEMO_TDIR}/${NEW_CONF} || cd -
+
+#if AGRIF we do a first preprocessing
+    if [ ${#x_c} -eq 0 ]; then
+        [ "$AGRIFUSE" == 1 ] && fcm build --ignore-lock -s 2 ${COMPIL_DIR}/$USEBLD
+        [ "$AGRIFUSE" == 1 ] && rm -rf  ${NEMO_TDIR}/${NEW_CONF}/BLD/*
+    fi
+    fcm build ${x_c} --ignore-lock -v ${x_v} -j ${NBR_PRC} ${COMPIL_DIR}/$USEBLD || cd -
+    [ -f ${NEMO_TDIR}/${NEW_CONF}/BLD/bin/nemo.exe ] && ln -sf ${NEMO_TDIR}/${NEW_CONF}/BLD/bin/nemo.exe  ${CONFIG_DIR}/${NEW_CONF}/EXP00/opa
+    [ -f $MAIN_DIR/EXTERNAL/XIOS/bin/xios_server.exe ] && ln -sf $MAIN_DIR/EXTERNAL/XIOS/bin/xios_server.exe  ${CONFIG_DIR}/${NEW_CONF}/EXP00/xios_server.exe
+
+#add remove for clean option
+    if  [ ${#x_c} -ne 0 ]; then
+        rm -rf ${NEMO_TDIR}/${NEW_CONF}/WORK
+        rm -rf ${NEMO_TDIR}/${NEW_CONF}/BLD
+        rm -rf ${NEMO_TDIR}/${NEW_CONF}/EXP00/opa
+        rm -rf ${NEMO_TDIR}/${NEW_CONF}/EXP00/server.exe
+        echo "cleaning ${NEW_CONF} WORK, BLD"
+    fi
+
+fi
+
+#- Come back to original directory ---
+cd -
+
+#-
+#- Unset variables
+${COMPIL_DIR}/Fclean_var.sh
+
+

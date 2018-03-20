@@ -1,0 +1,3 @@
+cfg_name=fcm1_exe_rename
+test_name=test_$cfg_name
+. ./perform_test
