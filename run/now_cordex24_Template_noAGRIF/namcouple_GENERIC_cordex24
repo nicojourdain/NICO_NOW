@@ -1,0 +1,161 @@
+###############################################################################
+#
+# NFIELDS : total number of fields being exchanged.
+#
+ $NFIELDS
+ 9
+ $END
+###############################################################################
+#
+# NBMODEL : number of models and their names (CHAR*6).
+#
+ $NBMODEL
+ 3 wrfexe oceanx xios.x 
+ $END
+###############################################################################
+#
+# RUNTIME: total simulated time for the actual run in seconds (<I8)
+#
+ $RUNTIME
+ DUR_SECS
+ $END
+###############################################################################
+#
+# NLOGPRT: printing level in output file cplout:
+#
+ $NLOGPRT
+  2 1
+ $END
+#
+#
+###############################################################################
+ $STRINGS
+###############################################################################
+#
+#                      OCEAN  --->>>  ATMOS
+#                      --------------------
+###############################################################################
+# --- start Field 1 --- 
+# Weighted sea surface temperature (o->a 1)
+#
+O_SSTSST WRF_d01_EXT_d01_SST 1 cplfreqd01  2  sO1A1.nc EXPORTED
+nbxNEMd01 nbyNEMd01 nbxWRFd01 nbyWRFd01 n75t  w75m  LAG=NBTNEMd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Od01_to_Ad01.nc
+# 
+# --- end field 1 ---
+###############################################################################
+# --- start Field 2 ---
+# Ocean X-velocity (o->a 2)
+#
+O_OCurx1 WRF_d01_EXT_d01_UOCE 1 cplfreqd01  2  sO1A1.nc EXPORTED
+nbxNEMd01 nbyNEMd01 nbxWRFd01 nbyWRFd01 n75u  w75u  LAG=NBTNEMd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Od01_to_Ad01.nc
+#
+# --- end field 2 ---
+###############################################################################
+# --- start Field 3 ---
+# Ocean surface Y-velocity (o->a 3)
+#
+O_OCury1 WRF_d01_EXT_d01_VOCE 1 cplfreqd01  2  sO1A1.nc EXPORTED
+nbxNEMd01 nbyNEMd01 nbxWRFd01 nbyWRFd01 n75v  w75v  LAG=NBTNEMd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Od01_to_Ad01.nc
+#
+# --- end field 3 ---
+############################################################################
+############################################################################
+#
+#                      ATMOSPHERE  --->>>  OCEAN
+#                      -------------------------
+############################################################################   
+############################################################################   
+# --- start Field 4 --- 
+# wind stress module (a->o tau 1)
+#
+WRF_d01_EXT_d01_TAUMOD O_TauMod 23 cplfreqd01  2  fA1O1.nc   EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01 w75m  n75t  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 4 ---
+###########################################################################
+# --- start Field 5 --- 
+# wind stress along X axis (a->o tau 2)
+#
+WRF_d01_EXT_d01_TAUX O_OTaux1 23 cplfreqd01  2  fA1O1.nc   EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01  w75u  n75u  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 5 ---
+###########################################################################
+# --- start Field 6 --- 
+# stress along Y axis (a->o tau 3)
+#
+WRF_d01_EXT_d01_TAUY O_OTauy1 24 cplfreqd01  2  fA1O1.nc  EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01  w75v  n75v  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 6 ---
+###########################################################################
+# --- start Field 7 --- 
+# emp = emp_oce = evap_oce - ( rain_oce + snow_oce ) (a->o flx 4)
+#
+WRF_d01_EXT_d01_EVAP-PRECIP OOEvaMPr 29 cplfreqd01  2   fA1O1.nc   EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01  w75m  n75t  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 7 ---
+##########################################################################
+# --- start Field 8 --- 
+# solar heat flux on ocean (a->o flx 5)
+#
+WRF_d01_EXT_d01_SURF_NET_SOLAR O_QsrOce  7 cplfreqd01  2   fA1O1.nc  EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01  w75m  n75t  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 8 ---
+#########################################################################
+# --- start Field 9 --- 
+# Non solar heat flux on ocean (a->o flx 6)
+#
+WRF_d01_EXT_d01_SURF_NET_NON-SOLAR O_QnsOce 6 cplfreqd01  2   fA1O1.nc  EXPORTED
+nbxWRFd01 nbyWRFd01 nbxNEMd01 nbyNEMd01  w75m  n75t  LAG=NBTWRFd01
+R  0  R  0
+LOCTRANS MAPPING
+#
+AVERAGE
+mozaic_Ad01_to_Od01.nc
+#
+# --- end field 9 ---
+#########################################################################
+ $END

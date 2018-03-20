@@ -1,0 +1,293 @@
+<?xml version="1.0"?>
+<simulation> 
+
+ <context id="nemo" time_origin="1989-01-01 00:00:00">
+    
+    <!-- $id$ -->
+    
+    <!-- 
+============================================================================================================
+=                                  definition of all existing variables                                    =
+=                                            DO NOT CHANGE                                                 =
+============================================================================================================
+    -->
+    <field_definition src="./field_def.xml"/>
+    <!-- 
+============================================================================================================
+=                                           output files definition                                        =
+=                                            Define your own files                                         =
+=                                         put the variables you want...                                    =
+============================================================================================================
+    -->
+    
+    <file_definition type="one_file" sync_freq="1d" min_digits="4" enabled=".TRUE.">
+    
+      <file_group id="2h" output_freq="2h"   output_level="10" enabled=".FALSE."> <!-- 2h files -->
+	<file_group id="2h_grid_T" name="auto" description="ocean T grid variables" >
+          <file id="0n0eT"      name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n10wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="6s10wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="10s10wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="21n23wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12n23wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n23wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n23wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="20n38wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="15n38wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12n38wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n38wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n38wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n35wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s30wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="14s32wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="19s34wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s95eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s95eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12s95eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="16s95eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="15n90eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12n90eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n90eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n90eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5n90eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n90eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5s90eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n80.5eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5n80.5eT" name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n80.5eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5s80.5eT" name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4s80.5eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s80.5eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12s80.5eT"  name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="16s80.5eT"  name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n67eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n67eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5n67eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n67eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5s67eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4s67eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s67eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12s67eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="16s67eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="15n65eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4n55eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5n55eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n55eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="1.5s55eT"   name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="4s55eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s55eT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="12s55eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="16s55eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s95wT"     name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s110wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s125wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s140wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s155wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s170wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s180wT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8s165eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2s156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5s156eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n147eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n147eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="0n147eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="8n137eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="5n137eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+          <file id="2n137eT"    name_suffix="auto" > <field_group group_ref="mooring" /> </file>
+	</file_group>
+      </file_group>
+
+      <file_group id="3h" output_freq="3h"  output_level="10" enabled=".TRUE."/> <!-- 3h files -->     
+      <file_group id="4h" output_freq="4h"  output_level="10" enabled=".TRUE."/> <!-- 4h files -->
+      <file_group id="6h" output_freq="6h"  output_level="10" enabled=".TRUE."/> <!-- 6h files -->
+     
+      <file_group id="1d" output_freq="1d"   output_level="10" enabled=".TRUE."> <!-- 1d files -->
+
+	<file id="1d_grid_T" name="auto" description="ocean T grid variables" >
+	    <field field_ref="sst"          name="tos"      long_name="sea_surface_temperature"                       />
+	    <field field_ref="sst"          name="tos_max"  long_name="max_sea_surface_temperature" operation="maximum" /> 
+	    <field field_ref="sst"          name="tos_min"  long_name="min_sea_surface_temperature" operation="minimum" /> 
+	    <field field_ref="sst2"         name="tossq"    long_name="square_of_sea_surface_temperature"             />
+	    <field field_ref="sss"          name="sos"      long_name="sea_surface_salinity"                          />
+	    <field field_ref="ssh"          name="zos"      long_name="sea_surface_height_above_geoid"                />
+	    <field field_ref="mldr10_3"                                                                                 />
+	    <field field_ref="mld_dt02"                                                                                 />
+	</file>
+
+	<file id="1d_grid_U" name="auto" description="ocean T grid variables" >
+	  <field field_ref="suoce"        name="uos"      long_name="sea_surface_x_velocity"    />
+          <field field_ref="utau"         name="tauuo"    long_name="surface_downward_x_stress" />
+	</file>
+
+	<file id="1d_grid_V" name="auto" description="ocean T grid variables" >
+	  <field field_ref="svoce"        name="vos"      long_name="sea_surface_y_velocity"    />
+          <field field_ref="vtau"         name="tauvo"    long_name="surface_downward_y_stress" />
+	</file>
+
+      </file_group>
+
+      <file_group id="3d" output_freq="3d" output_level="10" enabled=".TRUE."/> <!-- 3d files -->    
+ 
+      <file_group id="5d" output_freq="5d" output_level="10" enabled=".TRUE.">  <!-- 5d files -->   
+	<file_group id="5d_grid_T" name="auto" description="ocean T grid variables" >
+	  <file id="5d_grid_T_2D" name_suffix="_2D" >
+	    <field field_ref="sst"          name="tos"      long_name="sea_surface_temperature"                       />
+	    <field field_ref="sst2"         name="tossq"    long_name="square_of_sea_surface_temperature"             />
+	    <field field_ref="sss"          name="sos"      long_name="sea_surface_salinity"                          />
+	    <field field_ref="ssh"          name="zos"      long_name="sea_surface_height_above_geoid"                />
+	    <field field_ref="empmr"        name="wfo"      long_name="water_flux_into_sea_water"                     />
+	    <field field_ref="qsr"          name="rsntds"   long_name="surface_net_downward_shortwave_flux"           />
+	    <field field_ref="qt"           name="tohfls"   long_name="surface_net_downward_total_heat_flux"          />
+	    <field field_ref="taum"         />
+	    <field field_ref="20d"          />
+	    <field field_ref="mldkz5"       />
+	    <field field_ref="mldr10_1"     />
+	    <field field_ref="mldr10_3"     />
+	    <field field_ref="mld_dt02"     />
+	    <field field_ref="topthdep"     />
+	    <field field_ref="pycndep"      />
+	    <field field_ref="tinv"         />
+	    <field field_ref="depti"        />
+	    <field field_ref="BLT"          name="blt"      long_name="barrier_layer_thickness"                       />
+	  </file>
+	
+	  <file id="5d_grid_T_T3D" name_suffix="_T3D" >
+	    <field field_ref="toce"         name="thetao"   long_name="sea_water_potential_temperature"               />
+	  </file>
+	
+	  <file id="5d_grid_T_S3D" name_suffix="_S3D" >
+	    <field field_ref="soce"         name="so"       long_name="sea_water_salinity"                            />
+	  </file>
+        </file_group>
+	
+	<file_group id="5d_grid_U" name="auto" description="ocean U grid variables" >
+	  <file id="5d_grid_U_2D" name_suffix="_2D" >
+	    <field field_ref="suoce"        name="uos"     long_name="sea_surface_x_velocity"    />
+	    <field field_ref="utau"         name="tauuo"   long_name="surface_downward_x_stress" />
+	  </file>
+	
+	  <file id="5d_grid_U_3D" name_suffix="_3D" >
+	    <field field_ref="uoce"         name="uo"      long_name="sea_water_x_velocity"  />
+	  </file>
+        </file_group>
+	
+	<file_group id="5d_grid_V" name="auto" description="ocean V grid variables" >
+	  <file id="5d_grid_V_2D" name_suffix="_2D" >
+	    <field field_ref="svoce"        name="vos"      long_name="sea_surface_y_velocity"    />
+	    <field field_ref="vtau"         name="tauvo"    long_name="surface_downward_y_stress" />
+	  </file>
+		
+	  <file id="5d_grid_V_3D" name_suffix="_3D" >
+	    <field field_ref="voce"         name="vo"       long_name="sea_water_y_velocity" />
+	  </file>
+        </file_group>
+
+	<file id="5d_grid_W" name="auto" description="ocean W grid variables" >
+	  <field field_ref="woce"         name="wo"       long_name="ocean_vertical_velocity" />
+	</file>
+
+      </file_group>
+
+      <file_group id="1m" output_freq="1mo" output_level="10" enabled=".TRUE."/> <!-- real monthly files -->
+      <file_group id="2m" output_freq="2mo" output_level="10" enabled=".TRUE."/> <!-- real 2m files -->
+      <file_group id="3m" output_freq="3mo" output_level="10" enabled=".TRUE."/> <!-- real 3m files -->
+      <file_group id="4m" output_freq="4mo" output_level="10" enabled=".TRUE."/> <!-- real 4m files -->
+      <file_group id="6m" output_freq="6mo" output_level="10" enabled=".TRUE."/> <!-- real 6m files -->
+
+      <file_group id="1y"  output_freq="1y"  output_level="10" enabled=".TRUE."/> <!-- real yearly files -->
+      <file_group id="2y"  output_freq="2y"  output_level="10" enabled=".TRUE."/> <!-- real 2y files -->
+      <file_group id="5y"  output_freq="5y"  output_level="10" enabled=".TRUE."/> <!-- real 5y files -->
+      <file_group id="10y" output_freq="10y" output_level="10" enabled=".TRUE."/> <!-- real 10y files -->
+
+   </file_definition>
+    
+    <!-- 
+============================================================================================================
+= grid definition = = DO NOT CHANGE =
+============================================================================================================
+    -->
+    
+   <axis_definition>  
+      <axis id="deptht" long_name="Vertical T levels" unit="m" positive="down" />
+      <axis id="depthu" long_name="Vertical U levels" unit="m" positive="down" />
+      <axis id="depthv" long_name="Vertical V levels" unit="m" positive="down" />
+      <axis id="depthw" long_name="Vertical W levels" unit="m" positive="down" />
+   </axis_definition> 
+    
+   <domain_definition src="./domain_def.xml"/>
+   
+   <grid_definition />    
+  
+  </context>
+  
+  <context id="xios">
+
+      <variable_definition>
+	
+     <!-- 
+        We must have buffer_size > jpi*jpj*jpk*8 (with jpi and jpj the subdomain size)
+-->
+	  <variable id="buffer_size"               type="integer">10000000</variable>
+	  <variable id="buffer_server_factor_size" type="integer">2</variable>
+	  <variable id="info_level"                type="integer">0</variable>
+	  <variable id="using_server"              type="boolean">true</variable>
+	  <variable id="using_oasis"               type="boolean">false</variable>
+	  <variable id="oasis_codes_id"            type="string" >oceanx</variable>
+	
+      </variable_definition>
+
+  </context>
+  
+</simulation>

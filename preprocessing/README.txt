@@ -66,6 +66,9 @@ NB: the presence of a 2-way nest in WRF modifies the effective
 ##     configuration name, for instance, if you had coordinates_xxxx.nc, you should have mesh_mask_xxxx.nc.
 ##     Copy the mesh_mask file in the current directory (i.e. here).
 
+cd ../run
+
+
 #########################################################################################################
 ## 4-- Build the open boundary conditions (OBCs) for the parent grid (first calculate interpolation 
 ##     coefficients then interpolate global ocean data on every OBC :
