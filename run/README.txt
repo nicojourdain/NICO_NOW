@@ -12,3 +12,5 @@ export CASE='GNJ001'
 cp -rp create_mesh_mask_cordex24_Template_noAGRIF create_mesh_mask_${CONFIG}_${CASE}
 cd create_mesh_mask_${CONFIG}_${CASE}
 ## Adapt the header in run_nemo.sh to your platform batch jobs manager.
+
+NB: you may have to replace rebuild_restart.f90 with rebuild_restart_2.f90 if rebuild the single restart file from multi-processor restart files does not work.
