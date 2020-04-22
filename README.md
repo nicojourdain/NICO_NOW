@@ -1,5 +1,7 @@
 # NEMO - OASIS - WRF (NOW)
 
+[![DOI](https://zenodo.org/badge/80709974.svg)](https://zenodo.org/badge/latestdoi/80709974)
+
 ## preprocessing/
 
 The preprocessing directory contains bash/fortran tools to build input files needed for NEMO and OASIS (see WPS user guide to build WRF's input). See specific README.txt file.
